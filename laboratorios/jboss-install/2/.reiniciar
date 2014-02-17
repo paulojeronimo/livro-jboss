@@ -1,0 +1,6 @@
+rm ~/curso-jboss/laboratorios/jboss-install/2/ambiente
+mv ~/curso-jboss/instaladores/jboss-eap-6.1.0.zip $HOME
+rm -rf ~/curso-jboss/{instaladores,ferramentas}
+cd 
+rm curso-jboss
+cd ~/github.com/paulojeronimo/curso-jboss/laboratorios/jboss-install/2

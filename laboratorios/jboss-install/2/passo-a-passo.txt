@@ -1,0 +1,40 @@
+$ LIVRO_DIR=curso-jboss
+$ LAB_HOME=~/$LIVRO_DIR/laboratorios/jboss-install/2
+$ INSTALADORES_DIR=instaladores
+$ cd && ln -sf github.com/paulojeronimo/$LIVRO_DIR
+$ cd $LIVRO_DIR
+$ mkdir $INSTALADORES_DIR && mv $HOME/jboss-eap-6.2.0.zip $INSTALADORES_DIR
+$ cat > $LAB_HOME/ambiente <<EOF
+#!/bin/bash
+export LIVRO_HOME=~/$LIVRO_DIR
+export PATH=\$LIVRO_HOME/scripts:\$PATH
+
+export LAB_HOME=$LAB_HOME
+
+export FERRAMENTAS_HOME=\$LIVRO_HOME/ferramentas
+export INSTALADORES_HOME=\$LIVRO_HOME/$INSTALADORES_DIR
+
+export JAVA_HOME=/usr/lib/jvm/java
+
+JBOSS_VER=eap-6.2.0
+JBOSS_INSTALADOR=\$INSTALADORES_HOME/jboss-\$JBOSS_VER.zip
+JBOSS_DIR=jboss-eap-6.2
+JBOSS_LINK=jboss
+export JBOSS_HOME=\$LIVRO_HOME/ferramentas/jboss
+export PATH=\$JBOSS_HOME/bin:\$PATH
+
+instalar_jboss() {
+   remover_jboss
+   mkdir -p \$FERRAMENTAS_HOME
+   unzip -o \$JBOSS_INSTALADOR -d \$FERRAMENTAS_HOME/
+   pushd \$FERRAMENTAS_HOME
+   ln -s \$JBOSS_DIR \$JBOSS_LINK
+   sed -i 's/1303/512/g' \$JBOSS_LINK/bin/standalone.conf
+   popd
+}
+
+remover_jboss() {
+   rm -rf \$FERRAMENTAS_HOME/{\$JBOSS_LINK,\$JBOSS_DIR}
+}
+EOF
+$ setenv $LAB_HOME/ambiente

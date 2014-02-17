@@ -1,0 +1,8 @@
+1) Logue-se na console do CentOS (usuário/senha: aluno/@lun0123). Execute:
+$ ping base
+$ ssh aluno@base
+$ logout
+$ ssh -R 3333:localhost:22 aluno-jboss@base
+
+2) Abra outro shell na máquina base e execute:
+$ ssh -p 3333 aluno@localhost

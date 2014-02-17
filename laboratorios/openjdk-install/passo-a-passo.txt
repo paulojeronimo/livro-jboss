@@ -1,0 +1,15 @@
+$ sudo yum -y install java-1.7.0-openjdk-devel
+$ java -version
+$ javac -version
+$ cat > HelloWorld.java <<EOF
+public class HelloWorld {
+   public static void main(String args[]) {
+      String s = args.length == 0 ? "World" : args[0];
+      System.out.printf("Hello, %s!\n", s);
+   }
+}
+EOF
+$ javac HelloWorld.java
+$ java HelloWorld
+$ java HelloWorld Paulo
+$ rm HelloWorld.*

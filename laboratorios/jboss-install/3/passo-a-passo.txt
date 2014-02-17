@@ -1,0 +1,6 @@
+
+$ d=github.com/paulojeronimo; mkdir -p $d && (cd $d && git clone http://$d/dotfiles.git)
+
+$ $d/dotfiles/Scripts/dotfiles install
+
+$ (cd $d && git clone http://$d/livro-jboss.git)
