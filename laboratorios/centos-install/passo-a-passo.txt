@@ -35,7 +35,7 @@ Nota para o instrutor: em sua máquina não há espaço em disco no Volume do Ma
 $ d=/Volumes/data/vms-aluno; mkdir -p $d; cd ~/curso-jboss && ln -s $d vms
 ----------------------
 
-4) Ao iniciar a VM, adicione 'ks=http://10.0.2.2/~aluno/ks' (sem os apóstrofos) a linha de inicialização do grub e, em seguida, pressione <Enter>.
+4) Ao iniciar a VM, adicione 'ks=http://10.0.2.2/~aluno/ks' (sem os apóstrofos) a linha de inicialização do grub (pressione <Tab> para isso) e, em seguida, pressione <Enter>.
 
 5) O processo de instalação da VM será realizado sem nenhuma intervenção. Aguarde sua finalização e, ao receber a mensagem de conclusão da instalação, remova o CD de instalação e pressione <Enter> para que a máquina seja reinicializada.
 

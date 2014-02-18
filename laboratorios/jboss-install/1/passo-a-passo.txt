@@ -1,4 +1,6 @@
-$ pwd
+$ mkdir -p ~/curso-jboss
+$ cd !$
+$ scp base:~/curso-jboss/instaladores/jboss-eap-6.2.0.zip .
 $ unzip -o jboss-eap-6.2.0.zip > /tmp/unzip.log 
 $ ln -s jboss-eap-6.2 jboss
 $ export JAVA_HOME=/usr/lib/jvm/java
@@ -6,6 +8,10 @@ $ export JBOSS_HOME=~/jboss
 $ export PATH=$JBOSS_HOME/bin:$PATH
 $ echo $PATH | tr ':' '\n'
 $ standalone.sh
+# <Ctrl+Z>
+$ bg
+$ free -m
+$ fg
 # <Ctrl+C>
 $ sed -i 's/1303/512/g' jboss/bin/standalone.conf
 $ standalone.sh

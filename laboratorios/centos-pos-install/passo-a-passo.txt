@@ -38,7 +38,33 @@ $ ssh-copy-id -p 3333 localhost
 $ ssh -p 3333 localhost
 $ logout
 
-10) Desligue a vm-centos e faça um snapshot dela para caso precisemos voltar até o ponto em que estamos agora:
+10) Desligue a vm-centos
 $ ssh -t -p 3333 localhost 'sudo shutdown -h now'
 # aguarde o shutdown ...
+
+11) Crie uma nova interface de rede na vm-centos. Isso será útil para evitarmos o uso do túnel reverso utilizamos agora a pouco. Ela também será útil nos laboratórios de JBoss em que formos levantar mais de uma instância;
+$ VBoxManage hostonlyif create
+$ VBoxManage list hostonlyifs
+$ VBoxManage dhcpserver add --netname HostInterfaceNetworking-vboxnet0 --ip 192.168.56.1 --netmask 255.255.255.0 --lowerip 192.168.56.101 --upperip 192.168.56.201 --enable
+$ VBoxManage list dhcpservers
+$ VBoxManage modifyvm vm-centos --nic2 hostonly --hostonlyadapter2 vboxnet0
+$ f=/etc/hosts; grep vm-centos $f &> /dev/null || echo -e "192.168.56.101\tvm-centos" | sudo tee -a $f
+$ cat $f
+$ VBoxManage startvm vm-centos
+$ ping vm-centos
+
+11) Desligue novamente a VM e, agora, faça um snapshot dela para caso precisemos voltar até o ponto em que chegamos:
+$ VBoxManage controlvm vm-centos acpipowerbutton
 $ VBoxManage snapshot vm-centos take 'centos-pos-install'
+
+FIM DESSE LAB!!! \0/
+
+##############################################################################
+# Comandos para desfazer a rede (referência para o futuro, NÃO EXECUTE AGORA):
+##############################################################################
+
+# Para remover o servidor dhcp da interface vboxnet0:
+$ VBoxManage dhcpserver remove --netname HostInterfaceNetworking-vboxnet0
+
+# Para remover a rede vboxnet0
+$ VBoxManage hostonlyif remove vboxnet0

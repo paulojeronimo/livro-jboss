@@ -1,3 +1,6 @@
+# shell-1@base
+$ VBoxManage startvm vm-centos
+$ ssh vm-centos
 $ sudo yum -y install java-1.7.0-openjdk-devel
 $ java -version
 $ javac -version

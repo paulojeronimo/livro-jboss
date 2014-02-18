@@ -1,18 +1,25 @@
-$ LIVRO_DIR=curso-jboss
-$ LAB_HOME=~/$LIVRO_DIR/laboratorios/jboss-install/2
+$ d=github.com/paulojeronimo; mkdir -p $d && cd $d
+$ git clone https://$d/dotfiles.git
+$ git clone https://$d/livro-jboss.git
+$ dotfiles/install
+$ logout
+
+$ ssh vm-centos
+$ CURSO_DIR=curso-jboss
+$ LAB_HOME=~/$CURSO_DIR/laboratorios/jboss-install/2
 $ INSTALADORES_DIR=instaladores
-$ cd && ln -sf github.com/paulojeronimo/$LIVRO_DIR
-$ cd $LIVRO_DIR
+$ cd && ln -sf github.com/paulojeronimo/livro-jboss $CURSO_DIR
+$ cd $CURSO_DIR
 $ mkdir $INSTALADORES_DIR && mv $HOME/jboss-eap-6.2.0.zip $INSTALADORES_DIR
 $ cat > $LAB_HOME/ambiente <<EOF
 #!/bin/bash
-export LIVRO_HOME=~/$LIVRO_DIR
-export PATH=\$LIVRO_HOME/scripts:\$PATH
+export CURSO_HOME=~/$CURSO_DIR
+export PATH=\$CURSO_HOME/scripts:\$PATH
 
 export LAB_HOME=$LAB_HOME
 
-export FERRAMENTAS_HOME=\$LIVRO_HOME/ferramentas
-export INSTALADORES_HOME=\$LIVRO_HOME/$INSTALADORES_DIR
+export FERRAMENTAS_HOME=\$CURSO_HOME/ferramentas
+export INSTALADORES_HOME=\$CURSO_HOME/$INSTALADORES_DIR
 
 export JAVA_HOME=/usr/lib/jvm/java
 
@@ -20,7 +27,7 @@ JBOSS_VER=eap-6.2.0
 JBOSS_INSTALADOR=\$INSTALADORES_HOME/jboss-\$JBOSS_VER.zip
 JBOSS_DIR=jboss-eap-6.2
 JBOSS_LINK=jboss
-export JBOSS_HOME=\$LIVRO_HOME/ferramentas/jboss
+export JBOSS_HOME=\$CURSO_HOME/ferramentas/jboss
 export PATH=\$JBOSS_HOME/bin:\$PATH
 
 instalar_jboss() {
@@ -38,3 +45,13 @@ remover_jboss() {
 }
 EOF
 $ setenv $LAB_HOME/ambiente
+$ logout
+
+$ ssh vm-centos
+$ type instalar_jboss
+$ instalar_jboss
+$ cd $JBOSS_HOME
+$ ls -la
+$ cd $CURSO_HOME
+$ type remover_jboss
+$ remover_jboss
