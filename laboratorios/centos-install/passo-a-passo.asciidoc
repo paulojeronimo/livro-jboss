@@ -101,8 +101,13 @@ $ VBoxManage startvm vm-centos
 * Ao ser apresentado o prompt do Grub, adicione +ks=http://10.0.2.2/~aluno/ks+ a sua linha de inicialização. Para isso, pressione <Tab>, edite e, por fim, pressione <Enter> continuar o boot.
 * O processo de instalação da VM será realizado sem nenhuma intervenção. Aguarde sua finalização e, ao receber a mensagem de conclusão da instalação, "remova" o CD de instalação. Pressione <Enter> para que a máquina seja reinicializada.
 
-.Nota para o instrutor:
+.Notas para o instrutor:
 [NOTE]
 ==================
-Aproveitar o tempo da instalação e começar a falar sobre o arquivo de kickstart do CentOS! ;)
+* Aproveitar o tempo da instalação e começar a falar sobre o arquivo de kickstart do CentOS! ;)
+* Se for necessário remover a +vm-centos+, por ter ocorrido algum erro em sua criação, executar:
+[source,bash]
+----
+$ VBoxManage unregistervm vm-centos --delete
+----
 ==================
