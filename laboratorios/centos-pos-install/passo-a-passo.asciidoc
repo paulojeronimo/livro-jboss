@@ -1,0 +1,113 @@
+= Preparando a comunicação entre HOST e VM
+:author: Paulo Jerônimo
+:email: pj@paulojeronimo.info
+
+== Passo a passo
+* Logue-se na console do CentOS (usuário/senha: +aluno+/+@lun0123+). Execute:
+[source,bash]
+----
+$ ls -la
+$ cat ~/.pos-install.sh
+$ startx
+----
+* No ambiente gráfico, abra um novo terminal e execute:
+[source,bash]
+----
+$ ~/.pos-install.sh
+----
+* Faça o logout do usuário (isso retirará você do modo gráfico);
+[source,bash]
+----
+$ gnome-session-quit
+----
+* Execute, novamente, a inicialização do modo gráfico. Redimensione a tela para verificar se o VirtualBox Guest Additions realmente está funcionando.
+[source,bash]
+----
+$ startx
+----
+* Faça novamente o logout do usuário e execute os comandos que o seguem:
+[source,bash]
+----
+$ gnome-session-quit
+$ ping base
+$ ssh base
+$ logout
+----
+* Gere as chave para o usuário +aluno+ e instale sua chave pública na máquina +base+: 
+[source,bash]
+----
+$ ssh-keygen
+$ ssh-copy-id base
+$ ssh base
+$ logout
+----
+* Conecte-se a +base+ criando um túnel reverso para a porta 3333:
+[source,bash]
+----
+$ ssh -R 3333:localhost:22 base
+----
+* Abra outro shell, na máquina +base+, e execute:
+[source,bash]
+----
+$ ssh -p 3333 localhost
+$ logout
+$ ssh-keygen
+----
+* Se estiver executando esses comandos no Mac OS X, você tentará executar o comando +ssh-copy-id+ e verificará que ele não será encontrado. Uma solução para esse problema é baixar o meu projeto dotfiles que contém um script com esse nome/utilidade. Outros scripts desse projeto também serão utilizados mais a frente. Então, executando no Fedora ou no OS X, baixe e instale esse projeto com os seguintes comandos:
+[source,bash]
+----
+$ git clone https://github.com/paulojeronimo/dotfiles.git
+$ dotfiles/install
+$ logout
+----
+* Abra um novo shell na máquina +base+ (note que seu prompt deverá estar modificado). Execute:
+[source,bash]
+----
+$ ssh-copy-id -p 3333 localhost
+----
+* Teste um novo ssh para a máquina vm-centos. Agora, nenhuma senha deverá ser solicitada:
+[source,bash]
+----
+$ ssh -p 3333 localhost
+$ logout
+----
+* Desligue a vm-centos e aguarde seu shutdown:
+[source,bash]
+----
+$ ssh -t -p 3333 localhost 'sudo shutdown -h now'
+----
+* Crie uma nova interface de rede na vm-centos. Isso será útil para evitarmos o uso do túnel reverso utilizamos agora a pouco. Ela também será útil nos laboratórios de JBoss em que formos levantar mais de uma instância;
+[source,bash]
+----
+$ VBoxManage hostonlyif create
+$ VBoxManage list hostonlyifs
+$ VBoxManage dhcpserver remove --netname HostInterfaceNetworking-vboxnet0
+$ VBoxManage dhcpserver add --netname HostInterfaceNetworking-vboxnet0 --ip 192.168.56.1 --netmask 255.255.255.0 --lowerip 192.168.56.101 --upperip 192.168.56.201 --enable
+$ VBoxManage list dhcpservers
+$ VBoxManage modifyvm vm-centos --nic2 hostonly --hostonlyadapter2 vboxnet0
+$ f=/etc/hosts; grep vm-centos $f &> /dev/null || echo -e "192.168.56.101\tvm-centos" | sudo tee -a $f
+$ cat $f
+$ VBoxManage startvm vm-centos
+$ ping vm-centos
+----
+* Desligue novamente a VM e, agora, faça um snapshot dela para caso precisemos voltar até o ponto em que chegamos:
+[source,bash]
+----
+$ VBoxManage controlvm vm-centos acpipowerbutton
+$ VBoxManage snapshot vm-centos take 'centos-pos-install'
+----
+* **FIM DESSE LAB**! Parabéns!!! \0/
+
+== Comandos para desfazer a rede (referência para o futuro, NÃO EXECUTE AGORA)
+
+* Para remover o servidor dhcp da interface vboxnet0:
+[source,bash]
+----
+$ VBoxManage dhcpserver remove --netname HostInterfaceNetworking-vboxnet0
+----
+
+* Para remover a rede vboxnet0:
+[source,bash]
+----
+$ VBoxManage hostonlyif remove vboxnet0
+----
