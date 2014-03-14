@@ -41,7 +41,7 @@ $ cd mirrors
 $ CentOS/6.5/i386/mirror.sh
 ----
 
-== Fazendo o mirror a partir de outro existente no HD externo
+== Trabalhando com o mirror num HD externo
 * Neste tópico apresento comandos que você poderá executar, de forma semelhante, caso já tenha seu mirror num HD externo;
 * Alguns comandos são executados com o +sudo+ para que não ocorram problemas de permissão;
 * Supondo que o comando +CentOS/6.5/i386/mirror.sh+ ainda esteja sendo executado, irei interrompê-lo para que o mirror continue a partir do meu HD externo e não mais da Internet. Então, teclo <Ctrl+C> na sua console de execução;
