@@ -44,10 +44,20 @@ $ CentOS/6.5/i386/mirror.sh
 * Você poderá executar as linhas a seguir quando já tiver seu mirror num HD externo;
 ** Se o comando anterior estiver sendo executado, interrompa-o com um <Ctrl+C>;
 ** Plugue seu HD externo na USB;
-** Crie o arquivo +.bin/config+ para informar a localização do diretório que contém seus mirrors. Par isso, observe o arquivo de configuração de exemplo +.bin/config.sample+.
+** Crie o arquivo +.bin/config+ para informar a localização do diretório que contém seus mirrors. Para isso, copie o arquivo de configuração de exemplo (+.bin/config.sample+) e ajuste-o conforme o teu ambiente.
 [source,bash]
 ----
-$ cat .bin/config.sample
+$ cat .bin/config.sample 
+LOCAL_MIRRORS_DIR_ON_DARWIN=/Volumes/data/mirrors
+LOCAL_MIRRORS_DIR_ON_LINUX=/data/mirrors
+EXTERNAL_MIRRORS_DIR_ON_DARWIN=/Volumes/PJ-HFS/mirrors
+EXTERNAL_MIRRORS_DIR_ON_LINUX=/run/media/$SUDO_USER/PJ-HFS/mirrors
+$ cp .bin/config.sample .bin/config
+$ vim .bin/config
+----
+* Execute os comandos abaixo (maiores explicações no vídeo do laboratório):
+[source,bash]
+----
 $ rm -rf CentOS/6.5/i386/mirror
 $ .bin/create-links
 $ ls -la CentOS/6.5/i386/mirror
@@ -58,4 +68,5 @@ $ du -hsc CentOS/6.5/i386/mirror/
 $ CentOS/6.5/i386/mirror.sh
 $ .bin/mirror-to-external-hd.CentOS-6.5-i386
 -----
+
 * Desplugue o HD externo (seu mirror local, agora, também está salvo nele!)
