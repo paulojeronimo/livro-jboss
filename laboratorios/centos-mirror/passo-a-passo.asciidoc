@@ -1,10 +1,11 @@
-= Laboratório: Fazendo um mirror do CentOS
+= Criando um mirror local do CentOS
 :author: Paulo Jerônimo
 :email: pj@paulojeronimo.info
 
 == Crie e logue-se como usuário aluno
-* O usuário aluno deverá ter poderes administrativos;
-* No Fedora, execute:
+* O usuário +aluno+ deverá ter poderes administrativos;
+
+=== No Fedora, execute:
 [source,bash]
 ----
 $ sudo useradd -m -s /bin/bash -G wheel aluno
@@ -68,5 +69,6 @@ $ du -hsc CentOS/6.5/i386/mirror/
 $ CentOS/6.5/i386/mirror.sh
 $ .bin/mirror-to-external-hd.CentOS-6.5-i386
 -----
-
 * Desplugue o HD externo (seu mirror local, agora, também está salvo nele!)
+
+== Fim do laboratório!
