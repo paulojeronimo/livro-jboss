@@ -31,12 +31,41 @@ $ ln -s ~/curso-jboss/mirrors/CentOS/6.5/i386/mirror centos
 $ ln -s ~/curso-jboss/mirrors/CentOS/6.5/i386/vm/ks.base ks
 ----
 
+=== No Fedora:
+* Se você seguiu meus passos desde a http://a.paulojeronimo.info/tutoriais/fedora-mac/index.html[instalação do Fedora], seu Apache já deverá estar instalado. Caso contrário, retorne ao seu usuário e refaça a http://a.paulojeronimo.info/tutoriais/fedora-mac/index.html#toc26[instalação do Apache] e não se esqueça que, para recomeçar esse laboratório, você deverá estar logado como +aluno+. Então, nesse ponto, será necessário configurar um diretório público (via HTTP) para o usuário +aluno+. Antes disso, porém, execute:
+[source,bash]
+----
+$ logout # para retonar ao seu usuário antes de se logar como aluno
+$ xhost +
+$ sudo su - aluno
+$ export DISPLAY=:0
+----
+* Em seguida:
+[source,bash]
+----
+$ sudo chmod 755 $HOME
+$ ls -ld $HOME
+$ mkdir ~/public_html
+$ cd !$
+$ d=~/curso-jboss/mirrors/CentOS/6.5/i386
+$ ln -s $d/mirror centos
+$ ln -s $d/vm/ks.base ks
+$ firefox http://localhost/~aluno/ &> /dev/null &
+----
+* Observe que o SELinux bloqueará o acesso do servidor HTTP aos diretórios necessários (serão notificados avisos de alerta). A forma mais simples de resolver esse problema é desabilitar, temporariamente o SELinux. Então, faça isso:
+[source,bash]
+----
+$ sudo setenforce 0
+$ sudo getenforce
+----
+* Em seguida, dê um refresh no browser e verifique se os links, agora, estão funcionando. A configuração acima, como eu disse, é temporária! Mais a frente faremos os ajustes corretos para que o SELinux não bloqueie o acesso os diretórios e, ainda assim, permaneça fazendo o seu papel de segurança.
+
 == Instale a versão 4.3.8 do VirtualBox
 === No OS X:
 * Baixe e instale. Link: http://download.virtualbox.org/virtualbox/4.3.8/VirtualBox-4.3.8-92456-OSX.dmg
 
 === No Fedora:
-* Se o VirtualBox ainda não tiver sido instalado, siga os passos apresentados em http://a.paulojeronimo.info/tutoriais/fedora-mac/index.html#toc27. Em seguida, execute:
+* Siga os passos apresentados em http://a.paulojeronimo.info/tutoriais/fedora-mac/index.html#toc27. Em seguida, execute:
 
 == Crie a VM
 * Execute o script vbox. Ele criará a VM:
@@ -46,15 +75,31 @@ $ mkdir ~/curso-jboss/vms
 $ ~/curso-jboss/mirrors/CentOS/6.5/i386/vm/vbox
 ----
 
-Nota para o instrutor: em sua máquina não há espaço em disco no Volume do Mac OS X. A primeira linha dos comandos apresentados acima deve ser executada da seguinte forma:
+.Nota para o instrutor:
+[NOTE]
+=======================
+Em sua máquina não há espaço em disco na partição +/+. A primeira linha dos comandos apresentados acima deve ser executada da seguinte forma:
+
+* No OS X:
 [source,bash]
 ----
 $ d=/Volumes/data/vms-aluno; mkdir -p $d; cd ~/curso-jboss && ln -s $d vms
 ----
+* No Fedora:
+[source,bash]
+----
+$ d=/data/pj/vms-aluno; sudo bash -c "mkdir -p $d && chown aluno: $d"; cd ~/curso-jboss && ln -s $d vms
+----
+=======================
 
 == Inicie a VM e aguarde a instalação
-* Ao iniciar a VM, adicione 'ks=http://10.0.2.2/~aluno/ks' (sem os apóstrofos) a linha de inicialização do grub (pressione <Tab> para isso) e, em seguida, pressione <Enter>
-* O processo de instalação da VM será realizado sem nenhuma intervenção. Aguarde sua finalização e, ao receber a mensagem de conclusão da instalação, remova o CD de instalação e pressione <Enter> para que a máquina seja reinicializada.
+* Para iniciar a VM, execute:
+[source,bash]
+----
+$ VBoxManage startvm vm-centos
+----
+* Ao ser apresentado o prompt do Grub, adicione +ks=http://10.0.2.2/~aluno/ks+ a sua linha de inicialização. Para isso, pressione <Tab>, edite e, por fim, pressione <Enter> continuar o boot.
+* O processo de instalação da VM será realizado sem nenhuma intervenção. Aguarde sua finalização e, ao receber a mensagem de conclusão da instalação, "remova" o CD de instalação. Pressione <Enter> para que a máquina seja reinicializada.
 
 .Nota para o instrutor:
 [NOTE]
