@@ -2,8 +2,8 @@
 :author: Paulo Jerônimo
 :email: pj@paulojeronimo.info
 
-== Configure seu servidor web
-* Após essa configuração, as seguintes URLs deverão estar acessíveis:
+== Instalando e/ou configurando o Apache
+* Após essa instalação e/ou configuração do Apache, as seguintes URLs deverão estar acessíveis:
 ** http://localhost/~aluno/centos
 ** http://localhost/~aluno/ks
 
@@ -32,7 +32,7 @@ $ ln -s ~/curso-jboss/mirrors/CentOS/6.5/i386/vm/ks.base ks
 ----
 
 === No Fedora:
-* Se você seguiu meus passos desde a http://a.paulojeronimo.info/tutoriais/fedora-mac/index.html[instalação do Fedora], seu Apache já deverá estar instalado. Caso contrário, retorne ao seu usuário e refaça a http://a.paulojeronimo.info/tutoriais/fedora-mac/index.html#toc26[instalação do Apache] e não se esqueça que, para recomeçar esse laboratório, você deverá estar logado como +aluno+. Então, nesse ponto, será necessário configurar um diretório público (via HTTP) para o usuário +aluno+. Antes disso, porém, execute:
+* Se você seguiu meus passos desde a http://a.paulojeronimo.info/tutoriais/fedora-mac/index.html[instalação do Fedora], seu Apache já deverá estar instalado. Caso contrário, retorne ao seu usuário e faça a http://a.paulojeronimo.info/tutoriais/fedora-mac/index.html#toc26[instalação do Apache]. Não se esqueça que, para recomeçar esse laboratório, você deverá estar logado como +aluno+. Então, nesse ponto, será necessário configurar um diretório público (via HTTP) para o usuário +aluno+. Antes disso, porém, execute:
 [source,bash]
 ----
 $ logout # para retonar ao seu usuário antes de se logar como aluno
@@ -60,14 +60,14 @@ $ sudo getenforce
 ----
 * Em seguida, dê um refresh no browser e verifique se os links, agora, estão funcionando. A configuração acima, como eu disse, é temporária! Mais a frente faremos os ajustes corretos para que o SELinux não bloqueie o acesso os diretórios e, ainda assim, permaneça fazendo o seu papel de segurança.
 
-== Instale a versão 4.3.8 do VirtualBox
+== Instalando o VirtualBox 4.3.8
 === No OS X:
 * Baixe e instale. Link: http://download.virtualbox.org/virtualbox/4.3.8/VirtualBox-4.3.8-92456-OSX.dmg
 
 === No Fedora:
 * Siga os passos apresentados em http://a.paulojeronimo.info/tutoriais/fedora-mac/index.html#toc27. Em seguida, execute:
 
-== Crie a VM
+== Criando a VM
 * Execute o script vbox. Ele criará a VM:
 [source,bash]
 ----
@@ -92,7 +92,7 @@ $ d=/data/pj/vms-aluno; sudo bash -c "mkdir -p $d && chown aluno: $d"; cd ~/curs
 ----
 =======================
 
-== Inicie a VM e aguarde a instalação
+== Iniciando a VM e aguardando a instalação do CentOS
 * Para iniciar a VM, execute:
 [source,bash]
 ----
