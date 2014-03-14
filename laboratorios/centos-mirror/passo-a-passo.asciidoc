@@ -68,7 +68,5 @@ $ .bin/mirror-from-external-hd.CentOS-6.5-i386
 $ du -hsc CentOS/6.5/i386/mirror/
 $ CentOS/6.5/i386/mirror.sh
 $ .bin/mirror-to-external-hd.CentOS-6.5-i386
------
+----
 * Desplugue o HD externo (seu mirror local, agora, também está salvo nele!)
-
-== Fim do laboratório!
