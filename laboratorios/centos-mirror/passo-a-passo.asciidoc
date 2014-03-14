@@ -41,11 +41,12 @@ $ cd mirrors
 $ CentOS/6.5/i386/mirror.sh
 ----
 
-== Extras 
-* Você poderá executar as linhas a seguir quando já tiver seu mirror num HD externo;
-** Se o comando anterior estiver sendo executado, interrompa-o com um <Ctrl+C>;
-** Plugue seu HD externo na USB;
-** Crie o arquivo +.bin/config+ para informar a localização do diretório que contém seus mirrors. Para isso, copie o arquivo de configuração de exemplo (+.bin/config.sample+) e ajuste-o conforme o teu ambiente.
+== Extra
+* Neste tópico apresento comandos que você poderá executar, de forma semelhante, caso já tenha seu mirror num HD externo;
+* Alguns comandos são executados com o +sudo+ para que não ocorram problemas de permissão;
+* Supondo que o comando +CentOS/6.5/i386/mirror.sh+ ainda esteja sendo executado, irei interrompê-lo para que o mirror continue a partir do meu HD externo e não mais da Internet. Então, teclo <Ctrl+C> na sua console de execução;
+* Plugo meu HD externo na USB. Nele, meus mirrors estão no diretório configurado na variável +EXTERNAL_MIRRORS_DIR_ON_LINUX+;
+* Crio o arquivo +.bin/config+ para informar a localização dos diretórios que contém meus mirrors (tanto no HD externo quanto no local). Para isso, copio o arquivo de configuração de exemplo (+.bin/config.sample+) e ajusto seu conteúdo conforme o meu ambiente. Observe isso nos comandos:
 [source,bash]
 ----
 $ cat .bin/config.sample 
@@ -55,18 +56,48 @@ EXTERNAL_MIRRORS_DIR_ON_DARWIN=/Volumes/PJ-HFS/mirrors
 EXTERNAL_MIRRORS_DIR_ON_LINUX=/run/media/$SUDO_USER/PJ-HFS/mirrors
 $ cp .bin/config.sample .bin/config
 $ vim .bin/config
+$ cat .bin/config
+LOCAL_MIRRORS_DIR_ON_LINUX=/data/mirrors
+EXTERNAL_MIRRORS_DIR_ON_LINUX=/run/media/pj/PJ-HFS/mirrors
 ----
-* Execute os comandos abaixo (maiores explicações no vídeo do laboratório):
+* Em seguida, para continuar a fazer meu mirror local, executo:
 [source,bash]
 ----
-$ rm -rf CentOS/6.5/i386/mirror
+$ sudo mkdir -p /data/mirrors/
+$ sudo mv CentOS/6.5/i386/mirror !$/CentOS-6.5-i386
+$ sudo chown -R root: !!:3
+$ sudo du -hsc !!:3
 $ .bin/create-links
 $ ls -la CentOS/6.5/i386/mirror
-$ du -hsc CentOS/6.5/i386/mirror/
-$ rm -rf CentOS/6.5/i386/mirror/updates/
-$ .bin/mirror-from-external-hd.CentOS-6.5-i386
-$ du -hsc CentOS/6.5/i386/mirror/
-$ CentOS/6.5/i386/mirror.sh
-$ .bin/mirror-to-external-hd.CentOS-6.5-i386
+$ !!/
+$ sudo .bin/mirror-from-external-hd.CentOS-6.5-i386
+$ sudo du -hsc CentOS/6.5/i386/mirror/
 ----
-* Desplugue o HD externo (seu mirror local, agora, também está salvo nele!)
+* Ao final eu poderia desplugar meu HD externo pois a cópia do mirror também está em meu HD local.
+* Agora posso sincronizar meu mirror local com o da Internet. Para isso, faço:
+[source,bash]
+----
+$ sudo CentOS/6.5/i386/mirror.sh
+----
+* Em seguida, também posso atualizar o mirror do meu HD externo a partir do que tenho no meu HD local, executando:
+[source,bash]
+----
+$ sudo .bin/mirror-to-external-hd.CentOS-6.5-i386
+----
+* Dessa forma, tudo fica sincronizado e eu evito consumir banda de Internet para downloads duplicados.
+* Alternativamente, caso eu quisesse apontar o mirror para o HD externo ao invés de fazer uma cópia do mesmo para o HD local, eu também poderia executar:
+[source,bash]
+----
+$ .bin/create-mirror-links external
+----
+* Observe que, nesse caso, o link para o mirror irá apontar, então, para o diretório no HD externo:
+[source,bash]
+----
+$ sudo ls -la CentOS-6.5-i386/mirror
+----
+* Enfim, para encerrar esse lab, voltarei o link para o mirror no HD local:
+[source,bash]
+----
+$ .bin/create-mirror-links
+$ !-2
+----
