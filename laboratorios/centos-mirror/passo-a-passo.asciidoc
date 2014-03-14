@@ -93,7 +93,7 @@ $ .bin/create-mirror-links external
 * Observe que, nesse caso, o link para o mirror irá apontar, então, para o diretório no HD externo:
 [source,bash]
 ----
-$ sudo CentOS/6.5/i386/mirror.sh
+$ sudo ls -la CentOS/6.5/i386/mirror
 ----
 * Enfim, para encerrar esse lab, voltarei o link para o mirror no HD local:
 [source,bash]
