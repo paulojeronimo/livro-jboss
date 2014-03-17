@@ -99,7 +99,9 @@ $ d=/data/pj/vms-aluno; sudo bash -c "mkdir -p $d && chown aluno: $d"; cd ~/curs
 $ VBoxManage startvm vm-centos
 ----
 * Ao ser apresentado o prompt do Grub, adicione +ks=http://10.0.2.2/~aluno/ks+ a sua linha de inicialização. Para isso, pressione <Tab>, edite e, por fim, pressione <Enter> continuar o boot.
-* O processo de instalação da VM será realizado sem nenhuma intervenção. Aguarde sua finalização e, ao receber a mensagem de conclusão da instalação, "remova" o CD de instalação. Pressione <Enter> para que a máquina seja reinicializada.
+* O processo de instalação da VM será realizado sem nenhuma intervenção.
+** Apenas ao final da instalação, você será questionado se deseja mudar o hostname da máquina (vm-centos) e/ou o formato do teclado. Contudo, se não você não estiver atento ao momento em que isso for solicitado (são apenas 5 segundos para responder), a instalação prosseguirá.
+* Aguarde a finalização do processo e, ao receber a mensagem de conclusão da instalação, "remova" o CD de instalação. Pressione <Enter> para que a máquina seja reinicializada.
 
 .Notas para o instrutor:
 [NOTE]

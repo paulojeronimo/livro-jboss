@@ -3,35 +3,48 @@
 :email: pj@paulojeronimo.info
 
 == Passo a passo
-* Logue-se na console do CentOS (usuário/senha: +aluno+/+@lun0123+). Execute:
+* Logue-se na console do CentOS (usuário/senha: +aluno+/+@lun0123+).
+* Se seu teclado não estiver configurado adequadamente, você pode executar o comando +loadkeys+. Por exemplo, se seu teclado for +br-abnt2+, execute:
+[source,bash]
+----
+$ sudo loadkeys br-abnt2
+----
+* Essa configuração, contudo, não sobreviverá a um reboot! Se quiser mantê-la de forma permanente, execute:
+[source,bash]
+----
+$ sudo sed -i 's/\(KEYTABLE=\).*/\1"br-abnt2"/g' /etc/sysconfig/keyboard
+----
+* Observe que há um script chamado +.pos-install.sh+ em teu diretório +$HOME+:
 [source,bash]
 ----
 $ ls -la
 $ cat ~/.pos-install.sh
-$ startx
 ----
-* No ambiente gráfico, abra um novo terminal e execute:
+* Inicie o ambiente gráfico, abra um novo terminal e execute:
 [source,bash]
 ----
+$ startx
 $ ~/.pos-install.sh
 ----
+* Se você receber algum erro na execução do script .pos-install.sh, edite-o para informar o caminho correto até a localização do arquivo +VBoxLinuxAdditions.run+;
+* Se você estiver com problemas de teclado no ambiente gráfico, vá ao menu 'System/Preferences/KeyBoard' na aba 'Layout' e configure o seu teclado;
 * Faça o logout do usuário (isso retirará você do modo gráfico);
 [source,bash]
 ----
-$ gnome-session-quit
+$ gnome-session-save --kill
 ----
 * Execute, novamente, a inicialização do modo gráfico. Redimensione a tela para verificar se o VirtualBox Guest Additions realmente está funcionando.
 [source,bash]
 ----
 $ startx
 ----
-* Faça novamente o logout do usuário e execute os comandos que o seguem:
+* Faça novamente o logout do usuário (pelo menu 'System/Log Out aluno'). Execute os comandos a seguir:
 [source,bash]
 ----
-$ gnome-session-quit
 $ ping base
 $ ssh base
 $ logout
+
 ----
 * Gere as chave para o usuário +aluno+ e instale sua chave pública na máquina +base+: 
 [source,bash]
@@ -46,7 +59,7 @@ $ logout
 ----
 $ ssh -R 3333:localhost:22 base
 ----
-* Abra outro shell, na máquina +base+, e execute:
+* Vá para o shell aberto como +aluno+ na máquina +base+ e execute:
 [source,bash]
 ----
 $ ssh -p 3333 localhost
@@ -60,9 +73,10 @@ $ git clone https://github.com/paulojeronimo/dotfiles.git
 $ dotfiles/install
 $ logout
 ----
-* Abra um novo shell na máquina +base+ (note que seu prompt deverá estar modificado). Execute:
+* Abra um novo shell na máquina +base+ (note que seu prompt deverá estar modificado). Para fazer isso, execute:
 [source,bash]
 ----
+$ sudo su - aluno
 $ ssh-copy-id -p 3333 localhost
 ----
 * Teste um novo ssh para a máquina vm-centos. Agora, nenhuma senha deverá ser solicitada:
@@ -85,10 +99,24 @@ $ VBoxManage dhcpserver remove --netname HostInterfaceNetworking-vboxnet0
 $ VBoxManage dhcpserver add --netname HostInterfaceNetworking-vboxnet0 --ip 192.168.56.1 --netmask 255.255.255.0 --lowerip 192.168.56.101 --upperip 192.168.56.201 --enable
 $ VBoxManage list dhcpservers
 $ VBoxManage modifyvm vm-centos --nic2 hostonly --hostonlyadapter2 vboxnet0
+----
+* Configure teu arquivo +/etc/hosts+ adicionando a +vm-centos+:
+[source,bash]
+----
 $ f=/etc/hosts; grep vm-centos $f &> /dev/null || echo -e "192.168.56.101\tvm-centos" | sudo tee -a $f
 $ cat $f
+----
+* Inicie novamente a VM e aguarde até obter um ping de retorno:
+[source,bash]
+----
+$ export DISPLAY=:0
 $ VBoxManage startvm vm-centos
 $ ping vm-centos
+----
+* Teste um comando remoto (nenhuma senha deverá ser solicitada):
+[source,bash]
+----
+$ ssh vm-centos cat ~/.pos-install.sh
 ----
 * Desligue novamente a VM e, agora, faça um snapshot dela para caso precisemos voltar até o ponto em que chegamos:
 [source,bash]
