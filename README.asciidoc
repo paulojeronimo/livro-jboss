@@ -1,0 +1,7 @@
+= Arquivos públicos do livro de JBoss =
+:author: Paulo Jerônimo
+:email: pj@paulojeronimo.info
+
+Interessado em adquirir o livro e/ou um curso a respeito do JBoss em ambiente de produção?
+
+Veja http://j.mp/jboss-em-producao

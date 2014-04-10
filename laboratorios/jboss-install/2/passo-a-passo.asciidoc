@@ -1,3 +1,9 @@
+= Automatizando a instalação através de scripts Bash =
+:author: Paulo Jerônimo
+:email: pj@paulojeronimo.info
+
+[source,bash]
+----
 $ d=github.com/paulojeronimo; mkdir -p $d && cd $d
 $ git clone https://$d/dotfiles.git
 $ git clone https://$d/livro-jboss.git
@@ -55,3 +61,4 @@ $ ls -la
 $ cd $CURSO_HOME
 $ type remover_jboss
 $ remover_jboss
+----

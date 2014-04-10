@@ -73,6 +73,7 @@ $ ssh-keygen
 Se estiver executando esses comandos no Mac OS X, você tentará executar o comando +ssh-copy-id+, a seguir, e verificará que ele não será encontrado. Uma solução para esse problema é baixar o meu projeto dotfiles que contém um script com esse nome/utilidade. Outros scripts desse projeto também serão utilizados mais a frente. Então, estando no Fedora ou no OS X, baixe e instale esse projeto com os seguintes comandos:
 [source,bash]
 ----
+$ cd ~/curso-jboss
 $ git clone https://github.com/paulojeronimo/dotfiles.git
 $ dotfiles/install
 $ logout
@@ -91,6 +92,17 @@ Teste um novo ssh para a máquina vm-centos. Agora, nenhuma senha deverá ser so
 [source,bash]
 ----
 $ ssh -p 3333 localhost
+----
+Instale o projeto dotfiles na VM:
+[source,bash]
+----
+$ cd ~/curso-jboss
+$ git clone https://github.com/paulojeronimo/dotfiles.git
+$ dotfiles/install
+----
+Efetue o logout da VM:
+[source,bash]
+----
 $ logout
 ----
 Desligue a vm-centos e aguarde seu shutdown:

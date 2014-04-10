@@ -1,3 +1,9 @@
+= Começando a usar o JBoss =
+:author: Paulo Jerônimo
+:email: pj@paulojeronimo.info
+
+[source,bash]
+----
 $ mkdir -p ~/curso-jboss
 $ cd !$
 $ scp base:~/curso-jboss/instaladores/jboss-eap-6.2.0.zip .
@@ -46,3 +52,4 @@ $ 00:14:18,523 INFO  [org.apache.coyote.http11] (MSC service thread 1-2) JBWEB00
 [1]+  Done                    nohup $c 2>&1 | tee /tmp/$c.log
 $ less -R /tmp/$c.log
 $ rm -rf jboss jboss-eap-6.2
+----
