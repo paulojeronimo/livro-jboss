@@ -18,7 +18,7 @@ $ mkdir -p $d
 Mova os arquivos baixados para o diretório do curso:
 [source,bash]
 ----
-$ mv ~/Downloads/jboss-eap-6.2.0.* $d/
+$ mv ~/Downloads/jboss-eap-6.2.0* $d/
 ----
 Verifique o sha1sum dos arquivos baixados, executando:
 [source,bash]
