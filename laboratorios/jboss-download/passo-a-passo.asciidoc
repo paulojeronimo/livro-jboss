@@ -23,6 +23,7 @@ $ mv ~/Downloads/jboss-eap-6.2.0* $d/
 Verifique o sha1sum dos arquivos baixados, executando:
 [source,bash]
 ----
+$ cd $d
 $ curl -L http://raw.github.com/paulojeronimo/livro-jboss/\
 master/laboratorios/jboss-download/jboss-eap-6.2.0.sha1sum -O
 $ sha1sum -c jboss-eap-6.2.0.sha1sum
