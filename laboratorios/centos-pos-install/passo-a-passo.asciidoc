@@ -3,50 +3,56 @@
 :email: pj@paulojeronimo.info
 
 == Passo a passo
-* Logue-se na console do CentOS (usuário/senha: +aluno+/+@lun0123+).
-* Se seu teclado não estiver configurado adequadamente, você pode executar o comando +loadkeys+. Por exemplo, se seu teclado for +br-abnt2+, execute:
+Logue-se na console do CentOS (usuário/senha: +aluno+/+@lun0123+).
+
+Se seu teclado não estiver configurado adequadamente, você pode executar o comando +loadkeys+. Por exemplo, se o seu teclado for +br-abnt2+, execute:
 [source,bash]
 ----
 $ sudo loadkeys br-abnt2
 ----
-* Essa configuração, contudo, não sobreviverá a um reboot! Se quiser mantê-la de forma permanente, execute:
+Essa configuração, contudo, não sobreviverá a um reboot! Se quiser mantê-la de forma permanente, execute:
 [source,bash]
 ----
 $ sudo sed -i 's/\(KEYTABLE=\).*/\1"br-abnt2"/g' /etc/sysconfig/keyboard
 ----
-* Observe que há um script chamado +.pos-install.sh+ em teu diretório +$HOME+:
+Observe que há um script chamado +.pos-install.sh+ em teu diretório +$HOME+:
 [source,bash]
 ----
 $ ls -la
 $ cat ~/.pos-install.sh
 ----
-* Inicie o ambiente gráfico, abra um novo terminal e execute:
+Inicie o ambiente gráfico:
 [source,bash]
 ----
 $ startx
+----
+Abra um terminal e execute:
+[source,bash]
+----
 $ ~/.pos-install.sh
 ----
-* Se você receber algum erro na execução do script .pos-install.sh, edite-o para informar o caminho correto até a localização do arquivo +VBoxLinuxAdditions.run+;
-* Se você estiver com problemas de teclado no ambiente gráfico, vá ao menu 'System/Preferences/KeyBoard' na aba 'Layout' e configure o seu teclado;
-* Faça o logout do usuário (isso retirará você do modo gráfico);
+Se você receber algum erro na execução do script .pos-install.sh, edite-o para informar o caminho correto até a localização do arquivo +VBoxLinuxAdditions.run+. _Note que há um ícone na tela informando o nome do CD do VirtualBox Guest Additions. Esse nome é o que deverá estar no caminho do script_.
+
+Se você estiver com problemas de teclado no ambiente gráfico, vá ao menu 'System/Preferences/KeyBoard' na aba 'Layout' e configure o seu teclado.
+
+Faça o logout do usuário (isso retirará você do modo gráfico).
 [source,bash]
 ----
 $ gnome-session-save --kill
 ----
-* Execute, novamente, a inicialização do modo gráfico. Redimensione a tela para verificar se o VirtualBox Guest Additions realmente está funcionando.
+Execute, novamente, a inicialização do modo gráfico. Redimensione a tela para verificar se o VirtualBox Guest Additions está realmente funcionando.
 [source,bash]
 ----
 $ startx
 ----
-* Faça novamente o logout do usuário (pelo menu 'System/Log Out aluno'). Execute os comandos a seguir:
+Faça novamente o logout do usuário (pelo menu 'System/Log Out aluno'). Execute os comandos a seguir:
 [source,bash]
 ----
 $ ping base
 $ ssh base
 $ logout
-
 ----
-* Gere as chave para o usuário +aluno+ e instale sua chave pública na máquina +base+: 
+Gere as chave para o usuário +aluno+ e instale sua chave pública na máquina +base+: 
 [source,bash]
 ----
 $ ssh-keygen
@@ -54,87 +60,96 @@ $ ssh-copy-id base
 $ ssh base
 $ logout
 ----
-* Conecte-se a +base+ criando um túnel reverso para a porta 3333:
+Conecte-se a +base+ criando um túnel reverso para a porta 3333:
 [source,bash]
 ----
 $ ssh -R 3333:localhost:22 base
 ----
-* Vá para o shell aberto como +aluno+ na máquina +base+ e execute:
+Vá para o shell aberto como +aluno+ na máquina +base+ e execute:
 [source,bash]
 ----
 $ ssh -p 3333 localhost
 $ logout
 $ ssh-keygen
 ----
-* Se estiver executando esses comandos no Mac OS X, você tentará executar o comando +ssh-copy-id+ e verificará que ele não será encontrado. Uma solução para esse problema é baixar o meu projeto dotfiles que contém um script com esse nome/utilidade. Outros scripts desse projeto também serão utilizados mais a frente. Então, executando no Fedora ou no OS X, baixe e instale esse projeto com os seguintes comandos:
+Se estiver executando esses comandos no Mac OS X, você tentará executar o comando +ssh-copy-id+ e verificará que ele não será encontrado. Uma solução para esse problema é baixar o meu projeto dotfiles que contém um script com esse nome/utilidade. Outros scripts desse projeto também serão utilizados mais a frente. Então, estando no Fedora ou no OS X, baixe e instale esse projeto com os seguintes comandos:
 [source,bash]
 ----
 $ git clone https://github.com/paulojeronimo/dotfiles.git
 $ dotfiles/install
 $ logout
 ----
-* Abra um novo shell na máquina +base+ (note que seu prompt deverá estar modificado). Para fazer isso, execute:
+Reabra o túnel reverso com a máquina +base+:
 [source,bash]
 ----
-$ sudo su - aluno
+$ ssh -R 3333:localhost:22 base
+----
+Note, que seu prompt deverá estar modificado. Faça a cópia da sua chave pública para a máquina +base+:
+[source,bash]
+----
 $ ssh-copy-id -p 3333 localhost
 ----
-* Teste um novo ssh para a máquina vm-centos. Agora, nenhuma senha deverá ser solicitada:
+Teste um novo ssh para a máquina vm-centos. Agora, nenhuma senha deverá ser solicitada:
 [source,bash]
 ----
 $ ssh -p 3333 localhost
 $ logout
 ----
-* Desligue a vm-centos e aguarde seu shutdown:
+Desligue a vm-centos e aguarde seu shutdown:
 [source,bash]
 ----
 $ ssh -t -p 3333 localhost 'sudo shutdown -h now'
 ----
-* Crie uma nova interface de rede na vm-centos. Isso será útil para evitarmos o uso do túnel reverso utilizamos agora a pouco. Ela também será útil nos laboratórios de JBoss em que formos levantar mais de uma instância;
+De volta ao console da base execute, manualmente, o recarregamento do teu arquivo +~/.bashrc+:
+[source,bash]
+----
+$ source ~/.bashrc
+----
+Crie também uma nova interface de rede na vm-centos. Isso será útil para evitarmos o uso do túnel reverso utilizamos agora a pouco. Ela também será útil nos laboratórios de JBoss em que formos levantar mais de uma instância;
 [source,bash]
 ----
 $ VBoxManage hostonlyif create
 $ VBoxManage list hostonlyifs
 $ VBoxManage dhcpserver remove --netname HostInterfaceNetworking-vboxnet0
-$ VBoxManage dhcpserver add --netname HostInterfaceNetworking-vboxnet0 --ip 192.168.56.1 --netmask 255.255.255.0 --lowerip 192.168.56.101 --upperip 192.168.56.201 --enable
+$ VBoxManage dhcpserver add --netname HostInterfaceNetworking-vboxnet0 \
+--ip 192.168.56.1 --netmask 255.255.255.0 \
+--lowerip 192.168.56.101 --upperip 192.168.56.201 --enable
 $ VBoxManage list dhcpservers
 $ VBoxManage modifyvm vm-centos --nic2 hostonly --hostonlyadapter2 vboxnet0
 ----
-* Configure teu arquivo +/etc/hosts+ adicionando a +vm-centos+:
+Configure teu arquivo +/etc/hosts+ adicionando a +vm-centos+:
 [source,bash]
 ----
-$ f=/etc/hosts; grep vm-centos $f &> /dev/null || echo -e "192.168.56.101\tvm-centos" | sudo tee -a $f
+$ f=/etc/hosts; grep vm-centos $f &> /dev/null || \
+echo -e "192.168.56.101\tvm-centos" | sudo tee -a $f
 $ cat $f
 ----
-* Inicie novamente a VM e aguarde até obter um ping de retorno:
+Inicie novamente a VM e aguarde até obter um ping de retorno:
 [source,bash]
 ----
-$ export DISPLAY=:0
 $ VBoxManage startvm vm-centos
-$ ping vm-centos
 ----
-* Teste um comando remoto (nenhuma senha deverá ser solicitada):
+Após a VM ter sido iniciada, teste um comando remoto (nenhuma senha deverá ser solicitada):
 [source,bash]
 ----
 $ ssh vm-centos cat ~/.pos-install.sh
 ----
-* Desligue novamente a VM e, agora, faça um snapshot dela para caso precisemos voltar até o ponto em que chegamos:
+Desligue novamente a VM e, agora, faça um snapshot dela para caso precisemos voltar até o ponto em que chegamos:
 [source,bash]
 ----
 $ VBoxManage controlvm vm-centos acpipowerbutton
-$ VBoxManage snapshot vm-centos take 'centos-pos-install'
+$ VBoxManage snapshot vm-centos take centos-pos-install
 ----
-* **FIM DESSE LAB**! Parabéns!!! \0/
+**FIM DESSE LAB**! Parabéns!!! \0/
 
-== Comandos para desfazer a rede (referência para o futuro, NÃO EXECUTE AGORA)
+== Comandos para desfazer a rede (apenas para referência, execute se necessário)
 
-* Para remover o servidor dhcp da interface vboxnet0:
+Para remover o servidor dhcp da interface vboxnet0:
 [source,bash]
 ----
 $ VBoxManage dhcpserver remove --netname HostInterfaceNetworking-vboxnet0
 ----
-
-* Para remover a rede vboxnet0:
+Para remover a rede vboxnet0:
 [source,bash]
 ----
 $ VBoxManage hostonlyif remove vboxnet0
