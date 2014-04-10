@@ -7,9 +7,9 @@ Logado como usuário aluno, na máquina base (HOST), abra um shell e execute:
 ----
 $ mkdir -p ~/Downloads
 ----
-Abra um browser, vá até a página http://www.jboss.org/products/eap e faça o download dos arquivos a seguir para o diretório +~/Downloads+. _Se você ainda não tiver uma conta no sistema do grupo JBoss, será necessário criar uma para fazer esse download._
+Abra um browser, vá até a página http://www.jboss.org/products/eap e clique nos links "Download EAP 6.2", "Quickstarts" e "Maven Repo". Salve todos os arquivos no diretório +~/Downloads+. _Se você ainda não tiver uma conta no sistema do grupo JBoss, será necessário criar uma para fazer esse download._
 
-Abra um shell e execute:
+Volte ao shell e execute:
 [source,bash]
 ----
 $ d=~/curso-jboss/instaladores/jboss-eap/6.2.0
@@ -18,9 +18,7 @@ $ mkdir -p $d
 Mova os arquivos baixados para o diretório do curso:
 [source,bash]
 ----
-$ mv ~/Downloads/jboss-eap-6.2.0-maven-repository.zip $d/
-$ mv ~/Downloads/jboss-eap-6.2.0-quickstarts.zip $d/
-$ mv ~/Downloads/jboss-eap-6.2.0.zip $d/
+$ mv ~/Downloads/jboss-eap-6.2.0.* $d/
 ----
 Verifique o sha1sum dos arquivos baixados, executando:
 [source,bash]
