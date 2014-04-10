@@ -96,7 +96,8 @@ $ ssh -p 3333 localhost
 Instale o projeto dotfiles na VM:
 [source,bash]
 ----
-$ cd ~/curso-jboss
+$ mkdir ~/curso-jboss
+$ cd !$
 $ git clone https://github.com/paulojeronimo/dotfiles.git
 $ dotfiles/install
 ----

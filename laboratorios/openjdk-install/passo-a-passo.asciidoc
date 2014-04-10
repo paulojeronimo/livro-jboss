@@ -2,16 +2,11 @@
 :author: Paulo Jerônimo
 :email: pj@paulojeronimo.info
 
+Como aluno e de um shell da máquina base, execute:
 [source,bash]
 ----
-# tty0@base
 $ VBoxManage startvm vm-centos
 $ ssh vm-centos
-----
-
-[source,bash]
-----
-# tty0@vm-centos
 $ sudo yum -y install java-1.7.0-openjdk-devel
 $ java -version
 $ javac -version
@@ -27,4 +22,5 @@ $ javac HelloWorld.java
 $ java HelloWorld
 $ java HelloWorld Paulo
 $ rm HelloWorld.*
+$ logout
 ----
