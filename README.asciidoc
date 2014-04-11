@@ -11,8 +11,8 @@ Se você estiver interessado em patrocinar ou adquirir esse livro e/ou ingressar
 
 Você pode utilizar o conteúdo desse repositório de duas maneiras:
 
-. Pela Internet, visualizando o conteúdo através do GitHub, em http://github.com/paulojeronimo/livro-jboss;
-. Em seu computador, baixando esse repositório e gerando os arquivos HTML através do utilitário +asciidoc+. Para isso, execute (_passos no Fedora_):
+. Pela Internet, visualizando o conteúdo através do http://github.com/paulojeronimo/livro-jboss[repositório no GitHub]. _Nesse caso, os links para os arquivos HTML (disponibilizados abaixo) não estarão disponíveis_;
+. Em seu computador, baixando esse repositório e gerando os arquivos HTML através do http://www.methods.co.nz/asciidoc/[AsciiDoc], ou do http://asciidoctor.org[Asciidoctor]. Para gerar através do AsciiDoc, execute (_passos no Fedora_):
 [source,bash]
 ----
 $ git clone https://github.com/paulojeronimo/livro-jboss.git
