@@ -7,6 +7,7 @@ Como aluno e de um shell da máquina base, execute:
 ----
 $ VBoxManage startvm vm-centos
 $ ssh vm-centos
+$ LAB=openjdk-install iniciar
 $ sudo yum -y install java-1.7.0-openjdk-devel
 $ java -version
 $ javac -version
@@ -20,7 +21,7 @@ public class HelloWorld {
 EOF
 $ javac HelloWorld.java
 $ java HelloWorld
-$ java HelloWorld Paulo
-$ rm HelloWorld.*
+$ java HelloWorld $USER
+$ exit
 $ logout
 ----
