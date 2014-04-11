@@ -5,6 +5,7 @@
 Logado como usuário aluno, na máquina base (HOST), abra um shell e execute:
 [source,bash]
 ----
+$ iniciar-script ~/curso-jboss/laboratorios/jboss-download
 $ mkdir -p ~/Downloads
 ----
 Abra um browser, vá até a página http://www.jboss.org/products/eap e clique nos links "Download EAP 6.2", "Quickstarts" e "Maven Repo". Salve todos os arquivos no diretório +~/Downloads+. _Se você ainda não tiver uma conta no sistema do grupo JBoss, será necessário criar uma para fazer esse download._
@@ -27,4 +28,9 @@ $ cd $d
 $ curl -L http://raw.github.com/paulojeronimo/livro-jboss/\
 master/laboratorios/jboss-download/jboss-eap-6.2.0.sha1sum -O
 $ sha1sum -c jboss-eap-6.2.0.sha1sum
+----
+Encerre a execução desse lab, executando:
+[source,bash]
+----
+$ exit
 ----

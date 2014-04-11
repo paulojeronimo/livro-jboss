@@ -7,7 +7,7 @@ Como aluno e de um shell da máquina base, execute:
 ----
 $ VBoxManage startvm vm-centos
 $ ssh vm-centos
-$ LAB=openjdk-install iniciar
+$ iniciar-script ~/curso-jboss/laboratorios/openjdk-install
 $ sudo yum -y install java-1.7.0-openjdk-devel
 $ java -version
 $ javac -version
