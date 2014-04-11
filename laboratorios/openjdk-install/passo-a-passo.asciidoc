@@ -2,15 +2,17 @@
 :author: Paulo Jerônimo
 :email: pj@paulojeronimo.info
 
-Como aluno e de um shell da máquina base, execute:
+Como usuário +aluno+ e de um shell aberto na máquina +base+ (HOST), execute:
 [source,bash]
 ----
+$ iniciar-script ~/curso-jboss/laboratorios/openjdk-install
 $ VBoxManage startvm vm-centos
 $ ssh vm-centos
-$ iniciar-script ~/curso-jboss/laboratorios/openjdk-install
 $ sudo yum -y install java-1.7.0-openjdk-devel
 $ java -version
 $ javac -version
+$ mkdir -p ~/curso-jboss/laboratorios/openjdk-install
+$ cd !$
 $ cat > HelloWorld.java <<EOF
 public class HelloWorld {
    public static void main(String args[]) {
@@ -22,6 +24,7 @@ EOF
 $ javac HelloWorld.java
 $ java HelloWorld
 $ java HelloWorld $USER
-$ exit
 $ logout
+$ exit
+$ reproduzir-script ~/curso-jboss/laboratorios/openjdk-install
 ----

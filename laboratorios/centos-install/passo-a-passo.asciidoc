@@ -69,17 +69,17 @@ Baixe e instale a versão mais atual disponível para download. Link para o down
 Baixe e instale a versão mais atual disponível para download. _Como exemplo, siga os passos apresentados em http://a.paulojeronimo.info/tutoriais/fedora-mac/index.html#toc31 mas esteja atento pois a versão instalada nesse documento pode não ser a mais atual_.
 
 == Criando a VM
-Execute o script vbox. Ele criará a VM:
+Execute o script vbox a seguir. Ele criará a VM: _(se for o instrutor, antes, observe a nota)_
 [source,bash]
 ----
 $ mkdir ~/curso-jboss/vms
 $ ~/curso-jboss/mirrors/CentOS/6.5/i386/vm/vbox
 ----
 
-.Nota para o instrutor:
+.Notas para o instrutor:
 [NOTE]
 ======
-Em sua máquina não há espaço em disco na partição +/+. A primeira linha dos comandos apresentados acima deve ser executada da seguinte forma:
+Em sua máquina não há espaço em disco na partição +/+. Você deverá executar a primeira linha dos comandos apresentados acima da seguinte forma:
 
 * No OS X:
 [source,bash]
@@ -89,7 +89,10 @@ $ d=/Volumes/data/vms-aluno; mkdir -p $d; cd ~/curso-jboss && ln -s $d vms
 * No Fedora:
 [source,bash]
 ----
-$ d=/data/pj/vms-aluno; sudo bash -c "mkdir -p $d && chown aluno: $d"; cd ~/curso-jboss && ln -s $d vms
+$ d=/data/aluno/VirtualBox\ VMs
+$ sudo bash -c "
+mkdir -p \"$d\" && chown -R aluno: $(dirname \"$d\")"
+$ cd ~/curso-jboss && ln -s "$d" vms
 ----
 ======
 
@@ -118,8 +121,8 @@ Pressione <Enter> no console da VM para que ela seja reinicializada.
 .Notas para o instrutor:
 [NOTE]
 ======
-Aproveitar o tempo da instalação e começar a falar sobre o arquivo de kickstart do CentOS! ;)
-Se for necessário remover a +vm-centos+, por ter ocorrido algum erro em sua criação, executar:
+. Aproveite o tempo da instalação e começe a falar sobre o arquivo de kickstart do CentOS! ;)
+. Se for necessário remover a +vm-centos+, por ter ocorrido algum erro em sua criação, execute:
 [source,bash]
 ----
 $ VBoxManage unregistervm vm-centos --delete

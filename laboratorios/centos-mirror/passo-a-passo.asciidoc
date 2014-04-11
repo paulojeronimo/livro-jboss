@@ -74,6 +74,7 @@ EXTERNAL_MIRRORS_DIR_ON_LINUX=/PJ-HFS/mirrors
 Em seguida, para continuar a fazer meu mirror local, executo:
 [source,bash]
 ----
+$ sudo rm -rf /data/mirrors/CentOS-6.5-i386 # para apagar o existente
 $ sudo mkdir -p /data/mirrors/
 $ sudo mv CentOS/6.5/i386/mirror !$/CentOS-6.5-i386
 $ sudo chown -R root: !!:3
@@ -84,6 +85,11 @@ $ !!/
 $ .bin/mirror-from-external-hd.CentOS-6.5-i386
 $ sudo du -hsc CentOS/6.5/i386/mirror/
 ----
+.Nota para o instrutor:
+[NOTE]
+======
+Até mesmo esse processo de copiar o mirror do HD externo para o local pode levar um certo tempo. É hora, então, de aproveitar esse tempo e explicar o script que faz o mirror e/ou o arquivo de kickstart de instalação do CentOS (utilizado no próximo laboratório).
+======
 Ao final eu poderia desplugar meu HD externo pois a cópia do mirror também está em meu HD local.
 
 Observe que para fazer o mirror a partir do HD externo (script +mirror-from-external-hd.CentOS-6.5-i386+) não foi necessário o uso de sudo. _Esse script detecta, automaticamente, se é necessária ou não a sua utilização_.

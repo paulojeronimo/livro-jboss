@@ -1,7 +1,33 @@
-= Arquivos públicos do livro de JBoss =
+= Arquivos públicos do meu livro de JBoss =
 :author: Paulo Jerônimo
 :email: pj@paulojeronimo.info
+:numbered:
 
-Interessado em adquirir o livro e/ou um curso a respeito do JBoss em ambiente de produção?
+Este repositório contém os arquivos públicos do livro de JBoss que estou escrevendo.
 
-Veja http://j.mp/jboss-em-producao
+Todo o material que está aqui é livre para uso sem fins comerciais, respeitando-se os direitos de autoria.
+
+Se você estiver interessado em patrocinar ou adquirir esse livro e/ou ingressar num curso a respeito do JBoss EAP em ambiente de produção, leia a página http://j.mp/jboss-em-producao.
+
+Você pode utilizar o conteúdo desse repositório de duas maneiras:
+
+. Pela Internet, visualizando o conteúdo através do GitHub, em http://github.com/paulojeronimo/livro-jboss;
+. Em seu computador, baixando esse repositório e gerando os arquivos HTML através do utilitário +asciidoc+. Para isso, execute (_passos no Fedora_):
+[source,bash]
+----
+$ git clone https://github.com/paulojeronimo/livro-jboss.git
+$ cd livro-jboss
+$ sudo yum -y install asciidoc python-pygments
+$ ./html.sh
+$ firefox ./README.html &> /dev/null &
+----
+
+Esta é a sequência inicial que você deverá trilhar na execução dos laboratórios:
+
+. link:laboratorios/centos-mirror/passo-a-passo.asciidoc[]; (link:laboratorios/centos-mirror/passo-a-passo.html[HTML])
+. link:laboratorios/centos-install/passo-a-passo.asciidoc[]; (link:laboratorios/centos-install/passo-a-passo.html[HTML])
+. link:laboratorios/centos-pos-install/passo-a-passo.asciidoc[]; (link:laboratorios/centos-pos-install/passo-a-passo.html[HTML])
+. link:laboratorios/openjdk-install/passo-a-passo.asciidoc[]; (link:laboratorios/openjdk-install/passo-a-passo.html[HTML])
+. link:laboratorios/jboss-download/passo-a-passo.asciidoc[]; (link:laboratorios/jboss-download/passo-a-passo.html[HTML])
+. link:laboratorios/jboss-install/1/passo-a-passo.asciidoc[]; (link:laboratorios/jboss-install/1/passo-a-passo.html[HTML])
+. link:laboratorios/jboss-install/2/passo-a-passo.asciidoc[]; (link:laboratorios/jboss-install/2/passo-a-passo.html[HTML])

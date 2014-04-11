@@ -145,10 +145,14 @@ Após a VM ter sido iniciada, teste um comando remoto (nenhuma senha deverá ser
 ----
 $ ssh vm-centos cat ~/.pos-install.sh
 ----
-Desligue novamente a VM e, agora, faça um snapshot dela para caso precisemos voltar até o ponto em que chegamos:
+Desligue novamente a VM _e aguarde até que ela esteja desligada antes de executar o próximo comando_:
 [source,bash]
 ----
 $ VBoxManage controlvm vm-centos acpipowerbutton
+----
+Agora, faça um snapshot da VM para caso precisemos voltar até o ponto em que chegamos:
+[source,bash]
+----
 $ VBoxManage snapshot vm-centos take centos-pos-install
 ----
 **FIM DESSE LAB**! Parabéns!!! \0/

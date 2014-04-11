@@ -2,22 +2,17 @@
 :author: Paulo Jerônimo
 :email: pj@paulojeronimo.info
 
+Logado como usuário +aluno+, em um shell aberto na máquina +base+ (HOST), execute:
 [source,bash]
 ----
-$ d=github.com/paulojeronimo; mkdir -p $d && cd $d
-$ git clone https://$d/dotfiles.git
-$ git clone https://$d/livro-jboss.git
-$ dotfiles/install
-$ logout
-
+$ iniciar-script ~/curso-jboss/laboratorios/jboss-install/2
 $ ssh vm-centos
 $ CURSO_DIR=curso-jboss
 $ LAB_HOME=~/$CURSO_DIR/laboratorios/jboss-install/2
 $ INSTALADORES_DIR=instaladores
-$ cd && ln -sf github.com/paulojeronimo/livro-jboss $CURSO_DIR
-$ cd $CURSO_DIR
+$ cd ~/$CURSO_DIR
 $ mkdir $INSTALADORES_DIR && mv $HOME/jboss-eap-6.2.0.zip $INSTALADORES_DIR
-$ cat > $LAB_HOME/ambiente <<EOF
+$ mkdir -p $LAB_HOME && cat > $LAB_HOME/ambiente <<EOF
 #!/bin/bash
 export CURSO_HOME=~/$CURSO_DIR
 export PATH=\$CURSO_HOME/scripts:\$PATH
@@ -50,6 +45,8 @@ remover_jboss() {
    rm -rf \$FERRAMENTAS_HOME/{\$JBOSS_LINK,\$JBOSS_DIR}
 }
 EOF
+$ tree laboratorios
+$ type setenv
 $ setenv $LAB_HOME/ambiente
 $ logout
 
@@ -61,4 +58,6 @@ $ ls -la
 $ cd $CURSO_HOME
 $ type remover_jboss
 $ remover_jboss
+$ logout
+$ exit
 ----

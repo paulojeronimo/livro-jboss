@@ -2,14 +2,34 @@
 :author: Paulo Jerônimo
 :email: pj@paulojeronimo.info
 
-Logado como usuário aluno, na máquina base (HOST), abra um shell e execute:
+Logado como usuário +aluno+, em um shell aberto na máquina +base+ (HOST), execute:
+[NOTE]
+======
+Para fazer o logon, e após ele, execute:
+[source,bash]
+----
+$ xhost +
+$ sudo su - aluno
+$ export DISPLAY=:0
+----
+======
 [source,bash]
 ----
 $ iniciar-script ~/curso-jboss/laboratorios/jboss-download
 $ mkdir -p ~/Downloads
 ----
-Abra um browser, vá até a página http://www.jboss.org/products/eap e clique nos links "Download EAP 6.2", "Quickstarts" e "Maven Repo". Salve todos os arquivos no diretório +~/Downloads+. _Se você ainda não tiver uma conta no sistema do grupo JBoss, será necessário criar uma para fazer esse download._
+Abra o browser, conforme a seguir:
+[source,bash]
+----
+$ firefox http://www.jboss.org/products/eap &> /dev/null &
+----
+Na página aberta, clique nos links "Download EAP 6.2", "Quickstarts" e "Maven Repo". Salve todos os arquivos no diretório +~/Downloads+. _Se você ainda não tiver uma conta no sistema do grupo JBoss, será necessário criar uma para fazer esse download._
 
+.Nota para o instrutor:
+[NOTE]
+======
+Para evitar a espera do download, os arquivos já estão baixados em +$HOME/Installers/Java/JBoss/EAP/6.2.0/+. Copie-os, para o diretório +~/Downloads+ e prossiga.
+======
 Volte ao shell e execute:
 [source,bash]
 ----
