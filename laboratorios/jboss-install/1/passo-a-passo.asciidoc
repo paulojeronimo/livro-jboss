@@ -21,7 +21,7 @@ $ free -m
 $ jps -Vvlm | grep --color '\-Xm'
 $ cat /proc/meminfo | grep -i total
 $ fg
-# $ netstat -tulpn | grep 10955
+$ netstat -tulpn | grep 10955
 (Not all processes could be identified, non-owned process info
  will not be shown, you would have to be root to see it all.)
 tcp        0      0 127.0.0.1:9999              0.0.0.0:*                   LISTEN      10955/java          
@@ -36,7 +36,7 @@ tcp        0      0 127.0.0.1:9999              0.0.0.0:*                   LIST
 tcp        0      0 127.0.0.1:8080              0.0.0.0:*                   LISTEN      10955/java          
 tcp        0      0 127.0.0.1:4447              0.0.0.0:*                   LISTEN      10955/java          
 tcp        0      0 127.0.0.1:9990              0.0.0.0:*                   LISTEN      10955/java           
-sed -i 's/1303/512/g' jboss/bin/standalone.conf
+$ sed -i 's/1303/512/g' jboss/bin/standalone.conf
 $ grep --color '\-Xm' jboss/bin/standalone.conf
    JAVA_OPTS="-Xms512m -Xmx512m -XX:MaxPermSize=256m -Djava.net.preferIPv4Stack=true"
 $ standalone.sh
@@ -44,11 +44,21 @@ $ standalone.sh
 $ c=standalone.sh; nohup $c 2>&1 | tee /tmp/$c.log &
 $ jps -Vvlm
 2633 sun.tools.jps.Jps -Vvlm -Dapplication.home=/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.51 -Xms8m
-2549 /home/aluno/jboss/jboss-modules.jar -mp /home/aluno/jboss/modules -jaxpmodule javax.xml.jaxp-provider org.jboss.as.standalone -Djboss.home.dir=/home/aluno/jboss -Djboss.server.base.dir=/home/aluno/jboss/standalone -D[Standalone] -Xms512m -Xmx512m -XX:MaxPermSize=256m -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true -Dorg.jboss.boot.log.file=/home/aluno/jboss/standalone/log/server.log -Dlogging.configuration=file:/home/aluno/jboss/standalone/configuration/logging.properties
+2549 /home/aluno/jboss/jboss-modules.jar -mp /home/aluno/jboss/modules -jaxpmodule javax.xml.jaxp-provider 
+org.jboss.as.standalone -Djboss.home.dir=/home/aluno/jboss -Djboss.server.base.dir=/home/aluno/jboss/standalone 
+-D[Standalone] -Xms512m -Xmx512m -XX:MaxPermSize=256m -Djava.net.preferIPv4Stack=true 
+-Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true 
+-Dorg.jboss.boot.log.file=/home/aluno/jboss/standalone/log/server.log 
+-Dlogging.configuration=file:/home/aluno/jboss/standalone/configuration/logging.properties
 $ ls -ld /proc/2549/
 dr-xr-xr-x. 8 aluno aluno 0 Apr 11 10:54 /proc/2549/
 $ cat /proc/2549/cmdline 
-/usr/lib/jvm/java/bin/java-D[Standalone]-server-Xms512m-Xmx512m-XX:MaxPermSize=256m-Djava.net.preferIPv4Stack=true-Djboss.modules.system.pkgs=org.jboss.byteman-Djava.awt.headless=true-Dorg.jboss.boot.log.file=/home/aluno/jboss/standalone/log/server.log-Dlogging.configuration=file:/home/aluno/jboss/standalone/configuration/logging.properties-jar/home/aluno/jboss/jboss-modules.jar-mp/home/aluno/jboss/modules-jaxpmodulejavax.xml.jaxp-providerorg.jboss.as.standalone-Djboss.home.dir=/home/aluno/jboss-Djboss.server.base.dir=/home/aluno/jboss/standalone
+/usr/lib/jvm/java/bin/java-D[Standalone]-server-Xms512m-Xmx512m-XX:MaxPermSize=256m-Djava.net.preferIPv4Stack=true
+-Djboss.modules.system.pkgs=org.jboss.byteman-Djava.awt.headless=true
+-Dorg.jboss.boot.log.file=/home/aluno/jboss/standalone/log/server.log
+-Dlogging.configuration=file:/home/aluno/jboss/standalone/configuration/logging.properties-
+jar/home/aluno/jboss/jboss-modules.jar-mp/home/aluno/jboss/modules-jaxpmodulejavax.xml.jaxp-providerorg.jboss.as.standalone
+-Djboss.home.dir=/home/aluno/jboss-Djboss.server.base.dir=/home/aluno/jboss/standalone
 $ lsof -n -P -p 2549 | grep LISTEN
 java    2549 aluno  262u  IPv4      19230      0t0    TCP 127.0.0.1:8080 (LISTEN)
 java    2549 aluno  275u  IPv4      19233      0t0    TCP 127.0.0.1:9990 (LISTEN)
