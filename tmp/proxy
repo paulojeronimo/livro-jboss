@@ -1,0 +1,2 @@
+wget https://raw.githubusercontent.com/paulojeronimo/join-community-2014/master/vm/configurar-proxy.sh
+scp -P 3333 configurar-proxy.sh localhost:/tmp

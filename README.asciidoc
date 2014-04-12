@@ -3,7 +3,7 @@
 :email: pj@paulojeronimo.info
 :numbered:
 
-Este repositório contém os arquivos públicos do livro de JBoss que estou escrevendo.
+Este repositório contém os arquivos públicos do livro de JBoss que *estou escrevendo*. Isso significa que as informações apresentadas aqui estão sujeitas a constantes mudanças, até a geração de uma release.
 
 Todo o material que está aqui é livre para uso sem fins comerciais, respeitando-se os direitos de autoria.
 
@@ -24,10 +24,11 @@ $ firefox ./README.html &> /dev/null &
 
 Esta é a sequência inicial que você deverá trilhar na execução dos laboratórios:
 
-. link:laboratorios/centos-mirror/passo-a-passo.asciidoc[]; (link:laboratorios/centos-mirror/passo-a-passo.html[HTML])
-. link:laboratorios/centos-install/passo-a-passo.asciidoc[]; (link:laboratorios/centos-install/passo-a-passo.html[HTML])
-. link:laboratorios/centos-pos-install/passo-a-passo.asciidoc[]; (link:laboratorios/centos-pos-install/passo-a-passo.html[HTML])
-. link:laboratorios/openjdk-install/passo-a-passo.asciidoc[]; (link:laboratorios/openjdk-install/passo-a-passo.html[HTML])
-. link:laboratorios/jboss-download/passo-a-passo.asciidoc[]; (link:laboratorios/jboss-download/passo-a-passo.html[HTML])
-. link:laboratorios/jboss-install/1/passo-a-passo.asciidoc[]; (link:laboratorios/jboss-install/1/passo-a-passo.html[HTML])
-. link:laboratorios/jboss-install/2/passo-a-passo.asciidoc[]; (link:laboratorios/jboss-install/2/passo-a-passo.html[HTML])
+. link:laboratorios/centos-mirror/passo-a-passo.asciidoc[] (link:laboratorios/centos-mirror/passo-a-passo.html[HTML])
+. link:laboratorios/centos-install/passo-a-passo.asciidoc[] (link:laboratorios/centos-install/passo-a-passo.html[HTML])
+. link:laboratorios/centos-pos-install/passo-a-passo.asciidoc[] (link:laboratorios/centos-pos-install/passo-a-passo.html[HTML])
+. link:laboratorios/openjdk-install/passo-a-passo.asciidoc[] (link:laboratorios/openjdk-install/passo-a-passo.html[HTML])
+. link:laboratorios/jboss-download/passo-a-passo.asciidoc[] (link:laboratorios/jboss-download/passo-a-passo.html[HTML])
+. link:laboratorios/jboss-install/1/passo-a-passo.asciidoc[] (link:laboratorios/jboss-install/1/passo-a-passo.html[HTML])
+. link:laboratorios/jboss-install/2/passo-a-passo.asciidoc[] (link:laboratorios/jboss-install/2/passo-a-passo.html[HTML])
+. link:laboratorios/standalone-add-user/passo-a-passo.asciidoc[] (link:laboratorios/standalone-add-user/passo-a-passo.html[HTML])

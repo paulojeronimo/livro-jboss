@@ -5,7 +5,7 @@
 Logado como usuário +aluno+, em um shell aberto na máquina +base+ (HOST), execute:
 [NOTE]
 ======
-Para fazer o logon, e após ele, execute:
+Para fazer o login como aluno, a partir do seu usuário, execute os comandos a seguir. Eles deverão ser repetidos em todos os próximos laboratórios.
 [source,bash]
 ----
 $ xhost +

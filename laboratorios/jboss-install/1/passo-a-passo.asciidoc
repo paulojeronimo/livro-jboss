@@ -25,7 +25,6 @@ $ fg
 $ sed -i 's/1303/512/g' jboss/bin/standalone.conf
 $ grep --color '\-Xm' jboss/bin/standalone.conf
    JAVA_OPTS="-Xms512m -Xmx512m -XX:MaxPermSize=256m -Djava.net.preferIPv4Stack=true"
-$ standalone.sh
 $ c=standalone.sh; nohup $c 2>&1 | tee /tmp/$c.log &
 $ jps -Vvlm
 2633 sun.tools.jps.Jps -Vvlm -Dapplication.home=/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.51 -Xms8m
@@ -56,7 +55,8 @@ tcp        0      0 127.0.0.1:4447              0.0.0.0:*                   LIST
 tcp        0      0 127.0.0.1:9990              0.0.0.0:*                   LISTEN      2549/java           
 tcp        0      0 127.0.0.1:9999              0.0.0.0:*                   LISTEN      2549/java           
 tcp        0      0 127.0.0.1:8080              0.0.0.0:*                   LISTEN      2549/java           
-$ kill 2549
+$ pgrep java
+$ kill 2549 # pkill java
 10:59:18,254 INFO  [org.apache.coyote.http11] (MSC service thread 1-2) JBWEB003075: Coyote HTTP/1.1 pausing on: http-/127.0.0.1:8080
 10:59:18,255 INFO  [org.apache.coyote.http11] (MSC service thread 1-2) JBWEB003077: Coyote HTTP/1.1 stopping on : http-/127.0.0.1:8080
 10:59:18,266 INFO  [org.jboss.as.connector.subsystems.datasources] (MSC service thread 1-2) JBAS010409: Unbound data source [java:jboss/datasources/ExampleDS]
