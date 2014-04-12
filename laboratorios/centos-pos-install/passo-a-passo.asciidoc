@@ -70,7 +70,7 @@ Gere, também, um par de chaves na máquina base:
 ----
 $ ssh-keygen
 ----
-Se estiver executando esses comandos no Mac OS X, você tentará executar o comando +ssh-copy-id+, a seguir, e verificará que ele não será encontrado. Uma solução para esse problema é baixar o meu projeto dotfiles que contém um script com esse nome/utilidade. Outros scripts desse projeto também serão utilizados mais a frente. Então, estando no Fedora ou no OS X, baixe e instale esse projeto com os seguintes comandos:
+Baixe e instale o projeto dotfiles com os seguintes comandos:
 [source,bash]
 ----
 $ cd ~/curso-jboss
@@ -120,11 +120,9 @@ Crie também uma nova interface de rede na vm-centos. Isso será útil para evit
 [source,bash]
 ----
 $ VBoxManage hostonlyif create
+$ VBoxManage hostonlyif ipconfig vboxnet0 --ip 192.168.0.253 --netmask 255.255.255.0
 $ VBoxManage list hostonlyifs
 $ VBoxManage dhcpserver remove --netname HostInterfaceNetworking-vboxnet0
-$ VBoxManage dhcpserver add --netname HostInterfaceNetworking-vboxnet0 \
---ip 192.168.56.1 --netmask 255.255.255.0 \
---lowerip 192.168.56.101 --upperip 192.168.56.201 --enable
 $ VBoxManage list dhcpservers
 $ VBoxManage modifyvm vm-centos --nic2 hostonly --hostonlyadapter2 vboxnet0
 ----
@@ -132,15 +130,29 @@ Configure teu arquivo +/etc/hosts+ adicionando a +vm-centos+:
 [source,bash]
 ----
 $ f=/etc/hosts; grep vm-centos $f &> /dev/null || \
-echo -e "192.168.56.101\tvm-centos" | sudo tee -a $f
+echo -e "192.168.0.254\tvm-centos" | sudo tee -a $f
 $ cat $f
 ----
-Inicie novamente a VM e aguarde até obter um ping de retorno:
+Inicie novamente a VM:
 [source,bash]
 ----
 $ VBoxManage startvm vm-centos
 ----
-Após a VM ter sido iniciada, teste um comando remoto (nenhuma senha deverá ser solicitada):
+Faça o login no console da VM. Configure um IP estático para a interface eth1 e reinicie a rede:
+[source,bash]
+----
+$ cat<<'EOF' | sudo tee /etc/sysconfig/network-scripts/ifcfg-eth1
+DEVICE=eth1
+BOOTPROTO=static
+IPADDR=192.168.0.254
+PREFIX=24
+GATEWAY=192.168.0.254
+EOF
+$ sudo service NetworkManager stop
+$ sudo chkconfig NetworkManager off
+$ sudo service network restart
+----
+Volte para o console da base. Teste um comando remoto (nenhuma senha deverá ser solicitada):
 [source,bash]
 ----
 $ ssh vm-centos cat ~/.pos-install.sh

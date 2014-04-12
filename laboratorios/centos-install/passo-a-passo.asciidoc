@@ -8,32 +8,7 @@ Após essa instalação e/ou configuração do Apache, as seguintes URLs deverã
 * http://localhost/~aluno/centos
 * http://localhost/~aluno/ks
 
-=== No OS X:
-Leia a página http://blog.ladoservidor.com/2013/01/web-sharing-no-os-x-mountain-lion.html e execute:
-[source,bash]
-----
-$ sudo bash -c '
-cat > /etc/apache2/users/$SUDO_USER.conf <<EOF 
-<Directory "/Users/$SUDO_USER/Sites/">
-     Options Indexes MultiViews FollowSymLinks
-     AllowOverride All
-     Order allow,deny
-     Allow from all
-</Directory>
-EOF
-'
-$ sudo apachectl restart
-$ sudo defaults write /System/Library/LaunchDaemons/org.apache.httpd \
-Disabled -bool false
-$ d=~/Sites; mkdir -p $d && echo "Oi! Conseguiu! \o/" > $d/oi.txt; \
-open http://localhost/~`whoami`/oi.txt
-$ cd ~/Sites/
-$ ln -s ~/curso-jboss/mirrors/CentOS/6.5/i386/mirror centos
-$ ln -s ~/curso-jboss/mirrors/CentOS/6.5/i386/vm/ks.base ks
-----
-
-=== No Fedora:
-Se você seguiu meus passos desde a http://a.paulojeronimo.info/tutoriais/fedora-mac/index.html[instalação do Fedora], seu Apache já deverá estar instalado. Caso contrário, retorne ao seu usuário e faça a http://a.paulojeronimo.info/tutoriais/fedora-mac/index.html#toc26[instalação do Apache]. Não se esqueça que, para recomeçar esse laboratório, você deverá estar logado como +aluno+. Então, nesse ponto, será necessário configurar um diretório público (via HTTP) para o usuário +aluno+. Antes disso, porém, execute:
+Se você seguiu meus passos desde a http://a.paulojeronimo.info/tutoriais/fedora-mac/index.html[instalação do Fedora], seu Apache já deverá estar instalado. Caso contrário, retorne ao seu usuário e faça a http://a.paulojeronimo.info/tutoriais/fedora-mac/index.html#toc30[instalação do Apache]. Não se esqueça que, para recomeçar esse laboratório, você deverá estar logado como +aluno+. Então, nesse ponto, será necessário configurar um diretório público (via HTTP) para o usuário +aluno+. Antes disso, porém, execute:
 [source,bash]
 ----
 $ logout # para retonar ao seu usuário antes de se logar como aluno
@@ -62,39 +37,31 @@ $ sudo getenforce
 Em seguida, dê um refresh no browser e verifique se os links, agora, estão funcionando. A configuração acima, como eu disse, é temporária! Mais a frente faremos os ajustes corretos para que o SELinux não bloqueie o acesso os diretórios e, ainda assim, permaneça fazendo o seu papel de segurança.
 
 == Instalando o VirtualBox
-=== No OS X:
-Baixe e instale a versão mais atual disponível para download. Link para o download: https://www.virtualbox.org/wiki/Downloads
-
-=== No Fedora:
 Baixe e instale a versão mais atual disponível para download. _Como exemplo, siga os passos apresentados em http://a.paulojeronimo.info/tutoriais/fedora-mac/index.html#toc31 mas esteja atento pois a versão instalada nesse documento pode não ser a mais atual_.
 
 == Criando a VM
-Execute o script vbox a seguir. Ele criará a VM: _(se for o instrutor, antes, observe a nota)_
+Crei o diretório que armazenará as informações da VM:
 [source,bash]
 ----
 $ mkdir ~/curso-jboss/vms
-$ ~/curso-jboss/mirrors/CentOS/6.5/i386/vm/vbox
 ----
-
-.Notas para o instrutor:
+.Nota para o instrutor:
 [NOTE]
 ======
-Em sua máquina não há espaço em disco na partição +/+. Você deverá executar a primeira linha dos comandos apresentados acima da seguinte forma:
-
-* No OS X:
-[source,bash]
-----
-$ d=/Volumes/data/vms-aluno; mkdir -p $d; cd ~/curso-jboss && ln -s $d vms
-----
-* No Fedora:
+Em sua máquina não há espaço em disco na partição +/+. Você deverá executar o comando acima da seguinte forma:
 [source,bash]
 ----
 $ d=/data/aluno/VirtualBox\ VMs
-$ sudo bash -c "
-mkdir -p \"$d\" && chown -R aluno: $(dirname \"$d\")"
+$ sudo bash -c "mkdir -p \"$d\" && chown -R aluno: `dirname \"$d\"`"
 $ cd ~/curso-jboss && ln -s "$d" vms
 ----
 ======
+
+Execute o script vbox a seguir. Ele criará a VM:
+[source,bash]
+----
+$ ~/curso-jboss/mirrors/CentOS/6.5/i386/vm/vbox
+----
 
 == Iniciando a VM e aguardando a instalação do CentOS
 Para iniciar a VM, execute:
@@ -106,9 +73,9 @@ Ao ser apresentado o prompt do Grub, adicione +ks=http://10.0.2.2/~aluno/ks+ a s
 
 O processo de instalação da VM será realizado sem nenhuma intervenção.
 
-Apenas ao final da instalação, você será questionado se deseja mudar o hostname da máquina (vm-centos) e/ou o formato do teclado. Contudo, se não você não estiver atento ao momento em que isso for solicitado (são apenas 5 segundos para responder), a instalação prosseguirá.
+Apenas ao final da instalação, você será questionado se deseja mudar o hostname da máquina (vm-centos) e/ou o formato do teclado. Contudo, se não você não estiver atento ao momento em que isso for solicitado, são apenas 5 segundos para responder, a instalação prosseguirá.
 
-Aguarde a finalização do processo. Ao receber a mensagem de conclusão da instalação, "remova" o CD de instalação, digitando esse comando no console da base:
+Aguarde a finalização do processo. Ao receber a mensagem de conclusão da instalação, "remova" o CD de instalação, digitando este comando no console da base:
 [source,bash]
 ----
 $ VBoxManage storageattach vm-centos \

@@ -22,7 +22,7 @@ Crie o diretório do curso:
 $ mkdir ~/curso-jboss
 $ cd !$
 ----
-Se você ainda não tiver o Git instalado, execute o conjunto de comandos a seguir. Do contrário, pule esses comandos e siga as próximas instruções.
+Se você ainda não tiver o Git instalado, você pode executar o conjunto de comandos a seguir. Entretanto, prefira instalá-lo, agora, pule esses comandos e siga as próximas instruções.
 [source,bash]
 ----
 $ curl -L -O https://github.com/paulojeronimo/mirrors/archive/master.zip
