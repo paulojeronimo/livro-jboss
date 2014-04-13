@@ -26,5 +26,4 @@ $ java HelloWorld
 $ java HelloWorld $USER
 $ logout
 $ exit
-$ reproduzir ~/curso-jboss/laboratorios/openjdk-install
 ----
