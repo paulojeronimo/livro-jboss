@@ -8,69 +8,23 @@ Logado como usuário +aluno+, em um shell aberto na máquina +base+ (HOST), exec
 $ gravar ~/curso-jboss/laboratorios/standalone-add-user
 $ ssh vm-centos
 $ instalar_jboss
-$ nohup standalone.sh &> /tmp/jboss.log &
-$ tail /tmp/jboss.log | grep 'JBoss EAP.*Started'
+$ log=/tmp/jboss.log
+$ (> $log; nohup standalone.sh &> $log &) && s=0; \
+while true
+do 
+   tail $log | grep 'JBoss EAP.*Started' && break || { \
+      echo -ne "\raguardando JBoss ser iniciado a ${s}s ... "; \
+      sleep 1; (( s++ )); }
+done
 $ logout
 $ firefox http://localhost:8080 &> /dev/null &
 $ ssh -L 8080:localhost:8080 -L 9990:localhost:9990 vm-centos
+$ tail -f /tmp/jboss.log &
 # browser refresh ...
 $ add-user.sh 
-
-What type of user do you wish to add? 
- a) Management User (mgmt-users.properties) 
- b) Application User (application-users.properties)
-(a): 
-
-Enter the details of the new user to add.
-Using realm 'ManagementRealm' as discovered from the existing property files.
-Username : admin
-The username 'admin' is easy to guess
-Are you sure you want to add user 'admin' yes/no? yes  
-Password :
-
- * Error * 
-JBAS015269: Password must have at least '8' characters!
-
-Username (admin) :      
-The username 'admin' is easy to guess
-Are you sure you want to add user 'admin' yes/no? yes
-Password : 
-
- * Error * 
-JBAS015267: Password must have at least one non-alphanumeric s
-ymbol.
-
-Username (admin) : 
-The username 'admin' is easy to guess
-Are you sure you want to add user 'admin' yes/no? yes
-Password : 
-Re-enter Password : 
-What groups do you want this user to belong to? (Please enter 
-a comma separated list, or leave blank for none)[  ]: 
-About to add user 'admin' for realm 'ManagementRealm'
-Is this correct yes/no? yes
-Added user 'admin' to file '/home/aluno/curso-jboss/ferramenta
-s/jboss-eap-6.2/standalone/configuration/mgmt-users.properties
-'
-Added user 'admin' to file '/home/aluno/curso-jboss/ferramenta
-s/jboss-eap-6.2/domain/configuration/mgmt-users.properties'
-Added user 'admin' with groups  to file '/home/aluno/curso-jbo
-ss/ferramentas/jboss-eap-6.2/standalone/configuration/mgmt-gro
-ups.properties'
-Added user 'admin' with groups  to file '/home/aluno/curso-jbo
-ss/ferramentas/jboss-eap-6.2/domain/configuration/mgmt-groups.
-properties'
-Is this new user going to be used for one AS process to connec
-t to another AS process? 
-e.g. for a slave host controller connecting to the master or f
-or a Remoting connection for server to server EJB calls.
-yes/no? no
 # browser refresh
 $ grep ^admin $JBOSS_HOME/standalone/configuration/mgmt-users.properties
-admin=2d1eff35f5ce34a70d87e4534db7cf74
 $ echo -n 'admin:ManagementRealm:jb@ss123' | md5sum           
-2d1eff35f5ce34a70d87e4534db7cf74  -
-$ tail -f /tmp/jboss.log &
 $ jboss-cli.sh -c :shutdown
 $ pkill tail
 $ logout
@@ -81,13 +35,51 @@ Eliminando os túneis SSH ...
 $ ssh vm-centos
 $ standalone.sh --help | grep '\-b'
 $ nohup standalone.sh \
--b 192.168.56.101 -bmanagement=192.168.56.101 \
+-b 192.168.0.254 -bmanagement=192.168.0.254 \
 &> /tmp/jboss.log &
+$ STANDALONE_PID=$!
+$ !?tail -f
 $ JBOSS_PID=`jps -Vvlm | grep jboss.*standalone | cut -d ' ' -f 1`
-$ echo $JBOSS_PID
-$ lsof -n -P -p $JBOSS_PID | grep -i listen
-$ # TODO: configurar iptables ...
+$ echo STANDALONE_PID=$STANDALONE_PID JBOSS_PID=$JBOSS_PID
+$ pstree -p $STANDALONE_PID | less
+$ for pid in $STANDALONE_PID $JBOSS_PID
+do
+   cmd='lsof -n -P -p $pid | grep -i listen'
+   echo "pid=$pid; $cmd"; eval $cmd
+done
+$ sudo service iptables status | egrep 'ACCEPT.*(8080|9990)'
+$ [ $? = 0 ] || for dport in 8080 9990
+do
+   cmd='sudo iptables -I INPUT -m state --state NEW -m tcp -p tcp --dport $dport -j ACCEPT'
+   echo "dport=$dport; $cmd"; eval $cmd
+done
+$ sudo service iptables save
+$ sudo cat /etc/sysconfig/iptables
+$ kill $JBOSS_PID
+$ !?nohup standalone
+$ pkill tail
 $ logout
-$ firefox http://vm-centos:8080
+$ firefox http://vm-centos:9990
+----
+Abrindo as portas para o gerenciamento via linha de comando ...
+[source,bash]
+----
+$ ssh vm-centos
+$ !?jps
+$ lsof -p $JBOSS_PID | grep log$
+$ tail -f ~/curso-jboss/ferramentas/jboss/standalone/log/server.log &
+$ sudo service iptables status | grep 'ACCEPT.*9999'
+$ [ $? = 0 ] || { \
+sudo iptables -I INPUT -m state --state NEW -m tcp -p tcp --dport 9999 -j ACCEPT; \
+sudo service iptables save; \
+sudo service iptables restart; }
+$ jboss-cli.sh --controller=192.168.0.254 -c :shutdown
+$ grep vm-centos /etc/hosts || \
+echo -e "192.168.0.254\tvm-centos" | sudo tee -a /etc/hosts 
+$ jboss-cli.sh --controller=192.168.0.254 -c :shutdown
+$ pkill tail
+$ logout
+$ nmap -Pn 192.168.0.254
 $ exit
 ----
+Ideal em termos de segurança: deixar as portas administrativas escutando apenas em +localhost+ e acessá-las através de um túnel SSH.
