@@ -151,9 +151,10 @@ Reinicie os serviços de rede e verifique os IPs:
 $ sudo service network restart
 $ sudo ip a s
 ----
-Copie a sessão 3 para a +base+:
+Encerre e copie a sessão 3 para a +base+:
 [source,bash]
 ----
+$ exit
 $ !?ssh base bash
 ----
 Volte para o console da +base+ e inicie a sessão 4:
