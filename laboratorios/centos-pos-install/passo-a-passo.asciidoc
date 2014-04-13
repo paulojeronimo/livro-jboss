@@ -31,7 +31,7 @@ $ cd !$
 Instale o Git:
 [source,bash]
 ----
-$ sudo yum  -y install git
+$ sudo yum -y install git
 ----
 Baixe e instale o projeto dotfiles:
 [source,bash]
@@ -76,13 +76,18 @@ Giramos para um lado né!? Agora, vamos girar pro outro ... hehehe
 $ logout
 $ logout
 ----
-Encerre e mova a sessão 1 para a máquina +base+:
+Encerre e copie a sessão 1 para a máquina +base+:
 [source,bash]
 ----
 $ exit
 $ cat $sessao/sessao | \
 ssh base bash -c ":; mkdir -p $sessao; cd $sessao; cat - > sessao"
-$ rm -rf $sessao
+----
+Observe a estrutura de diretórios já montada para +~/curso-jboss+:
+[source,bash]
+----
+$ sudo yum -y install tree
+$ tree ~/curso-jboss
 ----
 Desligue a vm-centos e aguarde seu shutdown:
 [source,bash]
@@ -123,7 +128,13 @@ Encerre a gravação da sessão 2:
 ----
 $ exit
 ----
-Faça o login no console da VM. Configure um IP estático para a interface eth1 e reinicie a rede:
+Faça o login no console da VM. Em seguida, inicie a gravação da sessão 3:
+[source,bash]
+----
+$ sessao=~/curso-jboss/laboratorios/centos-pos-install/3
+$ gravar $sessao
+----
+Configure um IP estático para a interface eth1:
 [source,bash]
 ----
 $ cat<<'EOF' | sudo tee /etc/sysconfig/network-scripts/ifcfg-eth1
@@ -133,9 +144,19 @@ IPADDR=192.168.0.254
 PREFIX=24
 GATEWAY=192.168.0.254
 EOF
-$ sudo service network restart
 ----
-Volte para o console da +base+ e inicie a sessão 3:
+Reinicie os serviços de rede e verifique os IPs:
+[source,bash]
+----
+$ sudo service network restart
+$ sudo ip a s
+----
+Copie a sessão 3 para a +base+:
+[source,bash]
+----
+$ !?ssh base bash
+----
+Volte para o console da +base+ e inicie a sessão 4:
 [source,bash]
 ----
 $ gravar ~/curso-jboss/laboratorios/centos-pos-install/3
@@ -158,7 +179,7 @@ Agora, faça um snapshot da VM para caso precisemos voltar até o ponto em que c
 $ VBoxManage snapshot vm-centos take centos-pos-install
 ----
 
-Encerre a sessão 3:
+Encerre a sessão 4:
 [source,bash]
 ----
 $ exit
