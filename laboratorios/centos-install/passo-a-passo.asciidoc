@@ -57,7 +57,7 @@ Em sua máquina não há espaço em disco na partição +/+ para acomodar o cres
 ----
 $ d=/data/aluno/VirtualBox\ VMs
 $ sudo bash -c "mkdir -p \"$d\" && chown -R aluno: `dirname \"$d\"`"
-$ mv vm-centos $d && ln -s "$d"/vm-centos
+$ mv vm-centos "$d" && ln -s "$d"/vm-centos
 ----
 ======
 
