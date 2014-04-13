@@ -36,5 +36,5 @@ Solução 3:
 $ ssh vm-centos
 $ sudo sed -i 's/\(Defaults.*requiretty\)/#\1/' /etc/sudoers
 $ logout
-$ echo -e "192.168.0.253\t`hostname`" | ssh -t vm-centos sudo tee /tmp/host
+$ echo -e "192.168.0.253\t`hostname`" | ssh -t vm-centos sudo tee -a /etc/hosts
 ----
