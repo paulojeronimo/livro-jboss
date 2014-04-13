@@ -160,7 +160,7 @@ $ !?ssh base bash
 Volte para o console da +base+ e inicie a sessão 4:
 [source,bash]
 ----
-$ gravar ~/curso-jboss/laboratorios/centos-pos-install/3
+$ gravar ~/curso-jboss/laboratorios/centos-pos-install/4
 ----
 Teste um comando remoto (nenhuma senha deverá ser solicitada):
 [source,bash]
