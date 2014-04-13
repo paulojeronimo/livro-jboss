@@ -165,7 +165,7 @@ $ gravar ~/curso-jboss/laboratorios/centos-pos-install/4
 Teste um comando remoto (nenhuma senha deverá ser solicitada):
 [source,bash]
 ----
-$ ssh vm-centos ip a s
+$ ssh vm-centos date
 ----
 Percebe a demora no estabelecimento da conexão SSH? Vamos, agora, resolver isso. Execute os passos apresentados em link:../fix-ssh-slow-connection/["Resolvendo o problema da lentidão na conexão com o SSH"].
 
