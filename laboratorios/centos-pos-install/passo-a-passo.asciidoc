@@ -81,7 +81,7 @@ Encerre e mova a sessão 1 para a máquina +base+:
 ----
 $ exit
 $ cat $sessao/sessao | \
-ssh base bash -c "mkdir -p $sessao; cat - > sessao"
+ssh base bash -c ":; mkdir -p $sessao; cd $sessao; cat - > sessao"
 $ rm -rf $sessao
 ----
 Desligue a vm-centos e aguarde seu shutdown:
