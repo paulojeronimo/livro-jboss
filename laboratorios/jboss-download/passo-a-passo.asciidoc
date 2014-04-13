@@ -3,19 +3,9 @@
 :email: pj@paulojeronimo.info
 
 Logado como usuário +aluno+, em um shell aberto na máquina +base+ (HOST), execute:
-[NOTE]
-======
-Para fazer o login como aluno, a partir do seu usuário, execute os comandos a seguir. Eles deverão ser repetidos em todos os próximos laboratórios.
 [source,bash]
 ----
-$ xhost +
-$ sudo su - aluno
-$ export DISPLAY=:0
-----
-======
-[source,bash]
-----
-$ iniciar-script ~/curso-jboss/laboratorios/jboss-download
+$ gravar ~/curso-jboss/laboratorios/jboss-download
 $ mkdir -p ~/Downloads
 ----
 Abra o browser, conforme a seguir:

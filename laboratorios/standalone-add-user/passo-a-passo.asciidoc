@@ -5,7 +5,7 @@
 Logado como usuário +aluno+, em um shell aberto na máquina +base+ (HOST), execute:
 [source,bash]
 ----
-$ iniciar-script ~/curso-jboss/laboratorios/standalone-add-user
+$ gravar ~/curso-jboss/laboratorios/standalone-add-user
 $ ssh vm-centos
 $ instalar_jboss
 $ nohup standalone.sh &> /tmp/jboss.log &

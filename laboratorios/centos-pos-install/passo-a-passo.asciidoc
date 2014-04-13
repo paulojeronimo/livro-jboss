@@ -1,8 +1,8 @@
 = Preparando a comunicação entre HOST e VM
 :author: Paulo Jerônimo
 :email: pj@paulojeronimo.info
+:experimental:
 
-== Passo a passo
 Logue-se na console do CentOS (usuário/senha: +aluno+/+@lun0123+).
 
 Se seu teclado não estiver configurado adequadamente, você pode executar o comando +loadkeys+. Por exemplo, se o seu teclado for +br-abnt2+, execute:
@@ -15,108 +15,88 @@ Essa configuração, contudo, não sobreviverá a um reboot! Se quiser mantê-la
 ----
 $ sudo sed -i 's/\(KEYTABLE=\).*/\1"br-abnt2"/g' /etc/sysconfig/keyboard
 ----
-Observe que há um script chamado +.pos-install.sh+ em teu diretório +$HOME+:
+Instale o VirtualBox Guest Additions:
 [source,bash]
 ----
-$ ls -la
-$ cat ~/.pos-install.sh
+$ sudo yum -y install gcc kernel-devel-`uname -r`
+$ sudo mount /dev/sr1 /mnt
+$ sudo /mnt/VBoxLinuxAdditions.run
 ----
-Inicie o ambiente gráfico:
+Crie o diretório do curso e vá para ele:
 [source,bash]
 ----
-$ startx
+$ mkdir ~/curso-jboss
+$ cd !$
 ----
-Abra um terminal e execute:
+Instale o Git:
 [source,bash]
 ----
-$ ~/.pos-install.sh
+$ sudo yum  -y install git
 ----
-Se você receber algum erro na execução do script .pos-install.sh, edite-o para informar o caminho correto até a localização do arquivo +VBoxLinuxAdditions.run+. _Note que há um ícone na tela informando o nome do CD do VirtualBox Guest Additions. Esse nome é o que deverá estar no caminho do script_.
-
-Se você estiver com problemas de teclado no ambiente gráfico, vá ao menu 'System/Preferences/KeyBoard' na aba 'Layout' e configure o seu teclado.
-
-Faça o logout do usuário (isso retirará você do modo gráfico).
+Baixe e instale o projeto dotfiles:
 [source,bash]
 ----
-$ gnome-session-save --kill
+$ git clone https://github.com/paulojeronimo/dotfiles.git
+$ dotfiles/install
 ----
-Execute, novamente, a inicialização do modo gráfico. Redimensione a tela para verificar se o VirtualBox Guest Additions está realmente funcionando.
+Refaça o login, após o logout a seguir:
 [source,bash]
 ----
-$ startx
-----
-Faça novamente o logout do usuário (pelo menu 'System/Log Out aluno'). Execute os comandos a seguir:
-[source,bash]
-----
-$ ping base
-$ ssh base
 $ logout
 ----
-Gere as chave para o usuário +aluno+ e instale sua chave pública na máquina +base+: 
+Inicie a gravação da sessão 1:
 [source,bash]
 ----
-$ ssh-keygen
-$ ssh-copy-id base
-$ ssh base
-$ logout
+$ sessao=~/curso-jboss/laboratorios/centos-pos-install/1
+$ gravar $sessao
 ----
 Conecte-se a +base+ criando um túnel reverso para a porta 3333:
 [source,bash]
 ----
 $ ssh -R 3333:localhost:22 base
 ----
-Gere, também, um par de chaves na máquina base:
-[source,bash]
-----
-$ ssh-keygen
-----
-Baixe e instale o projeto dotfiles com os seguintes comandos:
-[source,bash]
-----
-$ cd ~/curso-jboss
-$ git clone https://github.com/paulojeronimo/dotfiles.git
-$ dotfiles/install
-$ logout
-----
-Reabra o túnel reverso com a máquina +base+:
-[source,bash]
-----
-$ ssh -R 3333:localhost:22 base
-----
-Note, que seu prompt deverá estar modificado. Faça a cópia da sua chave pública para a máquina +base+:
+Instale a chave pública do usuário +aluno+ da máquina +base+ e, em seguida, acesse a +vm-centos+ utilizando o túnel criado:
 [source,bash]
 ----
 $ ssh-copy-id -p 3333 localhost
-----
-Teste um novo ssh para a máquina vm-centos. Agora, nenhuma senha deverá ser solicitada:
-[source,bash]
-----
 $ ssh -p 3333 localhost
 ----
-Instale o projeto dotfiles na VM:
+Gere o par de chaves para o aluno, na máquina vm-centos, e copie sua chave pública para a máquina +base+:
 [source,bash]
 ----
-$ mkdir ~/curso-jboss
-$ cd !$
-$ git clone https://github.com/paulojeronimo/dotfiles.git
-$ dotfiles/install
+$ ssh-keygen
+$ ssh-copy-id base
 ----
-Efetue o logout da VM:
+
+Você está na máquina vm-centos, correto? As voltas do SSH te deixaram tonto? Rsrs... ;)
+
+Giramos para um lado né!? Agora, vamos girar pro outro ... hehehe
 [source,bash]
 ----
 $ logout
+$ logout
+----
+Encerre e mova a sessão 1 para a máquina +base+:
+[source,bash]
+----
+$ exit
+$ cat $sessao/sessao | \
+ssh base bash -c "mkdir -p $sessao; cat - > sessao"
+$ rm -rf $sessao
 ----
 Desligue a vm-centos e aguarde seu shutdown:
 [source,bash]
 ----
-$ ssh -t -p 3333 localhost 'sudo shutdown -h now'
+$ sudo shutdown -h now
 ----
-De volta ao console da base execute, manualmente, o recarregamento do teu arquivo +~/.bashrc+:
+De volta ao console da +base+, inicie a gravação da sessão 2:
 [source,bash]
 ----
-$ source ~/.bashrc
+$ gravar ~/curso-jboss/laboratorios/centos-pos-install/2
 ----
-Crie também uma nova interface de rede na vm-centos. Isso será útil para evitarmos o uso do túnel reverso utilizamos agora a pouco. Ela também será útil nos laboratórios de JBoss em que formos levantar mais de uma instância;
+Agora vamos "plugar" uma nova interface de rede na vm-centos. Isso será útil para evitarmos o uso do túnel reverso utilizamos agora a pouco. Ela também será útil nos laboratórios de JBoss em que formos levantar mais de uma instância.
+
+Comande:
 [source,bash]
 ----
 $ VBoxManage hostonlyif create
@@ -126,17 +106,22 @@ $ VBoxManage dhcpserver remove --netname HostInterfaceNetworking-vboxnet0
 $ VBoxManage list dhcpservers
 $ VBoxManage modifyvm vm-centos --nic2 hostonly --hostonlyadapter2 vboxnet0
 ----
-Configure teu arquivo +/etc/hosts+ adicionando a +vm-centos+:
+Configure o arquivo +/etc/hosts+ adicionando a +vm-centos+:
 [source,bash]
 ----
 $ f=/etc/hosts; grep vm-centos $f &> /dev/null || \
 echo -e "192.168.0.254\tvm-centos" | sudo tee -a $f
-$ cat $f
+$ grep vm-centos $f
 ----
 Inicie novamente a VM:
 [source,bash]
 ----
 $ VBoxManage startvm vm-centos
+----
+Encerre a gravação da sessão 2:
+[source,bash]
+----
+$ exit
 ----
 Faça o login no console da VM. Configure um IP estático para a interface eth1 e reinicie a rede:
 [source,bash]
@@ -148,15 +133,20 @@ IPADDR=192.168.0.254
 PREFIX=24
 GATEWAY=192.168.0.254
 EOF
-$ sudo service NetworkManager stop
-$ sudo chkconfig NetworkManager off
 $ sudo service network restart
 ----
-Volte para o console da base. Teste um comando remoto (nenhuma senha deverá ser solicitada):
+Volte para o console da +base+ e inicie a sessão 3:
 [source,bash]
 ----
-$ ssh vm-centos cat ~/.pos-install.sh
+$ gravar ~/curso-jboss/laboratorios/centos-pos-install/3
 ----
+Teste um comando remoto (nenhuma senha deverá ser solicitada):
+[source,bash]
+----
+$ ssh vm-centos ip a s
+----
+Percebe a demora no estabelecimento da conexão SSH? Vamos, agora, resolver isso. Execute os passos apresentados em link:../fix-ssh-slow-connection/["Resolvendo o problema da lentidão na conexão com o SSH"].
+
 Desligue novamente a VM _e aguarde até que ela esteja desligada antes de executar o próximo comando_:
 [source,bash]
 ----
@@ -167,17 +157,9 @@ Agora, faça um snapshot da VM para caso precisemos voltar até o ponto em que c
 ----
 $ VBoxManage snapshot vm-centos take centos-pos-install
 ----
-**FIM DESSE LAB**! Parabéns!!! \0/
 
-== Comandos para desfazer a rede (apenas para referência, execute se necessário)
-
-Para remover o servidor dhcp da interface vboxnet0:
+Encerre a sessão 3:
 [source,bash]
 ----
-$ VBoxManage dhcpserver remove --netname HostInterfaceNetworking-vboxnet0
-----
-Para remover a rede vboxnet0:
-[source,bash]
-----
-$ VBoxManage hostonlyif remove vboxnet0
+$ exit
 ----

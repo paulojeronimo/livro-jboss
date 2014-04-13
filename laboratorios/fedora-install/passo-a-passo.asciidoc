@@ -1,0 +1,5 @@
+= Instalando o Fedora numa partição do HD de teu computador
+:author: Paulo Jerônimo
+:email: pj@paulojeronimo.info
+
+Esse capítulo ainda será escrito. Por enquanto, para ter uma idéia de como proceder sua instalação do Fedora, afim de iniciar as atividades desse curso, leia http://j.mp/fedora-mac.

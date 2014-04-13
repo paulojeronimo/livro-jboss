@@ -5,7 +5,7 @@
 Logado como usuário +aluno+, em um shell aberto na máquina +base+ (HOST), execute:
 [source,bash]
 ----
-$ iniciar-script ~/curso-jboss/laboratorios/jboss-install/1
+$ gravar ~/curso-jboss/laboratorios/jboss-install/1
 $ ssh vm-centos
 $ scp base:~/curso-jboss/instaladores/jboss-eap/6.2.0/jboss-eap-6.2.0.zip .
 $ unzip -o jboss-eap-6.2.0.zip > /tmp/unzip.log 

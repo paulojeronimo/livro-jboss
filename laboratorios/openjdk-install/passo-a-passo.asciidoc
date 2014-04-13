@@ -5,7 +5,7 @@
 Como usuário +aluno+ e de um shell aberto na máquina +base+ (HOST), execute:
 [source,bash]
 ----
-$ iniciar-script ~/curso-jboss/laboratorios/openjdk-install
+$ gravar ~/curso-jboss/laboratorios/openjdk-install
 $ VBoxManage startvm vm-centos
 $ ssh vm-centos
 $ sudo yum -y install java-1.7.0-openjdk-devel
@@ -26,5 +26,5 @@ $ java HelloWorld
 $ java HelloWorld $USER
 $ logout
 $ exit
-$ reproduzir-script ~/curso-jboss/laboratorios/openjdk-install
+$ reproduzir ~/curso-jboss/laboratorios/openjdk-install
 ----

@@ -1,0 +1,66 @@
+= Criando o usuário aluno e o diretório do curso
+:author: Paulo Jerônimo
+:email: pj@paulojeronimo.info
+
+== Criando o usuário aluno e logando-se como ele
+O usuário +aluno+ deverá ter poderes administrativos.
+
+Para criá-lo, execute:
+[source,bash]
+----
+$ sudo useradd -m -s /bin/bash -G wheel aluno
+$ echo 'aluno:@lun0123' | sudo chpasswd
+$ su - aluno
+----
+
+*TODAS* as atividades do curso serão realizadas através desse usuário.
+
+== Criando o diretório do curso e instalando o projeto dotfiles
+Execute:
+[source,bash]
+----
+$ mkdir ~/curso-jboss
+$ cd !$
+$ git clone https://github.com/paulojeronimo/dotfiles.git
+$ dotfiles/install
+----
+Faça o logout do usuário aluno (usando o comando a seguir ou um <Ctrl+d>):
+[source,bash]
+----
+$ logout
+----
+
+=== O projeto dotfiles
+TODO
+
+== Possibilitando o usuário aluno acessar teu ambiente gráfico
+*TODAS* as vezes que for fazer o login como o usuário +aluno+ não se esqueça de, antes, liberar acesso ao ambiente gráfico para ele. Fazendo isso você não precisará sair do teu usuário e se logar como +aluno+ no GDM (ou KDM, LXDM, ...) para executar comandos gráficos como o Firefox, por exemplo, que utilizaremos muito.
+
+Então, execute o comando a seguir, com o teu usuário, antes de fazer o login do usuário +aluno+. _Não ocorrerá nenhum erro se esse comando já tiver sido executado anteriormente_.
+[source,bash]
+----
+$ xhost +
+----
+Em seguida, logue-se como aluno utilizando o +sudo+:
+[source,bash]
+----
+$ sudo su - aluno
+----
+[NOTE]
+======
+Observe que seu prompt de comando deve estar um pouco diferente agora ...
+======
+Configure o +DISPLAY+ do usuário +aluno+ em seu +~/.bashrc+ para evitar ter que ficar digitando o +export DISPLAY=:0+ após cada login:
+[source,bash]
+----
+$ export DISPLAY=:0
+$ echo "!!" >> ~/.bashrc
+$ grep DISPLAY ~/.bashrc
+----
+
+== Gerando um par de chaves para o usuário aluno
+Execute:
+[source,bash]
+----
+$ ssh-keygen
+----

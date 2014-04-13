@@ -5,7 +5,7 @@
 Logado como usuário +aluno+, em um shell aberto na máquina +base+ (HOST), execute:
 [source,bash]
 ----
-$ iniciar-script ~/curso-jboss/laboratorios/jboss-install/2
+$ gravar ~/curso-jboss/laboratorios/jboss-install/2
 $ ssh vm-centos
 $ CURSO_DIR=curso-jboss
 $ LAB_HOME=~/$CURSO_DIR/laboratorios/jboss-install/2

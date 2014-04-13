@@ -3,11 +3,13 @@
 :email: pj@paulojeronimo.info
 :numbered:
 
-Este repositório contém os arquivos públicos do livro de JBoss que *estou escrevendo*. Isso significa que as informações apresentadas aqui estão sujeitas a constantes mudanças, até a geração de uma release.
+Este repositório contém os arquivos públicos do livro de JBoss que *estou escrevendo*. Isso significa que as informações apresentadas aqui estão sujeitas a constantes mudanças, até a geração de releases desse livro.
 
 Todo o material que está aqui é livre para uso sem fins comerciais, respeitando-se os direitos de autoria.
 
-Se você estiver interessado em patrocinar ou adquirir esse livro e/ou ingressar num curso a respeito do JBoss EAP em ambiente de produção, leia a página http://j.mp/jboss-em-producao.
+Nesse repositório você encontrará o texto de alguns dos capítulos do livro, além de todos os comandos executados nos laboratórios (labs). Você notará que a apenas os labs iniciais contém explicações detalhadas. A maior parte dessas explicações, porém, assim como a ordem de execução dos labs, não está aqui e só é disponibilizada para aqueles que obtêm o livro.
+
+Se você estiver interessado adquirir esse livro e/ou ingressar num curso online a respeito do JBoss EAP em ambiente de produção, leia a página http://j.mp/jboss-em-producao.
 
 Você pode utilizar o conteúdo desse repositório de duas maneiras:
 
@@ -24,6 +26,8 @@ $ firefox ./README.html &> /dev/null &
 
 Esta é a sequência inicial que você deverá trilhar na execução dos laboratórios:
 
+. link:laboratorios/fedora-install/passo-a-passo.asciidoc[] (link:laboratorios/fedora-install/passo-a-passo.html[HTML])
+. link:laboratorios/useradd-aluno/passo-a-passo.asciidoc[] (link:laboratorios/useradd-aluno/passo-a-passo.html[HTML])
 . link:laboratorios/centos-mirror/passo-a-passo.asciidoc[] (link:laboratorios/centos-mirror/passo-a-passo.html[HTML])
 . link:laboratorios/centos-install/passo-a-passo.asciidoc[] (link:laboratorios/centos-install/passo-a-passo.html[HTML])
 . link:laboratorios/centos-pos-install/passo-a-passo.asciidoc[] (link:laboratorios/centos-pos-install/passo-a-passo.html[HTML])

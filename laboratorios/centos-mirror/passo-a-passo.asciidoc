@@ -2,50 +2,32 @@
 :author: Paulo Jerônimo
 :email: pj@paulojeronimo.info
 
-== Criando o usuário aluno e logando-se como ele
-O usuário +aluno+ deverá ter poderes administrativos.
-
-=== No Fedora, execute:
-[source,bash]
-----
-$ sudo useradd -m -s /bin/bash -G wheel aluno
-$ echo 'aluno:@lun0123' | sudo chpasswd
-$ su - aluno
-----
-
 == Criando seu mirror 
-O último comando dessa seção deverá demorar bastante pois será realizado o download de cerca de 9GB de arquivos.
-
-Crie o diretório do curso:
+Vá para o diretório do curso:
 [source,bash]
 ----
-$ mkdir ~/curso-jboss
-$ cd !$
+$ cd ~/curso-jboss/
 ----
-Se você ainda não tiver o Git instalado, você pode executar o conjunto de comandos a seguir. Entretanto, prefira instalá-lo, agora, pule esses comandos e siga as próximas instruções.
-[source,bash]
-----
-$ curl -L -O https://github.com/paulojeronimo/mirrors/archive/master.zip
-$ unzip master.zip
-$ ln -s mirrors-master mirrors
-$ cd !!:3
-----
-Se você possui o Git e saltou as instruções acima, execute:
+Baixe o projeto mirrors:
 [source,bash]
 ----
 $ git clone https://github.com/paulojeronimo/mirrors.git
 $ cd mirrors
 ----
-A execução do comando a seguir deverá demorar bastante (ele criará seu mirror utilizando o rsync para baixar o CentOS a partir de um mirror já existente).
+Crie seu mirror:
 [source,bash]
 ----
 $ CentOS/6.5/i386/mirror.sh
 ----
+[NOTE]
+======
+A execução desse comando demorará bastante pois, mesmo estando configurado para fazer o download de um mirror brasileiro, o +rsyn+ que será executado baixará mais de 9GB para o seu HD.
+======
 
 == Trabalhando com o mirror num HD externo
 Neste tópico apresento comandos que você poderá executar, de forma semelhante, caso já tenha seu mirror num HD externo.
 
-Alguns comandos são executados com o +sudo+ para que não ocorram problemas de permissão.
+Alguns dos comandos apresentados são executados com o +sudo+ para que não ocorram problemas de permissão.
 
 Supondo que o comando +CentOS/6.5/i386/mirror.sh+ ainda esteja sendo executado, irei interrompê-lo para que o mirror continue a partir do meu HD externo e não mais da Internet. Então, teclo <Ctrl+C> na sua console de execução.
 

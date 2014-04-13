@@ -1,0 +1,40 @@
+= Resolvendo o problema da lentidão na conexão com o SSH
+:author: Paulo Jerônimo
+:email: pj@paulojeronimo.info
+
+Execute os próximos passos como usuário +aluno+ e de um shell aberto na máquina +base+ (HOST).
+
+Problema: conexão muiiiito lenta com um servidor SSH. Para verificar, execute:
+[source,bash]
+----
+$ time ssh vm-centos date
+----
+
+Execute os passos apresentados em cada uma das soluções a seguir. Ao final, antes de passar para a próxima solução, repita o comando do problema e, em seguida, desfaça o que foi realizado nos passos. Na última solução, a escolhida para esse momento, não desfaça os passos.
+
+Solução 1:
+[source,bash]
+----
+$ echo -e "192.168.0.253\t`hostname`" | ssh vm-centos tee /tmp/host
+$ ssh vm-centos
+$ cat /tmp/host | sudo tee -a /etc/hosts &> /dev/null
+$ logout
+----
+
+Solução 2:
+[source,bash]
+----
+$ ssh vm-centos
+$ sudo sed -i 's/^#\(UseDNS\) yes/\1 no/' /etc/ssh/sshd_config
+$ sudo service sshd restart
+$ logout
+----
+
+Solução 3:
+[source,bash]
+----
+$ ssh vm-centos
+$ sudo sed -i 's/\(Defaults.*requiretty\)/#\1/' /etc/sudoers
+$ logout
+$ echo -e "192.168.0.253\t`hostname`" | ssh -t vm-centos sudo tee /tmp/host
+----
