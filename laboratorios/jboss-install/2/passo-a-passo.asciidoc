@@ -10,22 +10,22 @@ $ ssh vm-centos
 $ CURSO_DIR=curso-jboss
 $ LAB_HOME=~/$CURSO_DIR/laboratorios/jboss-install/2
 $ INSTALADORES_DIR=instaladores
+$ JBOSS_VER=6.2.0
 $ cd ~/$CURSO_DIR
-$ mkdir $INSTALADORES_DIR && mv $HOME/jboss-eap-6.2.0.zip $INSTALADORES_DIR
+$ mkdir -p $INSTALADORES_DIR/jboss-eap/$JBOSS_VER
+$ mv $HOME/jboss-eap-6.2.0.zip !$
 $ mkdir -p $LAB_HOME && cat > $LAB_HOME/ambiente <<EOF
 #!/bin/bash
 export CURSO_HOME=~/$CURSO_DIR
 export PATH=\$CURSO_HOME/scripts:\$PATH
-
-export LAB_HOME=$LAB_HOME
 
 export FERRAMENTAS_HOME=\$CURSO_HOME/ferramentas
 export INSTALADORES_HOME=\$CURSO_HOME/$INSTALADORES_DIR
 
 export JAVA_HOME=/usr/lib/jvm/java
 
-JBOSS_VER=eap-6.2.0
-JBOSS_INSTALADOR=\$INSTALADORES_HOME/jboss-\$JBOSS_VER.zip
+JBOSS_VER=$JBOSS_VER
+JBOSS_INSTALADOR=\$INSTALADORES_HOME/jboss-eap/\$JBOSS_VER/jboss-eap-\$JBOSS_VER.zip
 JBOSS_DIR=jboss-eap-6.2
 JBOSS_LINK=jboss
 export JBOSS_HOME=\$CURSO_HOME/ferramentas/jboss

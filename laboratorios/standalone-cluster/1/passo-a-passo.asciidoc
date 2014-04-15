@@ -1,0 +1,45 @@
+= Montando um cluster de n instâncias standalone
+:author: Paulo Jerônimo
+:email: pj@paulojeronimo.info
+
+[source,bash]
+----
+$ export n=2; ofs=100
+----
+'''
+[source,bash]
+----
+$ pushd $JBOSS_HOME
+$ for i in `seq $n`; do (cp -a standalone/ node$i &); done
+$ popd
+$ for i in `seq $n`; do (tail -F /tmp/node$i.log \
+2> /dev/null &); done
+$ for i in `seq $n`; do (standalone.sh \
+-Djboss.server.base.dir=$JBOSS_HOME/node$i \
+-c standalone-ha.xml -Djboss.node.name=node$i \
+-Djboss.socket.binding.port-offset=$(((i-1)*ofs)) \
+&> /tmp/node$i.log &); done
+$ pushd ../ClusterWebApp
+$ jar cvf ../ClusterWebApp.war .
+$ popd
+$ for i in `seq $n`; do (cp ../ClusterWebApp.war \
+$JBOSS_HOME/node$i/deployments/ &); done
+$ for i in `seq $n`; do (firefox -new-tab \
+http://localhost:$((8080+(i-1)*ofs))/ClusterWebApp \
+&> /dev/null &); sleep 1; done
+$ for i in `seq $n`; do (jboss-cli.sh -c \
+--controller=localhost:$((9999+(i-1)*ofs)) \
+--command=:shutdown &); done
+----
+'''
+[source,bash]
+----
+cat <<'EOF' | bash
+for i in `seq $n`
+do
+   rm -rf $JBOSS_HOME/node$i /tmp/node$i.log
+done
+rm -rf ../ClusterWebApp.war
+pkill tail
+EOF
+----

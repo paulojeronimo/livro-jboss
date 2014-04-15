@@ -1,0 +1,30 @@
+= Alteração do contexto ROOT
+:author: Paulo Jerônimo
+:email: pj@paulojeronimo.info
+
+[source,bash]
+----
+$ gravar ~/curso-jboss/laboratorios/standalone-root-context
+$ firefox http://vm-centos:8080/ &> /dev/null &
+$ ssh vm-centos
+$ grep '<virtual-server.*default-host' $JBOSS_HOME/standalone/configuration/standalone.xml
+$ nohup standalone.sh -b vm-centos 2>&1 | \
+tee /tmp/standalone.log &
+# recarregue a página do browser
+$ mkdir -p ~curso-jboss/laboratorios/standalone-root-context
+$ cd !$
+$ cat > cli.cmds <<EOF
+batch
+/subsystem=web/virtual-server=default-host:write-attribute(name=enable-welcome-root,value=false)
+/subsystem=web/virtual-server=default-host:write-attribute(name=default-web-module,value=exemplo)
+:shutdown(restart=true)
+run-batch
+EOF
+$ jboss-cli.sh -c --file=cli.cmds
+$ !?grep
+# observe o log do JBoss
+# recarregue a página do browser 
+$ jboss-cli.sh -c :shutdown
+$ logout
+$ exit
+----

@@ -1,0 +1,110 @@
+= Deploy manual de aplicações
+:author: Paulo Jerônimo
+:email: pj@paulojeronimo.info
+
+[source,bash]
+----
+$ gravar ~/curso-jboss/laboratorios/standalone-root-context
+$ firefox http://vm-centos:8080/exemplo &> /dev/null &
+$ ssh vm-centos
+$ nohup standalone.sh -b vm-centos 2>&1 | \
+tee /tmp/standalone.log &
+$ mkdir -p ~/curso-jboss/laboratorios/standalone-deploy
+$ cd !$
+$ d=exemplo
+$ mkdir -p $d && cd $d
+$ cat > index.jsp <<'EOF'
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" \
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Olá!</title>
+</head>
+<body>
+<h1>Bem vindo!</h1>
+<p>Esta é a aplicação implantada no servidor pelo arquivo exemplo.war</p>
+</body>
+</html>
+EOF
+$ mkdir -p WEB-INF
+$ jar cvf ../exemplo.war .
+$ cd ..
+$ cp exemplo.war $JBOSS_HOME/standalone/deployments
+# - obervar a saída do log do servidor
+# - dar um reload no browser
+
+$ rm $JBOSS_HOME/standalone/deployments/exemplo.war
+# - obervar a saída do log do servidor
+# - dar um reload no browser
+
+$ ls -l $JBOSS_HOME/standalone/deployments/
+$ cat !$exemplo.war.undeployed
+
+$ cp exemplo.war /tmp
+$ d=$JBOSS_HOME/standalone/deployments
+$ unzip -d $d/exemplo.war /tmp/exemplo.war
+# - obervar a saída do log do servidor
+
+$ pushd $d
+$ ls -l
+# - observe a existência do arquivo exemplo.war.undeployed
+# - observe que o diretório exemplo.war não foi implantado
+
+$ touch exemplo.war.dodeploy
+# - aguarde as mensagens do servidor
+
+$ ls -l
+# - observe que o arquivo .dodeploy deixará de existir
+# - observe a existência do arquivo exemplo.war.deployed
+
+$ rm exemplo.war.deployed
+# - a aplicação deverá ser desimplantada
+# - aguarde as mensagens do servidor
+
+$ ls -l
+# - observe a existência do arquivo exemplo.war.undeployed
+# - observe as mensagens do servidor
+
+$ rm exemplo.war.undeployed
+# - o servidor não fará nada!
+# - note que a remoção desse arquivo não causará a reimplantação
+
+$ touch exemplo.war.dodeploy
+# - aguarde as mensagens do servidor
+
+$ ls -l
+# - observe a existência do arquivo exemplo.war.deployed
+
+$ pushd exemplo.war
+$ mv  index.jsp index.jsp.original
+$ sed 's,\(servidor\),\1 <b>(<%=request.getServerName()%>:<%=request.getServerPort()%>)</b>,g' \
+index.jsp.original > index.jsp 
+$ popd
+# - atualizar o browser na URL da aplicação
+# - perceba que nenhuma mudança foi realizada (ainda não houve reimplantação)
+
+$ touch exemplo.war.deployed
+# - aguarde as mensagens do servidor
+# - perceba que as mudanças foram realizadas
+
+$ rm -rf exemplo.war
+# - aguarde as mensagens do servidor
+# - perceba que o servidor deimplantou a aplicação
+
+$ touch exemplo.war.skipdeploy
+$ mv /tmp/exemplo.war .
+# - perceba que o arquivo não será implantado!
+
+$ rm exemplo.war.skipdeploy
+# - perceba que nada ocorrerá!
+
+$ rm exemplo.war.undeployed
+# - o servidor irá reimplantar a aplicação!
+
+$ popd
+$ jboss-cli.sh -c :shutdown
+$ logout
+$ exit
+----

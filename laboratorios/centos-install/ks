@@ -116,18 +116,21 @@ name=CentOS-$releasever - Base
 baseurl=http://base/~aluno/centos/os/$basearch/
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+proxy=_none_
 
 [updates]
 name=CentOS-$releasever - Updates
 baseurl=http://base/~aluno/centos/updates/$basearch/
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+proxy=_none_
 
 [extras]
 name=CentOS-$releasever - Extras
 baseurl=http://base/~aluno/centos/extras/$basearch/
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+proxy=_none_
 EOF
 
 # Modifica o /etc/yum.conf para que o cache de pacotes seja mantido

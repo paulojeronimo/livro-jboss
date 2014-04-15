@@ -14,6 +14,7 @@ Essa configuração, contudo, não sobreviverá a um reboot! Se quiser mantê-la
 [source,bash]
 ----
 $ sudo sed -i 's/\(KEYTABLE=\).*/\1"br-abnt2"/g' /etc/sysconfig/keyboard
+$ cat !$
 ----
 Instale o VirtualBox Guest Additions:
 [source,bash]
@@ -22,27 +23,34 @@ $ sudo yum -y install gcc kernel-devel-`uname -r`
 $ sudo mount /dev/sr1 /mnt
 $ sudo /mnt/VBoxLinuxAdditions.run
 ----
-Crie o diretório do curso e vá para ele:
+Se você estiver configurando essa VM num ambiente em que a Internet é acessada através de um proxy, execute:
 [source,bash]
 ----
-$ mkdir ~/curso-jboss
-$ cd !$
+$ d=curso-jboss/dotfiles/Scripts; f=configurar-proxy
+$ scp base:~/$d/$f .; vim $f
+$ ./$f
+$ logout
+# refaça seu login ...
 ----
 Instale o Git:
 [source,bash]
 ----
 $ sudo yum -y install git
 ----
+Baixe o projeto livro-jboss no diretório +~/curso-jboss+ e mude para ele:
+[source,bash]
+----
+$ git clone https://github.com/paulojeronimo/livro-jboss.git curso-jboss
+$ cd !$
+----
 Baixe e instale o projeto dotfiles:
 [source,bash]
 ----
 $ git clone https://github.com/paulojeronimo/dotfiles.git
 $ dotfiles/install
-----
-Refaça o login, após o logout a seguir:
-[source,bash]
-----
+$ rm ~/.gitconfig
 $ logout
+# refaça se login ...
 ----
 Inicie a gravação da sessão 1:
 [source,bash]
@@ -87,7 +95,7 @@ Observe a estrutura de diretórios já montada para +~/curso-jboss+:
 [source,bash]
 ----
 $ sudo yum -y install tree
-$ tree ~/curso-jboss
+$ tree ~/curso-jboss | less
 ----
 Desligue a vm-centos e aguarde seu shutdown:
 [source,bash]

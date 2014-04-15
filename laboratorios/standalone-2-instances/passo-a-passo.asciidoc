@@ -1,0 +1,37 @@
+= Iniciando duas instâncias standalone, na mesma máquina
+:author: Paulo Jerônimo
+:email: pj@paulojeronimo.info
+
+[source,bash]
+----
+$ cd $JBOSS_HOME
+$ cp -r standalone standalone2
+$ rm -rf standalone2/{data,log,tmp}
+$ standalone.sh 2>&1 | tee /tmp/standalone.log &
+$ standalone.sh -Djboss.server.base.dir=$JBOSS_HOME/standalone2 \
+-Djboss.socket.binding.port-offset=100 2>&1 | tee /tmp/standalone2.log &
+$ jboss-cli.sh -c :shutdown
+$ jboss-cli.sh --controller=localhost:10099 -c :shutdown
+$ #ifconfig eth0
+$ ip addr show eth0
+$ #sudo ifconfig eth0:0 10.0.2.16
+$ sudo ip addr add 10.0.2.16/24 dev eth0 label eth0:0
+$ #ifconfig eth0
+$ !?show
+$ echo -e "10.0.2.15\tinstance\n10.0.2.16\tinstance2" | sudo tee -a /etc/hosts
+$ tail -F /tmp/standalone.*.log &
+$ INSTANCE=instance; standalone.sh -b $INSTANCE \
+-bmanagement=$INSTANCE &> /tmp/standalone.$INSTANCE.log &
+$ INSTANCE=instance2; standalone.sh -bjboss.server.base.dir=standalone2 -b $INSTANCE \
+-bmanagement=$INSTANCE &> /tmp/standalone.$INSTANCE.log &
+$ for i in '' 2; do jboss-cli.sh --controller=instance$i -c :shutdown; done
+----
+'''
+[source,bash]
+----
+cat << 'EOF' | bash
+sudo ip addr del 10.0.2.16/24 dev eth0
+rm -rf $JBOSS_HOME/standalone2
+sudo sed -i '/instance/d' /etc/hosts
+EOF
+----

@@ -11,8 +11,7 @@ $ ssh vm-centos
 $ sudo yum -y install java-1.7.0-openjdk-devel
 $ java -version
 $ javac -version
-$ mkdir -p ~/curso-jboss/laboratorios/openjdk-install
-$ cd !$
+$ cd ~/curso-jboss/laboratorios/openjdk-install
 $ cat > HelloWorld.java <<EOF
 public class HelloWorld {
    public static void main(String args[]) {

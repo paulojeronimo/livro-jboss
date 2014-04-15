@@ -19,7 +19,7 @@ $ su - aluno
 Execute:
 [source,bash]
 ----
-$ mkdir ~/curso-jboss
+$ git clone https://github.com/paulojeronimo/livro-jboss.git curso-jboss
 $ cd !$
 $ git clone https://github.com/paulojeronimo/dotfiles.git
 $ dotfiles/install
