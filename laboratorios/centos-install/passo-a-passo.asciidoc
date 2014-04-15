@@ -20,11 +20,9 @@ Em seguida:
 $ sudo chmod 755 $HOME
 $ ls -ld $HOME
 $ mkdir -p ~/public_html
-$ cd !$
-$ l=centos; rm -f $l && \
-ln -sf ~/curso-jboss/mirrors/CentOS/6.5/i386/mirror $l
-$ l=ks; rm -f  $l && \
-ln -s ~/curso-jboss/laboratorios/centos-install/$l
+$ ln -s ../curso-jboss
+$ ln -s curso-jboss/mirrors/CentOS/6.5/i386/mirror centos
+$ ln -s curso-jboss/laboratorios/centos-install/ks
 $ firefox http://localhost/~aluno/ &> /dev/null &
 ----
 Observe que o SELinux poderá bloquear o acesso do servidor HTTP aos diretórios necessários. Nesse caso, serão notificados avisos de alerta. A forma mais simples de resolver esse problema é desabilitar, temporariamente o SELinux. Então, se necessário, faça isso:
