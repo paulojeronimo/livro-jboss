@@ -30,7 +30,7 @@ $ sudo /mnt/VBoxLinuxAdditions.run
 Se você estiver configurando essa VM num ambiente em que a Internet é acessada através de um proxy, execute:
 [source,bash]
 ----
-$ d=curso-jboss/dotfiles/Scripts; f=configurar-proxy
+$ d=curso-jboss/dotfiles/.scripts; f=configurar-proxy
 $ scp base:~/$d/$f .; vim $f
 $ ./$f
 $ logout
