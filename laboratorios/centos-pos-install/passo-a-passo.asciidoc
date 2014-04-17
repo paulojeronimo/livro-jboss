@@ -122,7 +122,7 @@ $ VBoxManage modifyvm vm-centos --nic2 hostonly --hostonlyadapter2 vboxnet0
 Configure o arquivo +/etc/hosts+ adicionando a +vm-centos+:
 [source,bash]
 ----
-$ f=/etc/hosts; $ sudo sed -i '/vm-centos/d' $f
+$ f=/etc/hosts; sudo sed -i '/vm-centos/d' $f
 $ echo -e "192.168.0.254\tvm-centos" | sudo tee -a $f
 $ grep vm-centos $f
 ----
