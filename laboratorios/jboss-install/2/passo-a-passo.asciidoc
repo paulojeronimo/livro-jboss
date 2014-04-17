@@ -7,38 +7,33 @@ Logado como usuário +aluno+, em um shell aberto na máquina +base+ (HOST), exec
 ----
 $ gravar ~/curso-jboss/laboratorios/jboss-install/2
 $ ssh vm-centos
-$ CURSO_DIR=curso-jboss
-$ LAB_HOME=~/$CURSO_DIR/laboratorios/jboss-install/2
-$ INSTALADORES_DIR=instaladores
-$ JBOSS_VER=6.2.0
-$ cd ~/$CURSO_DIR
-$ mkdir -p $INSTALADORES_DIR/jboss-eap/$JBOSS_VER
-$ mv $HOME/jboss-eap-6.2.0.zip !$
-$ mkdir -p $LAB_HOME && cat > $LAB_HOME/ambiente <<EOF
+$ cd ~/curso-jboss
+$ mkdir -p instaladores/jboss-eap/6.2.0
+$ mv ~/jboss-eap-6.2.0.zip !$
+$ cat > ~/curso-jboss/laboratorios/jboss-install/2/ambiente <<EOF
 #!/bin/bash
-export CURSO_HOME=~/$CURSO_DIR
-export PATH=\$CURSO_HOME/scripts:\$PATH
+export PATH=~/curso-jboss/scripts:\$PATH
 
-export FERRAMENTAS_HOME=\$CURSO_HOME/ferramentas
-export INSTALADORES_HOME=\$CURSO_HOME/$INSTALADORES_DIR
+export FERRAMENTAS_HOME=~/curso-jboss/ferramentas
+export INSTALADORES_HOME=~/curso-jboss/instaladores
 
 export JAVA_HOME=/usr/lib/jvm/java
 
-JBOSS_VER=$JBOSS_VER
+JBOSS_VER=6.2.0
 JBOSS_INSTALADOR=\$INSTALADORES_HOME/jboss-eap/\$JBOSS_VER/jboss-eap-\$JBOSS_VER.zip
 JBOSS_DIR=jboss-eap-6.2
 JBOSS_LINK=jboss
-export JBOSS_HOME=\$CURSO_HOME/ferramentas/jboss
+export JBOSS_HOME=~/curso-jboss/ferramentas/jboss
 export PATH=\$JBOSS_HOME/bin:\$PATH
 
 instalar_jboss() {
    remover_jboss
    mkdir -p \$FERRAMENTAS_HOME
-   unzip -o \$JBOSS_INSTALADOR -d \$FERRAMENTAS_HOME/
-   pushd \$FERRAMENTAS_HOME
+   unzip -o \$JBOSS_INSTALADOR -d \$FERRAMENTAS_HOME/ &> /tmp/jboss.unzip.log
+   pushd \$FERRAMENTAS_HOME > /dev/null
    ln -s \$JBOSS_DIR \$JBOSS_LINK
    sed -i 's/1303/512/g' \$JBOSS_LINK/bin/standalone.conf
-   popd
+   popd > /dev/null
 }
 
 remover_jboss() {
@@ -47,17 +42,29 @@ remover_jboss() {
 EOF
 $ tree laboratorios
 $ type setenv
-$ setenv $LAB_HOME/ambiente
+$ setenv ~/curso-jboss/laboratorios/jboss-install/2/ambiente
 $ logout
-
 $ ssh vm-centos
 $ type instalar_jboss
 $ instalar_jboss
 $ cd $JBOSS_HOME
 $ ls -la
-$ cd $CURSO_HOME
+$ cd ..; !!
 $ type remover_jboss
 $ remover_jboss
+$ !-4
 $ logout
 $ exit
+----
+'''
+[source,bash]
+----
+cat <<'EOF' | bash
+cd
+wget http://base/~aluno/\
+curso-jboss/instaladores/jboss-eap/6.2.0/jboss-eap-6.2.0.zip
+rm -rf \
+~/curso-jboss/instaladores \
+~/curso-jboss/laboratorios/jboss-install/2/ambiente
+EOF
 ----
