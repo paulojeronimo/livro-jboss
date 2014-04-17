@@ -7,14 +7,30 @@ Logado como usuário +aluno+, em um shell aberto na máquina +base+ (HOST), exec
 ----
 $ gravar ~/curso-jboss/laboratorios/jboss-install/1
 $ ssh vm-centos
-$ scp base:~/curso-jboss/instaladores/jboss-eap/6.2.0/jboss-eap-6.2.0.zip .
+$ f=jboss-eap-6.2.0.zip
+$ wget http://base/~aluno/curso-jboss/instaladores/jboss-eap/6.2.0/$f
+$ # comando alternativo para download, 1:
+$ # curl http://base/~aluno/curso-jboss/instaladores/jboss-eap/6.2.0/$f -O
+$ # comando alternativo para download, 2:
+$ # ssh base cat ~/curso-jboss/instaladores/jboss-eap/6.2.0/$f > $f
+$ # comando alternativo para download, 3: por que esse não está funcionando?
+$ # scp base:~/curso-jboss/instaladores/jboss-eap/6.2.0/$f .
+$ du -hsc $f
 $ unzip -o jboss-eap-6.2.0.zip > /tmp/unzip.log 
 $ ln -s jboss-eap-6.2 jboss
 $ export JAVA_HOME=/usr/lib/jvm/java
 $ export JBOSS_HOME=~/jboss
 $ export PATH=$JBOSS_HOME/bin:$PATH
-$ echo $PATH | tr ':' '\n'
+$ showpath
+$ type showpath
 $ standalone.sh
+# viu o WARN que gerou o atraso no startup do JBoss? Resolvamos ...
+# <Ctrl+C>
+$ grep vm-centos /etc/hosts
+$ [ $? = 0 ] || sudo sed -i 's/\(127.0.0.1.*\)/\1 vm-centos/' !$
+$ cat !-2:2
+$ standalone.sh
+# startup rápido e sem avisos! é assim q tem q c! ;)
 # <Ctrl+Z>
 $ bg
 $ free -m
@@ -23,50 +39,27 @@ $ cat /proc/meminfo | grep -i total
 $ fg
 # <Ctrl+C>
 $ sed -i 's/1303/512/g' jboss/bin/standalone.conf
-$ grep --color '\-Xm' jboss/bin/standalone.conf
-   JAVA_OPTS="-Xms512m -Xmx512m -XX:MaxPermSize=256m -Djava.net.preferIPv4Stack=true"
+$ grep --color '\-Xm' !$
 $ c=standalone.sh; nohup $c 2>&1 | tee /tmp/$c.log &
 $ jps -Vvlm
-2633 sun.tools.jps.Jps -Vvlm -Dapplication.home=/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.51 -Xms8m
-2549 /home/aluno/jboss/jboss-modules.jar -mp /home/aluno/jboss/modules -jaxpmodule javax.xml.jaxp-provider 
-org.jboss.as.standalone -Djboss.home.dir=/home/aluno/jboss -Djboss.server.base.dir=/home/aluno/jboss/standalone 
--D[Standalone] -Xms512m -Xmx512m -XX:MaxPermSize=256m -Djava.net.preferIPv4Stack=true 
--Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true 
--Dorg.jboss.boot.log.file=/home/aluno/jboss/standalone/log/server.log 
--Dlogging.configuration=file:/home/aluno/jboss/standalone/configuration/logging.properties
-$ ls -ld /proc/2549/
-dr-xr-xr-x. 8 aluno aluno 0 Apr 11 10:54 /proc/2549/
-$ cat /proc/2549/cmdline 
-/usr/lib/jvm/java/bin/java-D[Standalone]-server-Xms512m-Xmx512m-XX:MaxPermSize=256m-Djava.net.preferIPv4Stack=true
--Djboss.modules.system.pkgs=org.jboss.byteman-Djava.awt.headless=true
--Dorg.jboss.boot.log.file=/home/aluno/jboss/standalone/log/server.log
--Dlogging.configuration=file:/home/aluno/jboss/standalone/configuration/logging.properties-
-jar/home/aluno/jboss/jboss-modules.jar-mp/home/aluno/jboss/modules-jaxpmodulejavax.xml.jaxp-providerorg.jboss.as.standalone
--Djboss.home.dir=/home/aluno/jboss-Djboss.server.base.dir=/home/aluno/jboss/standalone
-$ lsof -n -P -p 2549 | grep LISTEN
-java    2549 aluno  262u  IPv4      19230      0t0    TCP 127.0.0.1:8080 (LISTEN)
-java    2549 aluno  275u  IPv4      19233      0t0    TCP 127.0.0.1:9990 (LISTEN)
-java    2549 aluno  279u  IPv4      19236      0t0    TCP 127.0.0.1:4447 (LISTEN)
-java    2549 aluno  281u  IPv4      19235      0t0    TCP 127.0.0.1:9999 (LISTEN)
-$ netstat -tulpn | grep 2549
-(Not all processes could be identified, non-owned process info
- will not be shown, you would have to be root to see it all.)
-tcp        0      0 127.0.0.1:4447              0.0.0.0:*                   LISTEN      2549/java           
-tcp        0      0 127.0.0.1:9990              0.0.0.0:*                   LISTEN      2549/java           
-tcp        0      0 127.0.0.1:9999              0.0.0.0:*                   LISTEN      2549/java           
-tcp        0      0 127.0.0.1:8080              0.0.0.0:*                   LISTEN      2549/java           
-$ pgrep java
-$ kill 2549 # pkill java
-10:59:18,254 INFO  [org.apache.coyote.http11] (MSC service thread 1-2) JBWEB003075: Coyote HTTP/1.1 pausing on: http-/127.0.0.1:8080
-10:59:18,255 INFO  [org.apache.coyote.http11] (MSC service thread 1-2) JBWEB003077: Coyote HTTP/1.1 stopping on : http-/127.0.0.1:8080
-10:59:18,266 INFO  [org.jboss.as.connector.subsystems.datasources] (MSC service thread 1-2) JBAS010409: Unbound data source [java:jboss/datasources/ExampleDS]
-10:59:18,279 INFO  [org.apache.catalina.core] (MSC service thread 1-1) JBWEB001079: Container org.apache.catalina.core.ContainerBase.[jboss.web].[default-host].[/] has not been started
-10:59:18,316 INFO  [org.jboss.as] (MSC service thread 1-2) JBAS015950: JBoss EAP 6.2.0.GA (AS 7.3.0.Final-redhat-14) stopped in 81ms
-
-[1]+  Done                    nohup $c 2>&1 | tee /tmp/$c.log
-
+$ JBOSS_PID=`!! | grep Standalone | cut -d " " -f 1`
+$ echo $JBOSS_PID
+$ ls -ld /proc/$JBOSS_PID
+$ cat /proc/$JBOSS_PID/cmdline 
+$ lsof -n -P -p $JBOSS_PID | grep LISTEN
+$ netstat -tulpn | grep $JBOSS_PID
+$ [ `pgrep java` = $JBOSS_PID ] && \
+echo "O JBoss de PID $JBOSS_PID é o único processo java em execução\!"
+$ kill $JBOSS_PID # pkill java
 $ less -R /tmp/$c.log
-$ rm -rf jboss jboss-eap-6.2
 $ logout
 $ exit
+----
+'''
+[source,bash]
+----
+cat <<'EOF' | bash
+sudo sed -i 's/\(127.0.0.1.*\) vm-centos/\1/' /etc/hosts
+cd; rm -rf jboss*
+EOF
 ----
