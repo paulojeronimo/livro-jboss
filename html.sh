@@ -1,6 +1,6 @@
 #!/bin/bash
 # Author: Paulo Jerônimo (@paulojeronimo, pj@paulojeronimo.info)
-
+basedir=`d=$(dirname "$0"); cd "$d"; echo -n $PWD`
 op=${1:-build}
 
 __asciidoc() {
@@ -23,4 +23,5 @@ _delete() {
    find . -type f -name "*.html" -delete
 }
 
+cd "$basedir"
 _$op
