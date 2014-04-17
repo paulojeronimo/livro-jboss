@@ -34,6 +34,9 @@ Eliminando os túneis SSH ...
 ----
 $ ssh vm-centos
 $ standalone.sh --help | grep '\-b'
+$ sudo sed -i 's/\(127.0.0.1.*\) vm-centos/\1/' /etc/hosts
+$ ip a s eth1
+$ echo -e "192.168.0.254\tvm-centos" | sudo tee -a /etc/hosts
 $ nohup standalone.sh \
 -b 192.168.0.254 -bmanagement=192.168.0.254 \
 &> /tmp/jboss.log &
@@ -55,8 +58,8 @@ do
 done
 $ sudo service iptables save
 $ sudo cat /etc/sysconfig/iptables
-$ kill $JBOSS_PID
-$ !?nohup standalone
+$ #kill $JBOSS_PID
+$ #!?nohup standalone
 $ pkill tail
 $ logout
 $ firefox http://vm-centos:9990
@@ -74,12 +77,17 @@ sudo iptables -I INPUT -m state --state NEW -m tcp -p tcp --dport 9999 -j ACCEPT
 sudo service iptables save; \
 sudo service iptables restart; }
 $ jboss-cli.sh --controller=192.168.0.254 -c :shutdown
-$ grep vm-centos /etc/hosts || \
-echo -e "192.168.0.254\tvm-centos" | sudo tee -a /etc/hosts 
-$ jboss-cli.sh --controller=192.168.0.254 -c :shutdown
 $ pkill tail
 $ logout
 $ nmap -Pn 192.168.0.254
 $ exit
 ----
 Ideal em termos de segurança: deixar as portas administrativas escutando apenas em +localhost+ e acessá-las através de um túnel SSH.
+
+'''
+[source,bash]
+----
+cat <<'EOF' | bash
+#TODO
+EOF
+----
