@@ -7,14 +7,14 @@ Logado como usuário +aluno+, em um shell aberto na máquina +base+ (HOST), exec
 ----
 $ gravar ~/curso-jboss/laboratorios/jboss-install/1
 $ ssh vm-centos
-$ f=jboss-eap-6.2.0.zip
-$ wget http://base/~aluno/curso-jboss/instaladores/jboss-eap/6.2.0/$f
+$ d=curso-jboss/instaladores/jboss-eap/6.2.0; f=jboss-eap-6.2.0.zip
+$ wget http://base/~aluno/$d/$f
 $ # comando alternativo para download, 1:
-$ # curl http://base/~aluno/curso-jboss/instaladores/jboss-eap/6.2.0/$f -O
+$ # curl http://base/~aluno/$d/$f -O
 $ # comando alternativo para download, 2:
-$ # ssh base cat ~/curso-jboss/instaladores/jboss-eap/6.2.0/$f > $f
-$ # comando alternativo para download, 3: por que esse não está funcionando?
-$ # scp base:~/curso-jboss/instaladores/jboss-eap/6.2.0/$f .
+$ # ssh base cat ~/$d/$f > $f
+$ # comando alternativo para download, 3:
+$ # scp base:~/$d/$f .
 $ du -hsc $f
 $ unzip -o jboss-eap-6.2.0.zip > /tmp/unzip.log 
 $ ln -s jboss-eap-6.2 jboss
