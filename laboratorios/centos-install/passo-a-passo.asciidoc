@@ -5,6 +5,7 @@
 == Instalando e/ou configurando o Apache
 Após essa instalação e/ou configuração do Apache, as seguintes URLs deverão estar acessíveis:
 
+* http://localhost/~aluno/curso-jboss
 * http://localhost/~aluno/centos
 * http://localhost/~aluno/ks
 
@@ -20,6 +21,7 @@ Em seguida:
 $ sudo chmod 755 $HOME
 $ ls -ld $HOME
 $ mkdir -p ~/public_html
+$ cd !$
 $ ln -s ../curso-jboss
 $ ln -s curso-jboss/mirrors/CentOS/6.5/i386/mirror centos
 $ ln -s curso-jboss/laboratorios/centos-install/ks
@@ -40,7 +42,8 @@ Baixe e instale a versão mais atual disponível para download. _Como exemplo, s
 A seguir, execute o script vm-centos.sh:
 [source,bash]
 ----
-$ ~/curso-jboss/laboratorios/centos-install/vm-centos.sh
+$ cd ~/curso-jboss
+$ ./laboratorios/centos-install/vm-centos.sh
 ----
 .Nota para o instrutor:
 [NOTE]
@@ -49,8 +52,9 @@ Em sua máquina não há espaço em disco na partição +/+ para acomodar o cres
 [source,bash]
 ----
 $ d=/data/aluno/VirtualBox\ VMs
-$ sudo bash -c "mkdir -p \"$d\" && chown -R aluno: `dirname \"$d\"`"
-$ mv vm-centos "$d" && ln -s "$d"/vm-centos
+$ sudo bash -c "rm -rf \"$d\"/vm-centos; \
+mkdir -p \"$d\" && chown -R aluno: `dirname \"$d\";`
+$ mv vm-centos "$d" && ln -s !$
 ----
 ======
 
