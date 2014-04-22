@@ -29,7 +29,7 @@ $ jboss-cli.sh -c :shutdown
 $ pkill tail
 $ logout
 ----
-Eliminando os túneis SSH ...
+Eliminando os túneis SSH
 [source,bash]
 ----
 $ ssh vm-centos
@@ -64,7 +64,7 @@ $ pkill tail
 $ logout
 $ firefox http://vm-centos:9990
 ----
-Abrindo as portas para o gerenciamento via linha de comando ...
+Abrindo o firewall para as portas de gerenciamento
 [source,bash]
 ----
 $ ssh vm-centos

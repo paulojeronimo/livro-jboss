@@ -5,15 +5,13 @@
 
 Este repositório contém os arquivos públicos do livro de JBoss que *estou escrevendo*. Isso significa que as informações apresentadas aqui estão sujeitas a constantes mudanças, até a geração de releases desse livro.
 
-Todo o material que está aqui é livre para uso sem fins comerciais, respeitando-se os direitos de autoria.
+Esse livro também é a base para um link:curso.asciidoc[curso que ministro, a distância, sobre o JBoss EAP em ambientes de produção] (link:curso.html[HTML]). Se você deseja mais detalhes a respeito de como adquirir o livro e/ou ingressar no curso, clique nos links apresentados nesse parágrafo.
 
-Nesse repositório você encontrará o texto de alguns dos capítulos do livro, além de todos os comandos executados nos laboratórios (labs). Você notará que a apenas os labs iniciais contém explicações detalhadas. A maior parte dessas explicações, porém, assim como a ordem de execução dos labs, não está aqui e só é disponibilizada para aqueles que obtêm o livro.
-
-Se você estiver interessado adquirir esse livro e/ou ingressar num curso online a respeito do JBoss EAP em ambiente de produção, leia a página http://j.mp/jboss-em-producao.
+Todo o material que está publicado nesse repositório é livre para uso sem fins comerciais, respeitando-se os direitos de autoria. Nele você encontrará o texto de alguns dos capítulos do meu livro, além de alguns slides que criei para apresentar tópicos do curso e de todos os comandos executados nos laboratórios (labs). Sobre esses labs, entretanto, você notará que apenas os iniciais contém explicações detalhadas. A maioria das explicações, porém, assim como a ordem de execução dos labs, não está aqui e só é disponibilizada para aqueles que obtêm o livro.
 
 Você pode utilizar o conteúdo desse repositório de duas maneiras:
 
-. Pela Internet, visualizando o conteúdo através do http://github.com/paulojeronimo/livro-jboss[repositório no GitHub]. _Nesse caso, os links para os arquivos HTML (disponibilizados abaixo) não estarão disponíveis_;
+. Pela Internet, visualizando o conteúdo através do http://github.com/paulojeronimo/livro-jboss[repositório no GitHub]. Nesse caso, os links "_(HTML)_" não estão disponíveis;
 . Em seu computador, baixando esse repositório e gerando os arquivos HTML através do http://www.methods.co.nz/asciidoc/[AsciiDoc], ou do http://asciidoctor.org[Asciidoctor]. Para gerar através do AsciiDoc, execute (_passos no Fedora_):
 [source,bash]
 ----
@@ -24,15 +22,4 @@ $ ./html.sh
 $ firefox ./README.html &> /dev/null &
 ----
 
-Esta é a sequência inicial que você deverá trilhar na execução dos laboratórios:
-
-. link:laboratorios/fedora-install/passo-a-passo.asciidoc[] (link:laboratorios/fedora-install/passo-a-passo.html[HTML])
-. link:laboratorios/useradd-aluno/passo-a-passo.asciidoc[] (link:laboratorios/useradd-aluno/passo-a-passo.html[HTML])
-. link:laboratorios/centos-mirror/passo-a-passo.asciidoc[] (link:laboratorios/centos-mirror/passo-a-passo.html[HTML])
-. link:laboratorios/centos-install/passo-a-passo.asciidoc[] (link:laboratorios/centos-install/passo-a-passo.html[HTML])
-. link:laboratorios/centos-pos-install/passo-a-passo.asciidoc[] (link:laboratorios/centos-pos-install/passo-a-passo.html[HTML])
-. link:laboratorios/openjdk-install/passo-a-passo.asciidoc[] (link:laboratorios/openjdk-install/passo-a-passo.html[HTML])
-. link:laboratorios/jboss-download/passo-a-passo.asciidoc[] (link:laboratorios/jboss-download/passo-a-passo.html[HTML])
-. link:laboratorios/jboss-install/1/passo-a-passo.asciidoc[] (link:laboratorios/jboss-install/1/passo-a-passo.html[HTML])
-. link:laboratorios/jboss-install/2/passo-a-passo.asciidoc[] (link:laboratorios/jboss-install/2/passo-a-passo.html[HTML])
-. link:laboratorios/standalone-add-user/passo-a-passo.asciidoc[] (link:laboratorios/standalone-add-user/passo-a-passo.html[HTML])
+Esse repositório contém uma sequência de labs gratuitos que você deve trilhar se desejar continuar o curso. Essa sequência compreende todos os labs iniciais cujos links estão disponíveis em "*Tópicos do curso*" da página link:curso.asciidoc[] (link:curso.html[HTML]).

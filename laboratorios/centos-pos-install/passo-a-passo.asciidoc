@@ -1,4 +1,4 @@
-= Preparando a comunicação entre HOST e VM
+= Preparando a comunicação entre o HOST e a VM
 :author: Paulo Jerônimo
 :email: pj@paulojeronimo.info
 :experimental:
@@ -175,7 +175,7 @@ Teste um comando remoto (nenhuma senha deverá ser solicitada):
 ----
 $ ssh vm-centos date
 ----
-Percebe a demora no estabelecimento da conexão SSH? Vamos, agora, resolver isso. Execute os passos apresentados em link:../fix-ssh-slow-connection/["Resolvendo o problema da lentidão na conexão com o SSH"].
+Percebe a demora no estabelecimento da conexão SSH? Vamos, agora, resolver isso. Execute os passos apresentados em "link:../fix-ssh-slow-connection/passo-a-passo.asciidoc[Resolvendo o problema da lentidão na conexão com o SSH] (link:../fix-ssh-slow-connection/passo-a-passo.html[HTML])".
 
 Desligue novamente a VM _e aguarde até que ela esteja desligada antes de executar o próximo comando_:
 [source,bash]

@@ -1,0 +1,130 @@
+= Curso: JBoss em Produção =
+:author: Paulo Jerônimo
+:email: pj@paulojeronimo.info
+:numbered:
+
+== Descrição ==
+Neste documento, parte integrante de um link:README.asciidoc[livro] (link:README.html[HTML]), eu passo informações sobre um curso que ministro para o público responsável por manter instâncias http://www.jboss.org/products/eap[JBoss EAP] em ambiente de produção. Esse é um *curso totalmente prático, a distância, baseado em vídeos e com o meu suporte através de emails enviados a uma lista de discussão e/ou mensagens via WhatsApp*. Ele cobre os tópicos necessários para instalar o JBoss EAP num ambiente de produção Linux (http://www.redhat.com/products/enterprise-linux/[RHEL] e/ou derivados como o http://centos.org[CentOS], https://edelivery.oracle.com/linux[Oracle Linux], etc). Também ajuda na preparação do aluno que deseja fazer o exame para a obtenção da http://br.redhat.com/training/certifications/jbcaa/[certificação RHCJA].
+
+No curso eu explico e desafio o aluno a realizar tarefas que vão, desde a instalação e configuração do sistema operacional (S.O.), até o _tuning_ básico do JBoss EAP para o ambiente de produção. O foco é, principalmente, a utilização de linhas de comando relativas a administração do JBoss EAP. Ainda assim, apresento a realização de tarefas através das interfaces de gerenciamento disponíveis via browser. Creio que essa abordagem seja essencial para que o aluno conheça melhor os detalhes relativos a configuração desse servidor.
+
+Meu curso tem cerca de 20 horas de aula em vídeos. Em cada conjunto de vídeos (o primeiro é *gratuito* e *disponibilizado no YouTube*) o aluno deverá reproduzir as atividades que apresento, em seu ambiente. Para ter acesso ao próximo conjunto de vídeos, o aluno deverá ter realizado a assinatura do curso e enviar suas sessões gravadas para mim. Essas sessões são iniciadas quando o aluno, conforme solicitado nos labs, executa o script https://github.com/paulojeronimo/dotfiles/blob/master/.scripts/gravar[gravar] que faz uso do utilitário http://en.wikipedia.org/wiki/Script_%28Unix%29[script] (disponibilizado pelo pacote https://apps.fedoraproject.org/packages/util-linux[util-linux]) para fazer o restante da gravação. Também há, para alguns tópicos, tarefas extras que precisam ser feitas e entregues. Quando eu recebo todas as tarefas do conjunto de vídeos corrente do aluno, eu comento o que julgo necessário e disponibilizo para ele um link para o download do próximo conjunto de vídeos.
+
+Ao fazer a assinatura do curso o aluno tem o direito de receber os vídeos e o meu suporte, pelo período de um (1) mês. Como explicado, para receber o próximo conjunto de vídeos o aluno precisa entregar suas sessões gravadas e as tarefas solicitadas. Se, após esse tempo (um mês), o aluno ainda não tiver concluído o curso, ele pode renovar sua assinatura, por igual período, enquanto isso for interessante e/ou necessário. Encerrada a assinatura (quando o aluno acaba o curso ou o período da assinatura expira), o aluno perde o direito a receber os vídeos a partir do último conjunto recebido, as novas versões dos vídeos (caso existam) e o meu suporte (via email para as listas de discussão e/ou WhatsApp).
+
+Todas as tarefas do curso, nesse momento, são realizadas nas versões 20 do Fedora, 6.5 do CentOS e 6.2.0 do JBoss EAP. Para começar o curso, o aluno deverá instalar essa versão do Fedora em sua máquina. Nos vídeos, além de me ver executando os comandos no Fedora, o aluno poderá, certas vezes, observar minha utilização do http://www.apple.com/br/osx/[OS X Mavericks] como alternativa para a realização de certas tarefas do curso.
+
+Após a instalação do S.O. todas as tarefas serão realizadas através de um novo usuário que será criado: aluno. Os passos seguintes envolvem: o download do mirror do CentOS, a instalação do VirtualBox e a criação de uma máquina virtual (VM) CentOS (a partir de um https://access.redhat.com/site/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Installation_Guide/ch-kickstart2.html[arquivo kickstart]), tarefas de pós-instalação do S.O., a instalação do OpenJDK e, finalmente, vários laboratórios (labs) sobre o JBoss EAP.
+
+O primeiro conjunto de labs apresenta, parcialmente, detalhes a respeito do passo a passo de cada uma dessas atividades. Os detalhes não apresentados nesse repositório, entretanto, estão todos no livro fornecido aos alunos.
+
+Nesse curso eu espero que o aluno já possua alguma experiência com o Linux e seus comandos básicos. Mesmo assim, até para alguns dos comandos mais simples que utilizo, eu procuro fazer explicações a respeito, quando acho necessário. Virtualização também já é algo corriqueiro na vida de qualquer administrador Linux e, aqui, também será muito explorado. A ferramenta que utilizo nesse curso, como citei, é o VirtualBox.
+
+== Tópicos do curso ==
+. Uma breve apresentação
+.. Meu histórico de utilização do JBoss EAP
+.. Trabalhos atuais com ferramentas do grupo JBoss
+. Instalando e preparando o Fedora em seu computador como a base (HOST) para as atividades do curso
+.. link:laboratorios/fedora-install/passo-a-passo.asciidoc[Instalando o Fedora numa partição do HD de teu computador] (link:laboratorios/fedora-install/passo-a-passo.html[HTML])
+.. link:laboratorios/useradd-aluno/passo-a-passo.asciidoc[Criando o usuário aluno e o diretório do curso] (link:laboratorios/useradd-aluno/passo-a-passo.html[HTML])
+. Instalando o CentOS numa máquina virtual (VM)
+.. link:laboratorios/centos-mirror/passo-a-passo.asciidoc[Criando um mirror local do CentOS] (link:laboratorios/centos-mirror/passo-a-passo.html[HTML])
+.. link:laboratorios/centos-install/passo-a-passo.asciidoc[Instalando o CentOS num ambiente virtualizado (VirtualBox)] (link:laboratorios/centos-install/passo-a-passo.html[HTML])
+. link:laboratorios/centos-pos-install/passo-a-passo.asciidoc[Preparando a comunicação entre o HOST e a VM] (link:laboratorios/centos-pos-install/passo-a-passo.html[HTML])
+. Instalando a Java Virtual Machine (JVM)
+.. link:laboratorios/openjdk-install/passo-a-passo.asciidoc[Instalando o OpenJDK] (link:laboratorios/openjdk-install/passo-a-passo.html[HTML])
+. Baixando e instalando o JBoss EAP
+.. link:laboratorios/jboss-download/passo-a-passo.asciidoc[Fazendo o download] (link:laboratorios/jboss-download/passo-a-passo.html[HTML])
+.. link:laboratorios/jboss-install/1/passo-a-passo.asciidoc[Começando a usar] (link:laboratorios/jboss-install/1/passo-a-passo.html[HTML])
+.. link:laboratorios/jboss-install/2/passo-a-passo.asciidoc[Automatizando a instalação através de scripts Bash] (link:laboratorios/jboss-install/2/passo-a-passo.html[HTML])
+. link:laboratorios/standalone-add-user/passo-a-passo.asciidoc[Acessando a interface administrativa do JBoss EAP] (link:laboratorios/standalone-add-user/passo-a-passo.html[HTML])
+.. Via túneis SSH
+.. Eliminando os túneis SSH
+.. Abrindo o firewall para as portas de gerenciamento
+. Modificando os arquivos XML
+. Fazendo o JBoss subir automaticamente após o boot da máquina
+. Instalando componentes nativos do S.O. no JBoss
+. Executando mais de uma instância JBoss simultaneamente
+. Extensões, subsistemas e profiles
+. Implantando aplicações
+. Configurando o contexto root do JBoss
+. O modo domain
+.. Diferenças em relação ao modo standalone
+.. Quando usar?
+.. Iniciando o JBoss em modo domain
+.. Configurando um domain controller
+.. Configurando host contollers
+.. Implantando aplicações no modo domain
+. Configurando servidores
+.. Definindo grupos de servidores
+.. Definindo servidores
+.. Unindo servidores a um domínio
+. Fazendo tudo via CLI
+. Implantando Drivers e Datasources XA e não XA
+. Configurando logs
+. Mensageria no JBoss
+. Segurança
+.. Através de Databases
+.. Através de LDAP
+.. Criptografia de senhas
+.. Segurança de filas e tópicos JMS
+. Ajutando parâmetros da JVM
+. Configurando o subsistema Web e integrando o JBoss ao Apache
+. Trabalhando com Clusters
+.. Conceitos e subsistemas
+.. Clusters no modo standalone
+.. Clusters no modo domain
+.. Balanceamento de carga e tolerância a falhas
+... mod_proxy, mod_proxy_ajp
+... mod_jk
+... mod_cluster
+.. Configurando o cluster para usar TCP
+
+== Documentação, material e/ou ferramentas de apoio ==
+. O curso referencia extensivamente https://access.redhat.com/site/documentation/en-US/JBoss_Enterprise_Application_Platform/[a documentação do JBoss EAP];
+. Cada aluno receberá uma cópia (em formato PDF) do livro que está sendo escrito;
+. Toda a comunicação entre os alunos ativos no curso é realizada através de meios privados:
+.. Lista de discussão: https://groups.google.com/group/jboss-em-producao;
+.. Grupo no WhastApp;
+. Esse curso utiliza alguns outros repositórios púbicos que disponibilizo em minha conta no GitHub. Então, é bom que o aluno conheça o essencial de Git/GitHub. Disponibilizo uma alternativa para isso nos links citados em "Cursos similares e/ou complementares". Estes são os repositórios extras que utilizo durante esse curso:
+.. http://github.com/paulojeronimo/dotfiles
+.. http://github.com/paulojeronimo/mirrors
+
+== Assinatura ou renovação ==
+. O valor do investimento na assinatura desse curso é de **R$ 499,00**. Caso necessário, ou desejado, sua renovação exige o investimento de **R$ 99,00**.
+. Há duas formas de pagamento:
+.. Via PagSeguro;
+.. Via depósito bancário;
+. Fone para dúvidas e/ou contato: (61) 9504-6178.
+
+=== Pagamento via PagSeguro (parcelamento em até 18x com acréscimo) ===
+
+++++
+<table border="1">
+<tr><th>Assinatura</th><th>Renovação</th></tr>
+<tr>
+<td>
+   <form target="pagseguro" action="https://pagseguro.uol.com.br/checkout/v2/cart.html?action=add" method="post">
+   <input type="hidden" name="itemCode" value="DC0130B96D6DE3C6649ACFB68AFCC8F4" />
+   <input type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/pagamentos/120x53-pagar.gif" name="submit" />
+   </form>
+</td>
+<td>
+   <form target="pagseguro" action="https://pagseguro.uol.com.br/checkout/v2/cart.html?action=add" method="post">
+   <input type="hidden" name="itemCode" value="CE5D30E9B5B5862BB4552F9E65F6AF12" />
+   <input type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/pagamentos/120x53-pagar.gif" name="submit" />
+   </form>
+</td>
+</tr>
+</table>
+++++
+
+=== Pagamento via depósito bancário (valor integral) ===
+Deposite o total em dinheiro numa das contas a seguir e envie o comprovante para o email pj@paulojeronimo.info. Para a transferência via DOC, solicite o CPF.
+
+. Banco Itaú, Agência 1584, Conta Corrente 08328-9.
+. Banco do Brasil, Agência 1236-X, Conta Corrente 22354-9.
+
+== Cursos similares e/ou complementares ==
+. http://a.paulojeronimo.info/cursos/git/index.html[Git/GitHub];
+. __JBoss em Desenvolvimento__;

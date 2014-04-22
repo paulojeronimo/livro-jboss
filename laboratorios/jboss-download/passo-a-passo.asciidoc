@@ -1,4 +1,4 @@
-= Fazendo o download do JBoss =
+= Fazendo o download =
 :author: Paulo Jerônimo
 :email: pj@paulojeronimo.info
 

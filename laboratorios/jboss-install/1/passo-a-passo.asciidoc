@@ -1,4 +1,4 @@
-= Começando a usar o JBoss =
+= Começando a usar =
 :author: Paulo Jerônimo
 :email: pj@paulojeronimo.info
 
