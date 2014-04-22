@@ -77,8 +77,18 @@ $ VBoxManage storageattach vm-centos \
 --storagectl "IDE Controller" \
 --port 1 --device 0 --type dvddrive --medium emptydrive
 ----
-
-Pressione <Enter> no console da VM para que ela seja reinicializada.
+Pressione <Enter> no console da VM para que ela seja reinicializada. Aguarde o reboot, logue-se na VM e desligue-a para criar o snapshot no próximo passo:
+[source,bash]
+----
+# faça o login (usuário/senha: aluno/@lun0123) 
+# desligue a VM:
+$ sudo shutdown -h now
+----
+De volta ao console da base, crie o snapshot. Ele será útil se tivermos algum problema nas atividades de pós-instalação da VM:
+[source,bash]
+----
+$ VBoxManage snapshot vm-centos take centos-install
+----
 
 .Notas para o instrutor:
 [NOTE]

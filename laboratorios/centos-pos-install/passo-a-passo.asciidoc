@@ -3,8 +3,12 @@
 :email: pj@paulojeronimo.info
 :experimental:
 
-Logue-se na console do CentOS (usuário/senha: +aluno+/+@lun0123+).
-
+Inicie a VM, vá para sua console e efetue o login:
+[source,bash]
+----
+$ VBoxManage startvm vm-centos
+# quando terminar o boot, efetue o login
+----
 Se seu teclado não estiver configurado adequadamente, você pode executar o comando +loadkeys+. Por exemplo, se o seu teclado for +br-abnt2+, execute:
 [source,bash]
 ----
@@ -26,7 +30,7 @@ $ sudo /mnt/VBoxLinuxAdditions.run
 Se você estiver configurando essa VM num ambiente em que a Internet é acessada através de um proxy, execute:
 [source,bash]
 ----
-$ d=curso-jboss/dotfiles/Scripts; f=configurar-proxy
+$ d=curso-jboss/dotfiles/.scripts; f=configurar-proxy
 $ scp base:~/$d/$f .; vim $f
 $ ./$f
 $ logout
