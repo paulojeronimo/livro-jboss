@@ -9,5 +9,5 @@ Para gerá-los você deverá ter o AsciiDoc e o Asciidoctor instalados. Você po
 
 Lista dos slides disponíveis:
 
-. link:apresentando-o-curso.html[Apresentando o curso]
-. link:instalando-o-fedora.html[Instalando o Fedora]
+. link:apresentando-o-curso.asciidoc[Apresentando o curso] (link:apresentando-o-curso.html[HTML])
+. link:instalando-o-fedora.asciidoc[Instalando o Fedora] (link:instalando-o-fedora.html[HTML])

@@ -169,6 +169,12 @@ include::atributos.conf[]
 * Tentando arrumar tempo para continuar o desenvolvimento de um produto para atletas e treinadores:
 ** http://a.paulojeronimo.info/3plans/docs/index.html
 
+[NOTE]
+[role="speaker"]
+====
+* Sempre me perguntam sobre as distâncias de um Ironman. Então, é melhor deixá-las escritas! :D
+====
+
 [.topic.source]
 == Sobre você: quem é você?
 * Ao iniciar o curso, apresente-se!
@@ -178,12 +184,6 @@ include::atributos.conf[]
 ** Empresa em que trabalha atualmente
 *** Cargo/Funções
 ** Esportes e/ou http://en.wikipedia.org/wiki/List_of_hobbies[Hobbies]
-
-[NOTE ]
-[role="speaker"]
-====
-* Sempre me perguntam sobre as distâncias de um Ironman. Então, é melhor deixá-las escritas! :D
-====
 
 [.topic.ending, hrole="name"]
 == Paulo Jerônimo
