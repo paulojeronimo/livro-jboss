@@ -26,13 +26,13 @@ _build() {
    __slides_build
 }
 
-_delete() {
+_clean() {
    find . -type f -name "*.html" -delete ! -path './slides/*'
-   __slides_build delete
+   __slides_build clean
 }
 
-_delete_all() {
-   __slides_build delete_all
+_clean_all() {
+   __slides_build clean_all
 }
 
 cd "$basedir"
