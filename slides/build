@@ -1,0 +1,32 @@
+#!/bin/bash
+# Author: Paulo Jerônimo (@paulojeronimo, pj@paulojeronimo.info)
+
+build_README() {
+   local cmd="asciidoc README.asciidoc"
+   echo "$cmd"; $cmd
+}
+
+build_SLIDES() {
+   local f=$1
+   local cmd="asciidoctor -b dzslides -T asciidoctor-backends/slim/dzslides $f"
+
+   echo "$cmd"; $cmd
+}
+
+[ -f README.html ] || build_README
+[ README.asciidoc -nt README.html ] && build_README
+
+for d in asciidoctor-backends dzslides
+do
+   [ -d $d ] || git clone https://github.com/paulojeronimo/$d.git
+done
+
+find . -type f -name '*.asciidoc' ! \( \
+-name README.asciidoc \
+\) | \
+while read f
+do
+   h=${f/asciidoc/html}
+   [ ! -f "$h" ] && build_SLIDES "$f"
+   [ "$f" -nt "$h" ] && build_SLIDES "$f"
+done

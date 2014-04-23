@@ -7,7 +7,7 @@ Este repositório contém os arquivos públicos do livro de JBoss que *estou esc
 
 Esse livro também é a base para um link:curso.asciidoc[curso que ministro, a distância, sobre o JBoss EAP em ambientes de produção] (link:curso.html[HTML]). Se você deseja mais detalhes a respeito de como adquirir o livro e/ou ingressar no curso, clique nos links apresentados nesse parágrafo.
 
-Todo o material que está publicado nesse repositório é livre para uso sem fins comerciais, respeitando-se os direitos de autoria. Nele você encontrará o texto de alguns dos capítulos do meu livro, além de alguns slides que criei para apresentar tópicos do curso e de todos os comandos executados nos laboratórios (labs). Sobre esses labs, entretanto, você notará que apenas os iniciais contém explicações detalhadas. A maioria das explicações, porém, assim como a ordem de execução dos labs, não está aqui e só é disponibilizada para aqueles que obtêm o livro.
+Todo o material que está publicado nesse repositório é livre para uso sem fins comerciais, respeitando-se os direitos de autoria. Nele você encontrará o texto de alguns dos capítulos do meu livro, além dos link:slides/README.asciidoc[slides] (link:slides/README.html[HTML]) que criei para apresentar tópicos do curso e de todos os comandos executados nos laboratórios (labs). Sobre esses labs, entretanto, você notará que apenas os iniciais contém explicações detalhadas. A maioria das explicações, porém, assim como a ordem de execução dos labs, não está aqui e só é disponibilizada para aqueles que obtêm o livro.
 
 Você pode utilizar o conteúdo desse repositório de duas maneiras:
 

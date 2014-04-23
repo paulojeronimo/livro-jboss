@@ -1,0 +1,50 @@
+= JBoss em Produção - Instalando o Fedora
+Paulo Jerônimo; @paulojeronimo
+include::atributos.conf[]
+
+[.topic.source]
+== Nestes slides
+* Por que o Fedora?
+* Quais os requisitos de hardware para esse curso?
+* Como baixar o Fedora?
+* Como instalar o Fedora?
+* Após instalar o Fedora, o que devo instalar?
+
+[.topic.source]
+== Por que o Fedora?
+* Juntamente com o CentOS, é o mais indicado para esse curso
+** No exame RHCJA é utilizado o RHEL
+*** RHEL exige uma subscrição ou uma licença para avaliação :/
+*** CentOS é para quem não pode ter custos e precisa se basear no RHEL
+*** Fedora é para quem deseja saber como será o RHEL no futuro
+* O Fedora tem as versões mais atuais dos pacotes que instalaremos
+** As novas versões do RHEL (e derivados como o CentOS) são baseadas nele
+** Sua comunidade desenvolvedora é muito ativa
+
+[.topic.source]
+== Quais os requisitos de hardware para esse curso?
+* Processador atual, com suporte a virtualização
+* Memória RAM: 8GB
+* Espaço estimado para acomodar todo o material do curso: 40GB
+** Partição / do Fedora: ~ 8GB
+** Mirror do CentOS: ~ 10GB
+** VM e snapshots: ~ 10GB
+
+[.topic.source]
+== Como baixar o Fedora?
+
+[.topic.source]
+== Como instalar o Fedora?
+
+[.topic.source]
+== Após instalar o Fedora, o que devo instalar?
+* Você precisara instalar o pacote httpd (Apache) e o VirtualBox
+** Leia a página http://j.mp/fedora-mac para saber como eu faço essas instalações
+*** Ela descreve como eu instalo o Fedora num MacBook Pro
+*** Serve de base para você instalar o Fedora em teu Mac ou PC
+
+[.topic.ending, hrole="name"]
+== Paulo Jerônimo
+
+[.footer]
+[icon-twitter]'{zwsp}' @paulojeronimo

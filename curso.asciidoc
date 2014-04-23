@@ -10,7 +10,7 @@ No curso eu explico e desafio o aluno a realizar tarefas que vão, desde a insta
 
 Meu curso tem cerca de 20 horas de aula em vídeos. Em cada conjunto de vídeos (o primeiro é *gratuito* e *disponibilizado no YouTube*) o aluno deverá reproduzir as atividades que apresento, em seu ambiente. Para ter acesso ao próximo conjunto de vídeos, o aluno deverá ter realizado a assinatura do curso e enviar suas sessões gravadas para mim. Essas sessões são iniciadas quando o aluno, conforme solicitado nos labs, executa o script https://github.com/paulojeronimo/dotfiles/blob/master/.scripts/gravar[gravar] que faz uso do utilitário http://en.wikipedia.org/wiki/Script_%28Unix%29[script] (disponibilizado pelo pacote https://apps.fedoraproject.org/packages/util-linux[util-linux]) para fazer o restante da gravação. Também há, para alguns tópicos, tarefas extras que precisam ser feitas e entregues. Quando eu recebo todas as tarefas do conjunto de vídeos corrente do aluno, eu comento o que julgo necessário e disponibilizo para ele um link para o download do próximo conjunto de vídeos.
 
-Ao fazer a assinatura do curso o aluno tem o direito de receber os vídeos e o meu suporte, pelo período de um (1) mês. Como explicado, para receber o próximo conjunto de vídeos o aluno precisa entregar suas sessões gravadas e as tarefas solicitadas. Se, após esse tempo (um mês), o aluno ainda não tiver concluído o curso, ele pode renovar sua assinatura, por igual período, enquanto isso for interessante e/ou necessário. Encerrada a assinatura (quando o aluno acaba o curso ou o período da assinatura expira), o aluno perde o direito a receber os vídeos a partir do último conjunto recebido, as novas versões dos vídeos (caso existam) e o meu suporte (via email para as listas de discussão e/ou WhatsApp).
+Ao fazer a assinatura do curso o aluno tem o direito de receber os vídeos e o meu suporte, pelo período de dois (2) meses. Como explicado, para receber o próximo conjunto de vídeos o aluno precisa entregar suas sessões gravadas e as tarefas solicitadas. Se, após esse tempo (dois meses), o aluno ainda não tiver concluído o curso, ele pode renovar sua assinatura, por mais 30 dias, enquanto isso for interessante e/ou necessário. Encerrada a assinatura (quando o aluno acaba o curso ou o período da assinatura expira), o aluno perde o direito a receber os vídeos a partir do último conjunto recebido, as novas versões dos vídeos (caso existam) e o meu suporte (via email para as listas de discussão e/ou WhatsApp).
 
 Todas as tarefas do curso, nesse momento, são realizadas nas versões 20 do Fedora, 6.5 do CentOS e 6.2.0 do JBoss EAP. Para começar o curso, o aluno deverá instalar essa versão do Fedora em sua máquina. Nos vídeos, além de me ver executando os comandos no Fedora, o aluno poderá, certas vezes, observar minha utilização do http://www.apple.com/br/osx/[OS X Mavericks] como alternativa para a realização de certas tarefas do curso.
 
@@ -21,9 +21,7 @@ O primeiro conjunto de labs apresenta, parcialmente, detalhes a respeito do pass
 Nesse curso eu espero que o aluno já possua alguma experiência com o Linux e seus comandos básicos. Mesmo assim, até para alguns dos comandos mais simples que utilizo, eu procuro fazer explicações a respeito, quando acho necessário. Virtualização também já é algo corriqueiro na vida de qualquer administrador Linux e, aqui, também será muito explorado. A ferramenta que utilizo nesse curso, como citei, é o VirtualBox.
 
 == Tópicos do curso ==
-. Uma breve apresentação
-.. Meu histórico de utilização do JBoss EAP
-.. Trabalhos atuais com ferramentas do grupo JBoss
+. link:slides/apresentando-o-curso.asciidoc[Apresentando o curso] (link:slides/apresentando-o-curso.html[Slides])
 . Instalando e preparando o Fedora em seu computador como a base (HOST) para as atividades do curso
 .. link:laboratorios/fedora-install/passo-a-passo.asciidoc[Instalando o Fedora numa partição do HD de teu computador] (link:laboratorios/fedora-install/passo-a-passo.html[HTML])
 .. link:laboratorios/useradd-aluno/passo-a-passo.asciidoc[Criando o usuário aluno e o diretório do curso] (link:laboratorios/useradd-aluno/passo-a-passo.html[HTML])
@@ -41,7 +39,7 @@ Nesse curso eu espero que o aluno já possua alguma experiência com o Linux e s
 .. Via túneis SSH
 .. Eliminando os túneis SSH
 .. Abrindo o firewall para as portas de gerenciamento
-. Modificando os arquivos XML
+. Entendendo e modificando os arquivos XML
 . Fazendo o JBoss subir automaticamente após o boot da máquina
 . Instalando componentes nativos do S.O. no JBoss
 . Executando mais de uma instância JBoss simultaneamente
@@ -68,7 +66,7 @@ Nesse curso eu espero que o aluno já possua alguma experiência com o Linux e s
 .. Através de LDAP
 .. Criptografia de senhas
 .. Segurança de filas e tópicos JMS
-. Ajutando parâmetros da JVM
+. Ajustando parâmetros da JVM
 . Configurando o subsistema Web e integrando o JBoss ao Apache
 . Trabalhando com Clusters
 .. Conceitos e subsistemas

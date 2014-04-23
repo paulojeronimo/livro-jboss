@@ -1,0 +1,192 @@
+= JBoss em Produção - Apresentando o curso
+Paulo Jerônimo; @paulojeronimo
+include::atributos.conf[]
+
+[.topic.source]
+== Nestes slides
+* Sobre esse curso:
+** O que é?
+** Como é ministrado?
+** A quem se destina?
+** Quem sentirá dificuldades em fazê-lo?
+*** Em outras palavras: quais os requisitos mínimos? ;)
+** Quais os tópicos cobertos?
+** Que ferramentas/tecnologias serão usadas?
+** Quando/como você pode começar?
+** Onde está o material?
+* Sobre o instrutor: Paulo Jerônimo
+* Sobre você: quem é você?
+
+[.topic.source]
+== Sobre esse curso: o que é?
+* É um curso sobre administração do http://www.jboss.org/products/eap[JBoss EAP] em ambientes de produção
+* Maaass... vai além! É multidiciplinar! Aqui você também aprenderá sobre:
+** Sistemas Operacionais (Linux, especialmente http://fedoraproject.org/pt/[Fedora] e http://centos.org/[CentOS])
+** Virtualização (https://www.virtualbox.org/[VirtualBox], especialmente)
+** Redes
+** Bancos de dados (http://www.mysql.com/[MySQL] e http://www.postgresql.org/[PostgreSQL], especialmente)
+** Tecnologias Java (http://www.oracle.com/technetwork/java/javaee/overview/index.html[Java EE], especialmente)
+** Git/GitHub
+
+[.topic.source]
+== Sobre esse curso: como é ministrado?
+* De forma prática, a distância, através de vídeos
+** Você montará o teu próprio ambiente de treinamento
+** Maaass... não se engane! Para evoluir, você será cobrado!
+*** Para receber a continuação do material, você deverá me enviar suas "tarefinhas" de casa
+* Você terá suporte!
+** Através de emails e mensagens
+*** Lista de discussão no Google
+*** Grupo no WhatsApp
+** Apenas para os tópicos relativos ao curso
+** Enquanto durar sua assinatura
+*** Inicialmente, por 2 meses. Mas, renovável por mais 30 dias, enquanto necessário
+
+[.topic.source]
+== Sobre esse curso: a quem se destina?
+* A administradores de servidores de aplicações
+* A desenvolvedores que querem/precisam apreender mais sobre ambientes de produção
+* A administradores de sistemas Linux que desejam evoluir um pouco mais na carreira
+* A profissionais trabalhando com o JBoss EAP em ambiente de produção e/ou ...
+* ... em busca da http://br.redhat.com/training/certifications/jbcaa/[certificação RHCJA]
+
+[.topic.source]
+== Sobre esse curso: quem sentirá dificuldades em fazê-lo?
+* Quem tem pouca ou nenhuma experiência em
+** Linux
+** Bancos de dados
+** Redes
+** Virtualização
+** Programação (o mínimo de Java)
+* Esse curso exige conhecimentos básicos a respeito de todas essas disciplinas
+
+[.topic.source]
+== Sobre esse curso: quais os tópicos cobertos?
+* Instalando e preparando o Fedora em seu computador
+* Instalando o CentOS numa máquina virtual (VM)
+* Preparando a comunicação entre o HOST e a VM
+* Instalando a Java Virtual Machine
+* Baixando e instalando o JBoss EAP
+* Acesando a interface administrativa do JBoss EAP
+* Entendendo e modificando os arquivos XML
+
+[.topic.source]
+== Sobre esse curso: quais os tópicos cobertos?
+* Fazendo o JBoss iniciar automaticamente após o boot
+* Instalando componentes nativos do S.O. no JBoss
+* Executando mais de uma instância JBoss simultaneamente
+* Extensões, subsistemas e profiles
+* Implantando aplicações
+* Configurando o contexto root do JBoss
+* O modo domain
+
+[.topic.source]
+== Sobre esse curso: quais os tópicos cobertos?
+* Configurando servidores
+* Fazendo tudo via CLI 
+* Implantando Drivers e Datasources XA e não XA
+* Configurando logs
+* Mensageria no JBoss
+* Segurança
+* Ajustando parâmetros da JVM 
+
+[.topic.source]
+== Sobre esse curso: quais os tópicos cobertos?
+* Configurando o subsistema Web e integrando o JBoss ao Apache
+* Trabalhando com Clusters
+* ...
+* Afff... :-O é coisa bagar%#&()$o!!!! ;-)
+
+[.topic.source]
+== Sobre esse curso: que ferramentas/tecnologias serão utilizadas?
+* Fedora 20 (HOST, base)
+** IPs: 10.0.2.2 (NAT) 192.168.0.253 (Rede Privada)
+** Apache, VirtualBox, JDK 8
+** Alternativa: Mac OSX Mavericks (em alguns vídeos, você me verá utilizando-o)
+* CentOS 6.5 (VM, vm-centos)
+** IPs: 10.0.2.15 (NAT) 192.168.0.254 (Rede Privada)
+** JDK 7
+* JBoss EAP 6.2.0: tanto no HOST quanto na VM
+
+[.topic.source]
+== Sobre esse curso: que ferramentas/tecnologias serão utilizadas?
+* Bash - muito!
+* Java, Java EE
+* Git/GitHub
+* Vários utilitários, diversos GNU/Linux:
+** Vim, sed, curl, wget, lsof, netstat, ps, tree, pstree, kill, pkill, head, tail, awk, cut, ... 
+
+[.topic.source]
+== Sobre esse curso: quando/como você pode começar?
+* Quando: AGORA! JÁ!!! :)
+**. Você NÃO PRECISA ESPERAR a formação de nenhuma turma pra começar!
+* Como:
+** Monte teu ambiente! Siga os passos apresentados nos vídeos iniciais
+*** Instale o Fedora em tua máquina real
+*** Crie uma máquina virtual (VM) e instale o CentOS
+*** Instale o JBoss EAP na VM
+*** ...
+*** Execute as primeiras tarefas e submeta-as para avaliação
+** Tudo isso está ESCRITO e disponível na forma de vídeos!
+
+[.topic.source]
+== Sobre esse curso: quando/como você pode começar?
+* Como:
+** Para continuar, faça a assinatura do curso!
+*** Assinatura (2 meses): R$ 499,00
+**** Pagamento parcelado em até 18x (com acréscimo) via PagSeguro
+*** Renovação (+ 30 dias): R$ 99,00
+*** O que você recebe ao assinar:
+**** O material do curso (a medida em que for evoluindo em teus estudos):
+***** Mais vídeos
+***** Uma cópia (PDF) do livro (em desenvolvimento) que guia o curso
+**** Comunicação: troca de mensagens/ experiências: com o instrutor e outros alunos
+** "Enfie a cara" nos laboratórios! Pratique, revise, repita ...
+*** O exame para a certificação RHCJA é TOTALMENTE PRÁTICO!
+
+[.topic.source]
+== Sobre esse curso: onde está o material?
+* A parte gratuita do material é disponibilizada em
+** GitHub: http://github.com/paulojeronimo/livro-jboss
+** YouTube: https://www.youtube.com/user/ladoservidor
+
+[.topic.source]
+== Sobre o instrutor: Paulo Jerônimo
+* Desenvolvedor, autor de cursos e materiais instrucionais
+** Linux, http://a.paulojeronimo.info/cursos/git/index.html[Git/GitHub], Java EE, JBoss em Produção (esse curso), WildFly
+** Sites (em https://github.com/paulojeronimo/join-community-2014/blob/master/submissao.adoc[processo de migração] p/ o https://pages.github.com/[GitHub Pages])
+*** http://paulojeronimo.info - os novos conteúdos serão apenas em inglês
+*** http://ladoservidor.com - conteúdos em português. Você poderá contribuir!
+* Atualmente, analista de suporte na empresa http://mais2x.com.br/[+2X], em Brasília/DF
+** Suporte a JBoss em produção na Caixa Econômica Federal
+** Histórico profissional: http://j.mp/curriculopj
+
+[.topic.source]
+== Sobre o instrutor: Paulo Jerônimo
+* Triatleta, Ironman:
+** Próximo (2º): 29/Jun/2014
+** Natação/Ciclismo/Corrida: 3,8/180/42,195 Km; Prazo: 17 horas
+* Tentando arrumar tempo para continuar o desenvolvimento de um produto para atletas e treinadores:
+** http://a.paulojeronimo.info/3plans/docs/index.html
+
+[.topic.source]
+== Sobre você: quem é você?
+* Ao iniciar o curso, apresente-se!
+** Nome completo
+** Idade
+** Cidade onde mora
+** Empresa em que trabalha atualmente
+*** Cargo/Funções
+** Esportes e/ou http://en.wikipedia.org/wiki/List_of_hobbies[Hobbies]
+
+[NOTE ]
+[role="speaker"]
+====
+* Sempre me perguntam sobre as distâncias de um Ironman. Então, é melhor deixá-las escritas! :D
+====
+
+[.topic.ending, hrole="name"]
+== Paulo Jerônimo
+
+[.footer]
+[icon-twitter]'{zwsp}' @paulojeronimo

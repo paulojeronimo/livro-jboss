@@ -11,7 +11,8 @@ __asciidoc() {
 }
 
 _build() {
-   find . -type f -name "*.asciidoc" | while read f
+   find . -type f -name "*.asciidoc" ! -path 'slides/*' | \
+   while read f
    do 
       h=${f/asciidoc/html}
       [ ! -f "$h" ] && __asciidoc "$f"
