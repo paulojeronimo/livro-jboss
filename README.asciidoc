@@ -18,7 +18,7 @@ Você pode utilizar o conteúdo desse repositório de duas maneiras:
 $ git clone https://github.com/paulojeronimo/livro-jboss.git
 $ cd livro-jboss
 $ sudo yum -y install asciidoc python-pygments
-$ ./html.sh
+$ ./build
 $ firefox ./README.html &> /dev/null &
 ----
 

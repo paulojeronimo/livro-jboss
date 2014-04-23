@@ -58,7 +58,7 @@ include::atributos.conf[]
 ** Redes
 ** Virtualização
 ** Programação (o mínimo de Java)
-* Esse curso exige conhecimentos básicos a respeito de todas essas disciplinas
+* Esse curso pressupõe conhecimentos básicos a respeito de todas essas disciplinas
 
 [.topic.source]
 == Sobre esse curso: quais os tópicos cobertos?
@@ -123,7 +123,7 @@ include::atributos.conf[]
 * Como:
 ** Monte teu ambiente! Siga os passos apresentados nos vídeos iniciais
 *** Instale o Fedora em tua máquina real
-*** Crie uma máquina virtual (VM) e instale o CentOS
+*** Crie uma VM e instale o CentOS
 *** Instale o JBoss EAP na VM
 *** ...
 *** Execute as primeiras tarefas e submeta-as para avaliação

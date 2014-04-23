@@ -3,6 +3,11 @@
 basedir=`d=$(dirname "$0"); cd "$d"; echo -n $PWD`
 op=${1:-build}
 
+__slides_build() {
+   local p=$1
+   [ -d slides ] && slides/build $p
+}
+
 __asciidoc() {
    local f=$1
    local cmd="asciidoc $f"
@@ -11,17 +16,23 @@ __asciidoc() {
 }
 
 _build() {
-   find . -type f -name "*.asciidoc" ! -path 'slides/*' | \
+   find . -type f -name "*.asciidoc" ! -path './slides/*' | \
    while read f
    do 
       h=${f/asciidoc/html}
       [ ! -f "$h" ] && __asciidoc "$f"
       [ "$f" -nt "$h" ] && __asciidoc "$f"
    done
+   __slides_build
 }
 
 _delete() {
-   find . -type f -name "*.html" -delete
+   find . -type f -name "*.html" -delete ! -path './slides/*'
+   __slides_build delete
+}
+
+_delete_all() {
+   __slides_build delete_all
 }
 
 cd "$basedir"

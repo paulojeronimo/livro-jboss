@@ -1,32 +1,48 @@
 #!/bin/bash
 # Author: Paulo Jerônimo (@paulojeronimo, pj@paulojeronimo.info)
+basedir=`d=$(dirname "$0"); cd "$d"; echo -n $PWD`
+op=${1:-build}
 
-build_README() {
+__build_README() {
    local cmd="asciidoc README.asciidoc"
    echo "$cmd"; $cmd
 }
 
-build_SLIDES() {
+__build_SLIDES() {
    local f=$1
    local cmd="asciidoctor -b dzslides -T asciidoctor-backends/slim/dzslides $f"
 
    echo "$cmd"; $cmd
 }
 
-[ -f README.html ] || build_README
-[ README.asciidoc -nt README.html ] && build_README
+_build() {
+   [ -f README.html ] || __build_README
+   [ README.asciidoc -nt README.html ] && __build_README
 
-for d in asciidoctor-backends dzslides
-do
-   [ -d $d ] || git clone https://github.com/paulojeronimo/$d.git
-done
+   for d in asciidoctor-backends dzslides
+   do
+      [ -d $d ] || git clone https://github.com/paulojeronimo/$d.git
+   done
 
-find . -type f -name '*.asciidoc' ! \( \
--name README.asciidoc \
-\) | \
-while read f
-do
-   h=${f/asciidoc/html}
-   [ ! -f "$h" ] && build_SLIDES "$f"
-   [ "$f" -nt "$h" ] && build_SLIDES "$f"
-done
+   find . -type f -name '*.asciidoc' ! \( \
+   -name README.asciidoc \
+   \) | \
+   while read f
+   do
+      h=${f/asciidoc/html}
+      [ ! -f "$h" ] && __build_SLIDES "$f"
+      [ "$f" -nt "$h" ] && __build_SLIDES "$f"
+   done
+}
+
+_delete() {
+   find . -maxdepth 1 -type f -name '*.html' -delete
+}
+
+_delete_all() {
+   _delete
+   rm -rf asciidoctor-backends dzslides
+}
+
+cd "$basedir"
+_$op
