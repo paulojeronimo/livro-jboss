@@ -1,10 +1,11 @@
 #!/bin/bash
 # Author: Paulo Jerônimo (@paulojeronimo, pj@paulojeronimo.info)
 basedir=`d=$(dirname "$0"); cd "$d"; echo -n $PWD`
+pages_builder="${pages_builder:-asciidoc}"
 op=${1:-build}
 
 __build_README() {
-   local cmd="asciidoc README.asciidoc"
+   local cmd="$pages_builder README.asciidoc"
    echo "$cmd"; $cmd
 }
 

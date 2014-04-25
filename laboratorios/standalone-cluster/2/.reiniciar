@@ -1,0 +1,7 @@
+kill `pidof tail` &> /dev/null
+for node in node1 node2
+do
+   rm -rf /tmp/$node.log
+   rm -rf $JBOSS_HOME/$node
+done
+rm -rf ../ClusterWebApp.war

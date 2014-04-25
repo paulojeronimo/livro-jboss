@@ -1,6 +1,7 @@
 #!/bin/bash
 # Author: Paulo Jerônimo (@paulojeronimo, pj@paulojeronimo.info)
 basedir=`d=$(dirname "$0"); cd "$d"; echo -n $PWD`
+pages_builder="${pages_builder:-asciidoc}"
 op=${1:-build}
 
 __slides_build() {
@@ -8,9 +9,9 @@ __slides_build() {
    [ -d slides ] && slides/build $p
 }
 
-__asciidoc() {
+__pages_build() {
    local f=$1
-   local cmd="asciidoc $f"
+   local cmd="$pages_builder $f"
 
    echo "$cmd"; $cmd
 }
@@ -20,8 +21,8 @@ _build() {
    while read f
    do 
       h=${f/asciidoc/html}
-      [ ! -f "$h" ] && __asciidoc "$f"
-      [ "$f" -nt "$h" ] && __asciidoc "$f"
+      [ ! -f "$h" ] && __pages_build "$f"
+      [ "$f" -nt "$h" ] && __pages_build "$f"
    done
    __slides_build
 }
@@ -32,6 +33,7 @@ _clean() {
 }
 
 _clean_all() {
+   _clean
    __slides_build clean_all
 }
 

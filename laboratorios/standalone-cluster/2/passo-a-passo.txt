@@ -1,0 +1,10 @@
+$ sudo ifconfig eth0:0 10.0.2.16
+$ grep node1 /etc/hosts &> /dev/null || echo "10.0.2.15 node1" | sudo tee -a /etc/hosts
+$ grep node2 /etc/hosts &> /dev/null || echo "10.0.2.16 node2" | sudo tee -a /etc/hosts
+$ standalone.sh -Djboss.server.base.dir=$JBOSS_HOME/node1 -c standalone-ha.xml -Djboss.node.name=node1 -b node1 -bmanagement=node1 &> /tmp/node1.log &
+$ standalone.sh -Djboss.server.base.dir=$JBOSS_HOME/node2 -c standalone-ha.xml -Djboss.node.name=node2 -b node2 -bmanagement=node2 &> /tmp/node2.log &
+$ firefox http://node1:8080/ClusterWebApp &
+$ firefox http://node2:8080/ClusterWebApp &
+$ jboss-cli.sh -c --controller=node1 --command=:shutdown
+$ jboss-cli.sh -c --controller=node2 --command=:shutdown
+$ sudo ifconfig eth0:0 down

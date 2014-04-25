@@ -1,0 +1,26 @@
+= Montando um cluster com duas instâncias, em máquinas distintas
+:author: Paulo Jerônimo
+:email: pj@paulojeronimo.info
+
+[source,bash]
+----
+$ LAB=~/curso-jboss/laboratorios/standalone-cluster-with-vm
+$ mkdir -p $LAB
+$ scp vm-centos:~/curso-jboss/laboratorios/jboss-install/2/ambiente $LAB
+$ setenv $LAB/ambiente
+$ logout
+$ sudo su - aluno
+$ instalar_jboss
+$ f=/etc/hosts; hostname=`hostname`; grep $hostname $f || 
+echo -e "192.168.0.253\t$hostname" | sudo tee -a $f
+$ tmux # com dois paineis
+
+# no primeiro painel:
+$ sudo systemctl stop firewalld
+$ n=`hostname`; standalone.sh -c standalone-ha.xml -Djboss.node.name=$n -b $n -bmanagement=$n 2>&1 | tee /tmp/$n.log &
+
+# no segundo painel:
+$ ssh vm-centos
+$ sudo service iptables stop
+$ n=`hostname`; standalone.sh -c standalone-ha.xml -Djboss.node.name=$n -b $n -bmanagement=$n 2>&1 | tee /tmp/$n.log &
+----
