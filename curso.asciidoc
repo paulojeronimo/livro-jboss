@@ -97,7 +97,7 @@ Nesse curso eu espero que o aluno já possua alguma experiência com o Linux e s
 
 === Pagamento via PagSeguro (parcelamento em até 18x com acréscimo) ===
 
-http://htmlpreview.github.io?http://github.com/paulojeronimo/curso-jboss/blob/master/pagseguro.html[Este link] irá direcioná-lo para uma página com botões de pagamento da assinatura ou renovação do curso através do PagSeguro.
+http://htmlpreview.github.io?http://github.com/paulojeronimo/livro-jboss/blob/master/pagseguro.html[Este link] irá direcioná-lo para uma página com botões de pagamento da assinatura ou renovação do curso através do PagSeguro.
 
 === Pagamento via depósito bancário (valor integral) ===
 Deposite o total em dinheiro numa das contas a seguir e envie o comprovante para o email pj@paulojeronimo.info. Para a transferência via DOC, solicite o CPF.
