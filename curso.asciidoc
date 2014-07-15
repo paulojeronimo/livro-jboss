@@ -22,7 +22,7 @@ Nesse curso eu espero que o aluno já possua alguma experiência com o Linux e s
 
 == Tópicos do curso ==
 . link:slides/apresentando-o-curso.asciidoc[Apresentando o curso] (link:slides/apresentando-o-curso.html[Slides])
-. link:slides/overview.asciidoc[Overview prático] (link:overview.html[HTML])
+. link:overview.asciidoc[Overview prático] (link:overview.html[HTML])
 . Instalando e preparando o Fedora em seu computador como a base (HOST) para as atividades do curso
 .. link:laboratorios/fedora-install/passo-a-passo.asciidoc[Instalando o Fedora numa partição do HD de teu computador] (link:laboratorios/fedora-install/passo-a-passo.html[HTML])
 .. link:laboratorios/useradd-aluno/passo-a-passo.asciidoc[Criando o usuário aluno e o diretório do curso] (link:laboratorios/useradd-aluno/passo-a-passo.html[HTML])
