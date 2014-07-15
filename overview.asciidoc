@@ -1,0 +1,412 @@
+= Curso: JBoss em Produção - Overview prático
+:author: Paulo Jerônimo
+:email: pj@paulojeronimo.info
+:numbered:
+
+== Introdução
+
+Este é um tutorial prático (mão na massa de verdade) que faz um _overview_ de grande parte dos assuntos que são explicados detalhadamente em cada tópico do link:./curso.asciidoc[livro/curso "JBoss em Produção"] (link:./curso.html[HTML]).
+
+Os requisitos para a execução desse tutorial são bem reduzidos em relação aos do curso pois, nele, não solicito a instalação do http://fedoraproject.org[Fedora] como máquina base para todas os laboratórios que estão disponíveis. Sendo assim, esse tutorial oferece uma visão simplificada com um _startup_ rápido para várias tarefas que são minuciosamente cobertas durante o curso.
+
+Para começar o tutorial você precisará de um Linux (ou um http://j.mp/fedora-mac[OS X]) instalado em tua máquina. Ela também deverá ter pelo menos 4 GB de memória RAM e 8 GB de espaço livre em disco. O Linux pode ser de qualquer distribuição: http://debian.org[Debian], http://ubuntu.com[Ubuntu], http://archlinux.org[Arch Linux], http://fedoraproject.org[Fedora], ..., a que você quiser! Em seguida, você precisará instalar algumas ferramentas nesse Linux. São elas:
+
+. O servidor OpenSSH 
+.. https://help.ubuntu.com/community/SSH/OpenSSH/Configuring[Procedimentos de instalação] no Ubuntu
+. O virtualizador http://virtualbox.org[VirtualBox]
+.. https://help.ubuntu.com/community/VirtualBox[Procedimentos de instalação] no Ubuntu
+. O utilitário para (des)compactação http://www.7-zip.org/[7zip]
+.. http://www.thegeekstuff.com/2010/04/7z-7zip-7za-file-compression/[Procedimentos de instalação no Ubuntu, Debian, Fedora]
+.. http://wiki.ubuntu-br.org/7zip[Procedimentos de instalação] no Ubuntu
+
+Após ter instalado essas ferramentas, você fará o download de uma VM contendo uma versão do http://centos.org[CentOS] que, como sabemos, é gerado a partir dos fontes do http://br.redhat.com/products/enterprise-linux/[Red Hat Enterprise Linux (RHEL)] e é uma das distribuições mais adequadas para o estudo do http://www.jboss.org/products/eap/download/[JBoss EAP] em ambiente de produção. Além disso, por ser totalmente baseado no RHEL, a utilização do CentOS ofere toda a experiência necessária em Linux para aqueles que desejam fazer o http://br.redhat.com/training/certifications/jbcaa/[exame RHCJA].
+
+Acredito que também seja possível executar no _Janelas_ as tarefas que apresento aqui, com o auxílio do http://cygwin.org[Cygwin]. Contudo, eu ainda não tive tempo (nem paciência de sobra) para experimentar isso (e se eu o fizer algum dia você saberá ;)).
+
+Encarando de frente a execução desse tutorial, eu acredito que você terá uma boa visão dos tópicos que serão aprofundados no curso. Além disso, você poderá avaliar se, com minhas explicações, terá uma compreensão dos assuntos que extrapolam o objetivo principal do curso, que é falar sobre o servidor de aplicações JBoss. Assim como você verá nesse tutorial, o curso vai muito além desse servidor pois apresenta assuntos como a instalação e a configuração de virtualizadores, sistemas operacionais, redes, servidores (HTTP(S), SSH, FTP, ...), banco de dados, etc. Enfim, oferece uma visão extremamente abrangente de toda a infraestrutura em torno do servidor de aplicações além de um ótimo conhecimento para o desenvolvimento de scripts Bash.
+
+Espero, sinceramente, que você se divirta executando esse tutorial (assim como eu me diverti ao escrevê-lo :D)! Então ...
+
+== Mãos a obra
+
+=== Baixando e extraindo a VM
+
+Presumindo que você já tenha realizado as instalações que solicitei (VirtualBox, 7zip, OpenSSH server, ...), abra um shell Bash na tua máquina (chamarei-a de "base").
+
+Baixe os arquivos de minha http://gdriv.es/vm-centos[vm-centos] (será realizado o download de aproximadamente 400 MB):
+[source,bash]
+----
+$ mkdir -p ~/VirtualBox\ VMs
+$ cd !$
+$ bash <(curl -L http://j.mp/vm-centos-download)
+----
+
+Utilizando o 7zip, extraia o conteúdo da VM:
+[source,bash]
+----
+$ 7za x vm-centos.7z.001
+----
+
+=== Registrando e modificando a VM
+
+Registre a VM:
+[source,bash]
+----
+$ VBoxManage registervm "$PWD/vm-centos/vm-centos.vbox"
+----
+
+Crie e configure uma interface host-only para a máquina base:
+[source,bash]
+----
+$ VBoxManage hostonlyif create
+$ VBoxManage hostonlyif ipconfig vboxnet0 --ip 192.168.0.253 --netmask 255.255.255.0
+----
+
+Desabilite o servidor DHCP associado a essa interface:
+[source,bash]
+----
+$ VBoxManage dhcpserver remove --netname HostInterfaceNetworking-vboxnet0
+----
+
+Modifique a VM adicionando uma nova interface associada a esse adaptador:
+[source,bash]
+----
+$ VBoxManage modifyvm vm-centos --nic2 hostonly --hostonlyadapter2 vboxnet0
+----
+
+Modifique e verifique o conteúdo do teu arquivo /etc/hosts:
+[source,bash]
+----
+$ f=/etc/hosts; grep -q vm-centos $f || echo -e "192.168.0.254\tvm-centos" | sudo tee -a $f
+$ cat $f
+----
+
+=== Iniciando e configurando a nova interface de rede da VM
+
+Inicie a VM:
+[source,bash]
+----
+$ VBoxManage startvm vm-centos
+----
+
+Abra o console da VM e efetue o logon como usuário aluno (senha @lun0123).
+
+Logue-se como root:
+[source,bash]
+----
+$ sudo su -
+----
+
+Observe que agora há duas interfaces de rede além da lo (eth0 e eth1):
+[source,bash]
+----
+$ ip a s
+----
+
+Obtenha e imprima o endereço de hardware da interface eth1:
+[source,bash]
+----
+$ HWADDR=$(ip a s eth1 | grep ether | awk '{ print $2 }' | tr '[:lower:]' '[:upper:]')
+$ echo $HWADDR
+----
+
+Configure o arquivo que associará um IP estático para a nova interface de rede. Em seguida, veja seu conteúdo:
+[source,bash]
+----
+$ f=/etc/sysconfig/network-scripts/ifcfg-eth1; cat > $f <<EOF
+DEVICE=eth1
+BOOTPROTO=static
+IPADDR=192.168.0.254
+HWADDR=$HWADDR
+NM_CONTROLLED=yes
+ONBOOT=yes
+EOF
+$ cat $f
+----
+
+Reinicie os serviços de rede:
+[source,bash]
+----
+$ service network restart
+----
+
+Verifique se o IP foi associado a interface eth1:
+[source,bash]
+----
+$ ip a s eth1
+----
+
+Faça um ping no IP da interface vboxnet0 na máquina base:
+[source,bash]
+----
+$ ping 192.168.0.253
+----
+
+Teste se a resolução de nomes através do DNS está ok:
+[source,bash]
+----
+$ host google.com
+----
+
+Verifique o gateway default e a tabela de rotas:
+[source,bash]
+----
+$ ip route show
+$ route -n
+----
+
+Efetue o logout e volte para o shell na máquina base:
+[source,bash]
+----
+$ exit
+$ logout
+----
+
+=== Baixando o material gratuito do curso
+
+Faça um SSH na vm-centos:
+[source,bash]
+----
+$ ssh aluno@vm-centos
+----
+
+*Passo opcional*: se você possui um mirror local do CentOS, desabilite os repositórios remotos e habilite apenas os locais:
+[source,bash]
+----
+$ sudo yum-config-manager --disable base,updates,extras
+$ sudo yum-config-manager --enable local-mirror-*
+----
+
+Atualize a lista de pacotes:
+[source,bash]
+----
+$ sudo yum -y update
+----
+
+Instale o Git:
+[source,bash]
+----
+$ sudo yum -y install git
+----
+
+Baixe o repositório do curso e o projeto dotfiles dentro dele:
+[source,bash]
+----
+$ git clone https://github.com/paulojeronimo/livro-jboss curso-jboss
+$ cd !$
+$ git clone https://github.com/paulojeronimo/dotfiles
+----
+
+Instale o projeto dotfiles, encerre sua sessão e refaça o logon via SSH:
+[source,bash]
+----
+$ dotfiles/install
+$ logout
+----
+
+Copie tua chave pública para a VM e efetue um novo SSH:
+[source,bash]
+----
+$ ssh-copy-id aluno@vm-centos
+$ ssh !$
+----
+
+Instale o tree:
+[source,bash]
+----
+$ sudo yum -y install tree
+----
+
+Verifique a árvore de diretórios/arquivos do curso:
+[source,bash]
+----
+$ tree ~/curso-jboss | less
+----
+
+=== Instalando as ferramentas necessárias para a construção das páginas do curso
+
+Instale o asciidoc:
+[source,bash]
+----
+$ sudo yum -y install asciidoc
+$ sudo yum -y install http://epel.gtdinternet.com/6/i386/epel-release-6-8.noarch.rpm
+$ sudo yum -y install source-highlight
+----
+
+Instale o asciidoctor e suas dependências:
+[source,bash]
+----
+$ curl -sSL https://get.rvm.io | sudo -E bash -s stable
+$ sudo gpasswd -a $USER rvm
+$ logout
+$ ssh aluno@vm-centos
+$ rvm install 2.1
+$ gem install tilt asciidoctor slim
+----
+
+Faça um ajuste no arquivo +~/.gitconfig+. Isso é necessário pois a versão do Git instalada no CentOS (1.7.1) não suporta a configuração especificada nas duas últimas linhas desse arquivo:
+[source,bash]
+----
+$ rm .gitconfig
+$ head -n -2 curso-jboss/dotfiles/.gitconfig > !$
+$ vim -d .gitconfig curso-jboss/dotfiles/.gitconfig
+$ # digite :qa! para sair do vim
+----
+
+Observe que as páginas HTML do curso ainda não foram geradas:
+[source,bash]
+----
+$ cd curso-jboss/
+$ find . -type f -name '*.html'
+----
+
+Então, agora faça o _build_ dessas páginas e reexecute o _find_ anterior:
+[source,bash]
+----
+$ ./build
+$ !-2
+----
+
+=== Acessando as páginas do curso através do Apache HTTPD
+
+Instale e inicie o Apache:
+[source,bash]
+----
+$ sudo yum -y install httpd
+$ sudo service httpd start
+----
+
+Verifique o processo que está escutando na porta 80:
+[source,bash]
+----
+$ sudo lsof -i :80
+----
+
+Habilite a inicialização automática do Apache:
+[source,bash]
+----
+$ sudo chkconfig httpd on
+$ sudo chkconfig --list httpd
+----
+
+Configure o firewall para liberar o acesso a porta 80:
+[source,bash]
+----
+$ sudo iptables -I INPUT -s 192.168.0.0/24 -m state --state NEW -p tcp --dport 80 -j ACCEPT
+$ sudo service iptables save
+----
+
+Configure o acesso via Apache ao diretório do curso:
+[source,bash]
+----
+$ sudo chmod +x $HOME
+$ mkdir ~/public_html
+$ cd !$
+$ ln -s ../curso-jboss
+----
+
+Edite o arquivo de configuração do Apache para habilitar o acesso ao diretório +~/public_html+.
+[source,bash]
+----
+$ d=/etc/httpd/conf/; sudo cp $d/httpd.conf $d/httpd.conf.original
+$ sudo vim $d/httpd.conf
+$ # estas são as diferenças em realação ao arquivo original:
+$ diff $d/httpd.conf{,.original}
+366c366
+<     #UserDir disabled
+---
+>     UserDir disabled
+373c373
+<     UserDir public_html
+---
+>     #UserDir public_html
+381,392c381,392
+< <Directory /home/*/public_html>
+<     AllowOverride FileInfo AuthConfig Limit
+<     Options MultiViews Indexes SymLinksIfOwnerMatch IncludesNoExec
+<     <Limit GET POST OPTIONS>
+<         Order allow,deny
+<         Allow from all
+<     </Limit>
+<     <LimitExcept GET POST OPTIONS>
+<         Order deny,allow
+<         Deny from all
+<     </LimitExcept>
+< </Directory>
+---
+> #<Directory /home/*/public_html>
+> #    AllowOverride FileInfo AuthConfig Limit
+> #    Options MultiViews Indexes SymLinksIfOwnerMatch IncludesNoExec
+> #    <Limit GET POST OPTIONS>
+> #        Order allow,deny
+> #        Allow from all
+> #    </Limit>
+> #    <LimitExcept GET POST OPTIONS>
+> #        Order deny,allow
+> #        Deny from all
+> #    </LimitExcept>
+> #</Directory>
+----
+
+Recarregue as configurações do Apache (não é necessário reiniciá-lo):
+[source,bash]
+----
+$ sudo service httpd reload
+----
+
+Ajuste o SELinux para permitir o acesso ao diretório do usuário via HTTP:
+[source,bash]
+----
+$ sudo getsebool -a | grep httpd | less
+$ sudo setsebool -P httpd_read_user_content 1
+$ sudo setsebool -P httpd_enable_homedirs 1
+$ sudo getsebool -a | grep httpd | grep on$
+----
+
+De um browser na máquina base, teste o acesso a URL http://vm-centos/~aluno/curso-jboss
+
+=== Instalando o OpenJDK
+TODO
+
+=== Baixando e instalando o JBoss EAP
+TODO
+
+=== Iniciando e acessando a interface administrativa do JBoss via túnel SSH reverso
+TODO
+
+=== Criando, compilando e implantando via linha de comando, uma aplicação Web
+TODO
+
+=== Configurando e acessando o JBoss atrás do Apache HTTPD
+TODO
+
+=== Configurando um virtual host para acessar a aplicação
+TODO
+
+== Para refazer este tutorial
+
+Desligue a VM:
+[source,bash]
+----
+$ ssh -t aluno@vm-centos sudo shutdown -h now
+----
+
+Remova a interface vboxnet0:
+[source,bash]
+----
+$ VBoxManage hostonlyif remove vboxnet0
+----
+
+Remova a VM:
+[source,bash]
+----
+$ VBoxManage unregistervm vm-centos --delete
+----
+
+Remova a entrada +vm-centos+ do arquivo +/etc/hosts+ de tua máquina:
+[source,bash]
+----
+$ sudo sed -i '/vm-centos/d' /etc/hosts
+$ cat !$
+----
+

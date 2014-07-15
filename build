@@ -28,7 +28,7 @@ _build() {
 }
 
 _clean() {
-   find . -type f -name "*.html" ! -path './slides/*' -delete
+   find . -type f -name "*.html" ! \( -path './slides/*' -o -name pagseguro.html \) -delete
    __slides_build clean
 }
 

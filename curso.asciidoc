@@ -22,6 +22,7 @@ Nesse curso eu espero que o aluno já possua alguma experiência com o Linux e s
 
 == Tópicos do curso ==
 . link:slides/apresentando-o-curso.asciidoc[Apresentando o curso] (link:slides/apresentando-o-curso.html[Slides])
+. link:slides/overview.asciidoc[Overview prático] (link:overview.html[HTML])
 . Instalando e preparando o Fedora em seu computador como a base (HOST) para as atividades do curso
 .. link:laboratorios/fedora-install/passo-a-passo.asciidoc[Instalando o Fedora numa partição do HD de teu computador] (link:laboratorios/fedora-install/passo-a-passo.html[HTML])
 .. link:laboratorios/useradd-aluno/passo-a-passo.asciidoc[Criando o usuário aluno e o diretório do curso] (link:laboratorios/useradd-aluno/passo-a-passo.html[HTML])
@@ -97,7 +98,7 @@ Nesse curso eu espero que o aluno já possua alguma experiência com o Linux e s
 
 === Pagamento via PagSeguro (parcelamento em até 18x com acréscimo) ===
 
-http://htmlpreview.github.io?http://github.com/paulojeronimo/livro-jboss/blob/master/pagseguro.html[Este link] irá direcioná-lo para uma página com botões de pagamento da assinatura ou renovação do curso através do PagSeguro.
+http://htmlpreview.github.io?https://raw.githubusercontent.com/paulojeronimo/livro-jboss/master/pagseguro.html[Este link] irá direcioná-lo para uma página com botões de pagamento da assinatura ou renovação do curso através do PagSeguro.
 
 === Pagamento via depósito bancário (valor integral) ===
 Deposite o total em dinheiro numa das contas a seguir e envie o comprovante para o email pj@paulojeronimo.info. Para a transferência via DOC, solicite o CPF.
