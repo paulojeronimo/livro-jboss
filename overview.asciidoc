@@ -366,19 +366,311 @@ $ sudo getsebool -a | grep httpd | grep on$
 De um browser na máquina base, teste o acesso a URL http://vm-centos/~aluno/curso-jboss
 
 === Instalando o OpenJDK
-TODO
+
+Para executar o JBoss, será necessária a instalação de um JDK. Instalar o OpenJDK é o suficiente:
+[source,bash]
+----
+$ sudo yum -y install java-1.7.0-openjdk-devel
+$ java -version
+----
 
 === Baixando e instalando o JBoss EAP
-TODO
 
-=== Iniciando e acessando a interface administrativa do JBoss via túnel SSH reverso
-TODO
+Abra um browser em tua máquina (base) e faça o download do JBoss EAP a partir da URL http://www.jboss.org/products/eap/download/. Para esse tutorial, faça o download desse arquivo da versão 6.2.0.GA: http://www.jboss.org/download-manager/file/jboss-eap-6.2.0.GA.zip
 
-=== Criando, compilando e implantando via linha de comando, uma aplicação Web
-TODO
+Crie e copie o arquivo baixado na máquina +base+ para o diretório +~/curso-jboss/instaladores+
+[source,bash]
+----
+$ mkdir -p ~/curso-jboss/instaladores
+$ cd !$
+$ read -p 'Informe teu usuário na máquina base: ' BASE_USER
+$ read -p 'Informe o diretório onde foi baixado o JBoss: ' DOWNLOADS_DIR
+$ scp $BASE_USER@base:$DOWNLOADS_DIR/jboss-eap-6.2.0.zip .
+----
+
+Crie o diretório +~/curso-jboss/ferramentas+ e descompacte o JBoss dentro dele:
+[source,bash]
+----
+$ mkdir ../ferramentas
+$ cd !$
+$ unzip ../instaladores/jboss-eap-6.2.0.zip
+----
+
+Crie o link +jboss+ para o diretório onde o JBoss foi descompactado:
+
+[source,bash]
+----
+$ ln -s jboss-eap-6.2 jboss
+----
+
+Crie o arquivo +~/curso-jboss/ambiente+ para configurar variáveis de ambiente +$PATH+:
+[source,bash]
+----
+$ ambiente=~/curso-jboss/ambiente
+$ tee $ambiente <<EOF > /dev/null
+# Informa o nome do usuário na máquina base:
+BASE_USER=$BASE_USER
+
+# Informa o diretório de downloads na máquina base:
+DOWNLOADS_DIR=$DOWNLOADS_DIR
+EOF
+$ tee -a $ambiente <<'EOF' > /dev/null
+
+# Informa a localização do JBoss e ajusta o PATH para seus executáveis:
+JBOSS_HOME=~/curso-jboss/ferramentas/jboss
+PATH=$JBOSS_HOME/bin:$PATH
+EOF
+$ cat $ambiente
+$ type setenv
+$ setenv $ambiente
+----
+
+Efetue o logout e logue-se novamente. Em seguida, verifique se o PATH foi ajustado:
+[source,bash]
+----
+$ logout
+$ ssh aluno@vm-centos
+$ echo $PATH | tr ':' '\n' | grep jboss
+----
+
+=== Iniciando, ajustando alguns parâmetros de execução e parando o JBoss
+
+Inicie o JBoss:
+[source,bash]
+----
+$ standalone.sh
+----
+
+Pressione 'Ctrl+Z' para parar o processo do JBoss e em seguida, digite 'bg' para executá-lo em _background_.
+
+Note o +WARN+ apresentado no log de execução do JBoss. Ele representa um problema que precisemos resolver. 
+
+Observe algumas informações sobre o JBoss em execução:
+
+[source,bash]
+----
+$ jps -Vvlm | grep --color '\-Xm'
+$ JBOSS_PID=`jps -Vvlm | grep Standalone | cut -d " " -f 1`
+$ lsof -p $JBOSS_PID -P -n | grep LISTEN
+----
+
+Solucione o problema do +WARN+ adicionando o nome vm-centos no arquivo +/etc/hosts/+:
+
+[source,bash]
+----
+$ grep -q vm-centos /etc/hosts || \
+sudo sed -i 's/\(127.0.0.1.*\)/\1 vm-centos/' /etc/hosts
+----
+
+Diminua a quantidade de memória solicitada na inicialização do JBoss:
+
+[source,bash]
+----
+$ sed -i 's/1303/512/g' $JBOSS_HOME/bin/standalone.conf
+----
+
+Agora pare o JBoss e execute-o novamente. Observe que o +WARN+ não deverá mais aparecer, a quantidade de memória alocada deverá ser inferior e o tempo de inicialização menor:
+
+[source,bash]
+----
+$ kill $JBOSS_PID
+$ c=standalone.sh; nohup $c 2>&1 | tee /tmp/$c.log &
+----
+
+Novamente, pare o JBoss:
+[source,bash]
+----
+$ jboss-cli.sh -c :shutdown
+----
+
+=== Acessando a interface administrativa do JBoss via túnel SSH reverso
+
+Para acessar a interface administrativa do JBoss, será necessário criar um usuário que possua tais privilégios. Para isso, execute:
+
+[source,bash]
+----
+$ # informe o usuário 'admin' e a senha 'jb@ss123' (sem os apoóstrofos)
+$ add-user.sh
+
+What type of user do you wish to add? 
+ a) Management User (mgmt-users.properties) 
+ b) Application User (application-users.properties)
+(a): 
+
+Enter the details of the new user to add.
+Using realm 'ManagementRealm' as discovered from the existing property files.
+Username : admin
+The username 'admin' is easy to guess
+Are you sure you want to add user 'admin' yes/no? yes
+Password : 
+Re-enter Password : 
+What groups do you want this user to belong to? (Please enter a comma separated list, or leave blank for none)[  ]: 
+About to add user 'admin' for realm 'ManagementRealm'
+Is this correct yes/no? yes
+Added user 'admin' to file '/home/aluno/curso-jboss/ferramentas/jboss-eap-6.2/standalone/configuration/mgmt-users.properties'
+Added user 'admin' to file '/home/aluno/curso-jboss/ferramentas/jboss-eap-6.2/domain/configuration/mgmt-users.properties'
+Added user 'admin' with groups  to file '/home/aluno/curso-jboss/ferramentas/jboss-eap-6.2/standalone/configuration/mgmt-groups.properties'
+Added user 'admin' with groups  to file '/home/aluno/curso-jboss/ferramentas/jboss-eap-6.2/domain/configuration/mgmt-groups.properties'
+Is this new user going to be used for one AS process to connect to another AS process? 
+e.g. for a slave host controller connecting to the master or for a Remoting connection for server to server EJB calls.
+yes/no? no
+----
+
+Inicie novamente o JBoss e, em seguida efetue o logout:
+[source,bash]
+----
+$ nohup standalone.sh 2>&1 &
+$ logout
+----
+
+Conecte-se novamente, via SSH, criando túneis para as portas 8080 (aplicações) e 9990 (gerenciamento via web):
+[source,bash]
+----
+$ ssh -L 8080:localhost:8080 -L 9990:localhost:9990 aluno@vm-centos 
+----
+
+Na máquina base, abra o browser em http://localhost:8080. Em seguida, clique no link http://localhost:8080/console[Administration Console]. Informe o usuário e a senha cadastrados anteriormente. Navegue pela interface administrativa ...
+
+Feche a conexão SSH. Obviamente, após fazer isso, os túneis serão desfeitos e o acesso as portas 8080 e 9990 não será mais possível! Mesmo assim, é claro que o JBoss continuará em execução ...
+[source,bash]
+----
+$ logout
+----
+
+=== Compilando e implantando aplicações através do Maven
+
+==== Instalando o Maven
+Efetue o logon novamente. Baixe e instale o Maven. Utilize esse instalador: http://ftp.unicamp.br/pub/apache/maven/maven-3/3.2.2/binaries/apache-maven-3.2.2-bin.tar.gz.
+[source,bash]
+----
+$ ssh aluno@vm-centos
+$ cd ~/curso-jboss/instaladores
+$ scp $BASE_USER@base:$DOWNLOADS_DIR/apache-maven-3.2.2-bin.tar.gz .
+$ cd ../ferramentas/
+$ tar xvfz ../instaladores/apache-maven-3.2.2-bin.tar.gz
+$ ln -s apache-maven-3.2.2 maven
+$ tee -a ../ambiente <<'EOF' > /dev/null
+
+# Informa a localização do Maven e ajusta o PATH para seus binários:
+M2_HOME=~/curso-jboss/ferramentas/maven
+PATH=$M2_HOME/bin:$PATH
+EOF
+----
+
+Refaça o logon e teste se o Maven está funcionando:
+[source,bash]
+----
+$ logout
+$ ssh aluno@vm-centos
+$ mvn -version
+----
+
+==== Baixando e compilando os quickstarts do JBoss
+
+Baixe os quickstarts (http://www.jboss.org/download-manager/file/jboss-eap-6.2.0.GA-quickstarts.zip) e faça sua descompatação no diretório exemplos do curso:
+[source,bash]
+----
+$ cd ~/curso-jboss/instaladores
+$ scp $BASE_USER@base:$DOWNLOADS_DIR/jboss-eap-6.2.0-quickstarts.zip .
+$ mkdir -p ../exemplos
+$ cd !$
+$ unzip ../instaladores/jboss-eap-6.2.0-quickstarts.zip
+----
+
+Copie as configurações do Maven, necessárias para o _build_:
+[source,bash]
+----
+$ mkdir -p ~/.m2
+$ cd jboss-eap-6.2.0.GA-quickstarts
+$ cp settings.xml ~/.m2/
+----
+
+Compile e implante a aplicação HelloWorld:
+[source,bash]
+----
+$ cd helloworld
+$ mvn clean install jboss-as:deploy
+----
+
+Refaça o logon abrindo os túneis SSH:
+[source,bash]
+----
+$ logout
+$ ssh -L 8080:localhost:8080 -L 9990:localhost:9990 aluno@vm-centos
+----
+
+Teste o acesso ao contexto da aplicação helloworld através da URL http://localhost:8080/jboss-helloworld/.
+
+Efetue o logout novamente:
+[source,bash]
+----
+$ logout
+----
+
+===== Simplificando o uso do SSH ...
+O comando SSH executado acima é meio chato e grande e será executado várias vezes, não é? Podemos simplificá-lo ...
+
+Execute o seguinte comando para adicionar conteúdo ao arquivo +~/.ssh/config+ da tua máquina (+base+):
+
+[source,bash]
+----
+$ tee -a ~/.ssh/config <<EOF
+Host jboss-tunnel-vm-centos
+   Hostname vm-centos
+   User aluno
+   LocalForward 8080 localhost:8080
+   LocalForward 9990 localhost:9990
+EOF
+----
+
+Agora, acesse novamente a vm-centos, mas utilizando esse comando:
+[source,bash]
+----
+$ ssh jboss-tunnel-vm-centos
+----
+
+Então, com as configurações acima, não é mais necessário informar o usuário e os parâmetros para a criação dos túneis. Eles são criados automaticamente ao utilizar o alias (+jboss-tunnel-vm-centos+) como parâmetro para o +ssh+. legal, não é?
+
+Abra outro shell, na máquina +base+, e verifique que as portas 8080 e 9990 estão em listen pelo processo +ssh+:
+[source,bash]
+----
+$ lsof -i :8080 -P
+$ lsof -i :9990 -P
+----
+
+Talvez, nosso intuito seja apenas criar os túneis, sem precisar de acesso a máquina +vm-centos+. Isso também pode ser feito, informando alguns parâmetros na chamada ao +ssh+. Para isso, feche a conexão na máquina +base+ e, em seguida, execute o ssh novamente, conforme as instruções a seguir:
+
+[source,bash]
+----
+$ ssh -f -N jboss-tunnel-vm-centos
+----
+
+O parâmetro +-f+ informa que o +ssh+ deverá ser executado em background e o +-N+ que não será executado nenhum comando remoto. Dessa forma, os túneis serão criados e ficarão disponíveis mas, não estaremos logados na +vm-centos+.
+
+Veja que o +ssh+ está em execução e encerre-o, com os comandos a seguir:
+[source,bash]
+----
+$ ps -ef | grep ssh
+$ pkill ssh
+$ ps -ef | grep ssh
+----
+
+Para simplificar ainda mais, a criação de um alias pode ser útil. Execute e teste:
+[source,bash]
+----
+$ alias jboss-tunnel-vm-centos='ssh -f -N jboss-tunnel-vm-centos'
+$ jboss-tunnel-vm-centos
+$ ps -ef | grep ssh
+$ pkill ssh
+----
+
+Você pode tornar esse alias disponível a cada inicialização de um shell incluindo a linha acima no arquivo +\~/.bashrc+ ou +~/.profile+ (no OS X).
 
 === Configurando e acessando o JBoss atrás do Apache HTTPD
-TODO
+
+Se não fizermos o túnel para acessar a porta 8080 localmente ou se não tornarmos esta porta ser acessível através do endereço da +vm-centos+, por exemplo para acessar a aplicação +helloworld+ (URL http://vm-centos:8080/jboss-helloworld), como poderemos acessá-la via _browser_?
+
+Existem várias alternativas para isso ... boas é más. Porém, uma delas é colocar o Apache HTTPD como _frontend_ para o JBoss. Faremos isso agora.
 
 === Configurando um virtual host para acessar a aplicação
 TODO
