@@ -5,7 +5,7 @@
 
 == Introdução
 
-Este é um tutorial prático (mão na massa de verdade) que faz um _overview_ de grande parte dos assuntos que são explicados detalhadamente em cada tópico do link:./curso.asciidoc[livro/curso "JBoss em Produção"] (link:./curso.html[HTML]).
+Este é um tutorial prático (mão na massa de verdade) que faz um _overview_ de parte dos assuntos que são explicados detalhadamente em cada tópico do link:./curso.asciidoc[livro/curso "JBoss em Produção"] (link:./curso.html[HTML]).
 
 Os requisitos para a execução desse tutorial são bem reduzidos em relação aos do curso pois, nele, não solicito a instalação do http://fedoraproject.org[Fedora] como máquina base para todas os laboratórios que estão disponíveis. Sendo assim, esse tutorial oferece uma visão simplificada com um _startup_ rápido para várias tarefas que são minuciosamente cobertas durante o curso.
 
@@ -86,7 +86,7 @@ cat $f
 Inicie a VM:
 [source,bash]
 ----
-$ VBoxManage startvm vm-centos
+VBoxManage startvm vm-centos
 ----
 
 Abra o console da VM e efetue o logon como usuário aluno (senha @lun0123).
@@ -301,8 +301,8 @@ Configure o acesso via Apache ao diretório do curso:
 ----
 sudo chmod +x $HOME
 mkdir ~/public_html
-$ cd !$
-$ ln -s ../curso-jboss
+cd !$
+ln -s ../curso-jboss
 ----
 
 Edite o arquivo de configuração do Apache para habilitar o acesso ao diretório +~/public_html+.
@@ -411,7 +411,6 @@ Crie o arquivo +~/curso-jboss/ambiente+ para configurar variáveis de ambiente +
 [source,bash]
 ----
 ambiente=~/curso-jboss/ambiente
-
 tee $ambiente <<EOF > /dev/null
 # Informa o nome do usuário na máquina base:
 BASE_USER=$BASE_USER
@@ -419,14 +418,12 @@ BASE_USER=$BASE_USER
 # Informa o diretório de downloads na máquina base:
 DOWNLOADS_DIR=$DOWNLOADS_DIR
 EOF
-
 tee -a $ambiente <<'EOF' > /dev/null
 
 # Informa a localização do JBoss e ajusta o PATH para seus executáveis:
 JBOSS_HOME=~/curso-jboss/ferramentas/jboss
 PATH=$JBOSS_HOME/bin:$PATH
 EOF
-
 cat $ambiente
 type setenv
 setenv $ambiente
@@ -744,7 +741,68 @@ setsebool httpd_can_network_connect 1
 Não é necessário reiniciar o Apache após executar essa instrução. Agora, tente novamente o acesso a URL e _voilà_! https://www.youtube.com/watch?v=d-diB65scQU[Don't Worry Be Happy]! ;)
 
 === Configurando um virtual host para acessar a aplicação
-TODO
+
+Agora eu quero que a aplicação +helloworld+ seja acessada através da seguinte URL http://helloworld.vm-centos. 
+
+Observando a URL que já acessamos (http://vm-centos/jboss-helloworld/HelloWorld) podemos notar três elementos:
+
+. O nome do servidor (+vm-centos+)
+. O contexto web (+jboss-helloworld+)
+. O recurso (+HelloWorld+ - desenvolvedores lendo a aplicação saberão que trata-se de um Servlet)
+
+Na nova URL que será utilizada, o nome +helloworld.vm-centos+ será o nome de um _virtual host_. Eu não quero que a aplicação seja acessada através desse nome e mais o nome do contexto, ou seja, não quero ter que acessar http://helloworld.vm-centos/jboss-helloworld. Então, além de fazer a criação de um _virtual host_, também será necessário tornar o contexto +jboss-helloworld+, o contexto _root_ (/) desse _virtual host_. Logo, teremos dois trabalhos aqui ...
+
+==== Ajustando o contexto root
+
+Antes de fazer a configuração do _virtual host_ vamos ajustar o JBoss para tornar o contexto +jboss-helloworld+ o seu contexto _root_. Faremos isso, executando alguns comandos através da CLI (Command Line Interface) do JBoss:
+
+[source,bash]
+----
+f=/tmp/jboss-cmds.cli
+cat > $f <<EOF
+batch
+/subsystem=web/virtual-server=default-host:write-attribute(name=enable-welcome-root,value=false)
+/subsystem=web/virtual-server=default-host:write-attribute(name=default-web-module,value=jboss-helloworld)
+:shutdown(restart=true)
+run-batch
+EOF
+jboss-cli.sh -c --file=$f
+----
+
+A execução dos comandos acima faz os ajustes necessários no JBoss e em seguida, manda reiniciá-lo. 
+
+Você poderá observar, agora, que ao acessar a URL http://localhost:8080, o contexto _root_ (/) do JBoss será a aplicação +helloworld+.
+
+==== Configurando o virtual host
+
+Como não estamos utilizando nenhum servidor de DNS nesse tutorial, precisaremos ajustar esse nome no arquivo +/etc/hosts+ da nossa máquina +base+. Então, façamos isso:
+
+[source,bash]
+----
+f=/etc/hosts; grep -q 'helloworld\.vm-centos' $f ||
+echo -e '192.168.0.254\thelloworld.vm-centos' | sudo tee -a $f
+----
+
+Agora de volta ao shell aberto anteriormente como root na máquina +vm-centos+ vamos retornar o Apache a configuração feita no arquivo +http.conf.2+:
+
+[source,bash]
+----
+cd /etc/httpd/conf
+cp httpd.conf httpd.conf.3
+cp httpd.conf.2 httpd.conf
+----
+
+Vamos editar a configuração do novo _virtual host_ em +httpd.conf+:
+[source,bash]
+----
+vim httpd.conf
+----
+
+Observe as diferenças desse arquivo em relação ao arquivo +httpd.conf.2+ para saber o que foi editado:
+[source,bash]
+----
+diff httpd.conf{,.2}
+----
 
 == Para refazer este tutorial
 
