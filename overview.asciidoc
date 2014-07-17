@@ -316,9 +316,9 @@ Apresento a saída do comando +diff httpd.conf{.1,}+. Ela informa as diferenças
 [source,diff]
 ----
 276c276
-< ServerName 192.168.0.254
+< #ServerName www.example.com:80
 ---
-> #ServerName www.example.com:80
+> ServerName 192.168.0.254
 366c366
 <     UserDir disabled
 ---
