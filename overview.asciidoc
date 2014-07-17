@@ -869,7 +869,10 @@ Apresento a saída do comando +diff httpd.conf{.2,}+. Ela mostra as diferenças 
 < #NameVirtualHost *:80
 ---
 > NameVirtualHost *:80
-1009a1010,1015
+1009a1010,1018
+> <VirtualHost *:80>
+>     DocumentRoot /var/www/html
+> </VirtualHost>
 > <VirtualHost *:80>
 >     ServerName helloworld.vm-centos
 >     ProxyRequests off
