@@ -452,7 +452,7 @@ standalone.sh
 
 Pressione 'Ctrl+Z' para parar o processo do JBoss e em seguida, digite 'bg' para executá-lo em _background_.
 
-Note o +WARN+ apresentado no log de execução do JBoss. Ele representa um problema que precisemos resolver. 
+Note o +WARN+ apresentado no log de execução do JBoss. Ele representa um problema que precisaremos resolver.
 
 Observe algumas informações sobre o JBoss em execução:
 
@@ -494,9 +494,9 @@ jboss-cli.sh -c :shutdown
 
 === Habilitando a inicialização automática do JBoss durante o boot da máquina
 
-A habilidade de fazer um serviço subir automaticamente na inicialização da máquina é uma característica desejada em servidores. Fazer isso acontecer no JBoss, é bastante fácil. Para deixar as coisas ainda mais simples, vamos deixar o JBoss ser iniciado pelo próprio usuário +aluno+.
+A habilidade de fazer um serviço subir automaticamente na inicialização da máquina é uma característica desejada em servidores. Fazer isso acontecer no JBoss é bastante fácil. Para deixar as coisas ainda mais simples, vamos deixar o JBoss ser iniciado pelo próprio usuário +aluno+.
 
-Primeiro, copie o script de iniciacialização do JBoss para o local adequado, conforme a seguir:
+Primeiro copie o script de iniciacialização do JBoss para o local adequado, conforme a seguir:
 [source,bash]
 ----
 cd $JBOSS_HOME/bin
@@ -534,7 +534,8 @@ Registre o script de inicialização:
 [source,bash]
 ----
 sudo chkconfig --add jboss
-sudo chkconfig 
+sudo chkconfig jboss on
+sudo chkconfig --list jboss
 ----
 
 Por fim, como último teste, reinicie a VM e verifique se durante o boot o JBoss é iniciado automaticamente:
@@ -545,8 +546,14 @@ sudo shutdown -r now
 
 === Acessando a interface administrativa do JBoss via túnel SSH reverso
 
-Para acessar a interface administrativa do JBoss, será necessário criar um usuário que possua tais privilégios. Para isso, refaça o login na máquina +vm-centos+ como usuário +aluno+ e execute:
+Para acessar a interface administrativa do JBoss, será necessário criar um usuário que possua tais privilégios. Para isso, refaça o login na máquina +vm-centos+ como usuário +aluno+ 
 
+[source,bash]
+----
+ssh aluno@vm-centos
+----
+
+Execute:
 [source,bash]
 ----
 # informe o usuário 'admin' e a senha 'jb@ss123' (sem os apoóstrofos)
@@ -671,7 +678,7 @@ Execute o seguinte comando para adicionar conteúdo ao arquivo +~/.ssh/config+ d
 
 [source,bash]
 ----
-tee -a ~/.ssh/config <<EOF
+tee -a ~/.ssh/config <<EOF > /dev/null
 Host vm-centos
    Hostname vm-centos
    User aluno
@@ -712,7 +719,7 @@ Veja que o +ssh+ está em execução e encerre-o, com os comandos a seguir:
 ----
 ps -ef | grep ssh
 pkill ssh
-ps -ef | grep ssh
+!-2
 ----
 
 Para simplificar ainda mais, a criação de um alias pode ser útil. Execute e teste:
@@ -720,8 +727,8 @@ Para simplificar ainda mais, a criação de um alias pode ser útil. Execute e t
 ----
 alias jboss-tunnels-vm-centos='ssh -f -N jboss-tunnels-vm-centos'
 jboss-tunnels-vm-centos
-ps -ef | grep ssh
-pkill ssh
+!?ps
+!?pkill
 ----
 
 Você pode tornar esse alias disponível a cada inicialização de um shell incluindo a linha acima no arquivo +\~/.bashrc+ ou +~/.profile+ (no OS X).
@@ -739,7 +746,7 @@ Em termos de produção, por questões de segurança, é bom mesmo que o JBoss s
 Logue-se novamente na vm-centos como +aluno+ e, em seguida, como +root+:
 [source,bash]
 ----
-ssh vm-centos
+ssh jboss-tunnels-vm-centos
 sudo su -
 ----
 Observe que, no comando +ssh+ acima não informamos o usuário (+aluno+) mas, mesmo assim, o login foi realizado (como ele). Isso ocorreu devido a configuração que fizemos anteriormente no arquivo +~/.ssh/config+.
@@ -781,7 +788,7 @@ Refaça a requisição a URL informada e observe que na saída do arquivo +errro
 [Wed Jul 16 15:45:56 2014] [error] proxy: HTTP: disabled connection for (localhost)
 ----
 
-Esse é o problema! Geralmente, a primeira coisa que observo nesses tipos de casos (negação de serviço) é o SELinux. E, para esse caso específico, execute a seguinte instrução:
+Esse é o problema! Pode dar um 'Ctrl+C' na execução do +tail+. Geralmente, a primeira coisa que observo nesses tipos de casos (negação de serviço) é o SELinux. E, para esse caso específico, execute a seguinte instrução:
 
 [source,bash]
 ----
@@ -804,8 +811,15 @@ Na nova URL que será utilizada, o nome +helloworld.vm-centos+ será o nome de u
 
 ==== Ajustando o contexto root
 
-Antes de fazer a configuração do _virtual host_ vamos ajustar o JBoss para tornar o contexto +jboss-helloworld+ o seu contexto _root_. Faremos isso, executando alguns comandos através da CLI (Command Line Interface) do JBoss:
+Antes de fazer a configuração do _virtual host_ vamos ajustar o JBoss para tornar o contexto +jboss-helloworld+ o seu contexto _root_.
 
+Se você está logado como +root+, volte a ser o usuário +aluno+:
+[source,bash]
+----
+logout
+----
+
+Agora, execute alguns comandos através da CLI (Command Line Interface) do JBoss:
 [source,bash]
 ----
 f=/tmp/jboss-cmds.cli
@@ -825,7 +839,7 @@ Você poderá observar, agora, que ao acessar a URL http://localhost:8080, o con
 
 ==== Configurando o virtual host
 
-Como não estamos utilizando nenhum servidor de DNS nesse tutorial, precisaremos ajustar esse nome no arquivo +/etc/hosts+ da máquina +base+. Então, façamos isso:
+Como não estamos utilizando nenhum servidor de DNS nesse tutorial, precisaremos ajustar esse nome no arquivo +/etc/hosts+ da máquina +base+. Então, num shell aberto nessa máquina, execute:
 
 [source,bash]
 ----
@@ -833,37 +847,44 @@ f=/etc/hosts; grep -q 'helloworld\.vm-centos' $f ||
 echo -e '192.168.0.254\thelloworld.vm-centos' | sudo tee -a $f
 ----
 
-Agora de volta ao shell aberto anteriormente como +root+ na máquina +vm-centos+ vamos retornar o Apache a configuração feita no arquivo +http.conf.2+:
+De volta ao shell aberto na máquina +vm-centos+ vamos fazer algumas configurações no Apache:
 
 [source,bash]
 ----
 cd /etc/httpd/conf
-cp httpd.conf httpd.conf.3
-cp httpd.conf.2 httpd.conf
+sudo cp httpd.conf httpd.conf.3
+sudo cp httpd.conf.2 httpd.conf
 ----
 
 Edite a configuração do novo _virtual host_ em +httpd.conf+:
 [source,bash]
 ----
-vim httpd.conf
+sudo vim httpd.conf
 ----
 
 Apresento a saída do comando +diff httpd.conf{.2,}+. Ela mostra as diferenças entre o arquivo original e o editado. Utilize-a para saber o precisa ser modificado:
 [source,diff]
 ----
-991c991
+990c990
 < #NameVirtualHost *:80
 ---
 > NameVirtualHost *:80
-1010a1011,1017
+1009a1010,1015
 > <VirtualHost *:80>
 >     ServerName helloworld.vm-centos
-> 
 >     ProxyRequests off
 >     ProxyPass / http://localhost:8080/
 >     ProxyPassReverse / http://localhost:8080/
 > </VirtualHost>
 ----
+
+Faça o reload das configurações do Apache:
+[source,bash]
+----
+sudo service httpd reload
+----
+
+Teste o acesso a URL http://helloworld.vm-centos.
 
 == Para refazer este tutorial
 
@@ -892,3 +913,4 @@ sudo sed -i '/vm-centos/d' /etc/hosts
 cat !$
 ----
 
+Remova as linhas adicionadas ao arquivo +~/.ssh/config+ na máquina +base+.
