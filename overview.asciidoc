@@ -31,7 +31,7 @@ Espero, sinceramente, que você se divirta executando esse tutorial (assim como 
 
 === Baixando e extraindo a VM
 
-Presumindo que você já tenha realizado as instalações que solicitei (VirtualBox, 7zip, OpenSSH server, ...), abra um shell Bash na tua máquina (chamarei-a de "base").
+Presumindo que você já tenha realizado as instalações que solicitei (VirtualBox, 7zip, OpenSSH server, ...), abra um shell Bash em tua máquina (chamarei-a de +base+).
 
 Baixe os arquivos de minha http://gdriv.es/vm-centos[vm-centos] (será realizado o download de aproximadamente 400 MB):
 [source,bash]
@@ -55,7 +55,7 @@ Registre a VM:
 VBoxManage registervm "$PWD/vm-centos/vm-centos.vbox"
 ----
 
-Crie e configure uma interface host-only para a máquina base:
+Crie e configure uma interface host-only para a máquina +base+:
 [source,bash]
 ----
 VBoxManage hostonlyif create
@@ -89,9 +89,9 @@ Inicie a VM:
 VBoxManage startvm vm-centos
 ----
 
-Abra o console da VM e efetue o logon como usuário aluno (senha @lun0123).
+Abra o console da VM e efetue o logon como usuário +aluno+ (senha @lun0123).
 
-Logue-se como root:
+Logue-se como +root+:
 [source,bash]
 ----
 sudo su -
@@ -136,7 +136,7 @@ Verifique se o IP foi associado a interface eth1:
 ip a s eth1
 ----
 
-Faça um ping no IP da interface vboxnet0 na máquina base:
+Faça um ping no IP da interface vboxnet0 na máquina +base+:
 [source,bash]
 ----
 ping 192.168.0.253
@@ -155,7 +155,7 @@ ip route show
 route -n
 ----
 
-Efetue o logout e volte para o shell na máquina base:
+Efetue o logout e volte para o shell na máquina +base+:
 [source,bash]
 ----
 exit
@@ -315,41 +315,45 @@ sudo vim $d/httpd.conf
 As diferenças entre o arquivo original (httpd.conf.1) e o editado são apresentadas na saída do comando +diff+. Execute-o e observe as diferenças para saber o que você deve editar:
 [source,bash]
 ----
-diff $d/httpd.conf{,.1}
+diff httpd.conf{.1,}
+276c276
+< ServerName 192.168.0.254
+---
+> #ServerName www.example.com:80
 366c366
-<     #UserDir disabled
+<     UserDir disabled
 ---
->     UserDir disabled
+>     #UserDir disabled
 373c373
-<     UserDir public_html
+<     #UserDir public_html
 ---
->     #UserDir public_html
+>     UserDir public_html
 381,392c381,392
-< <Directory /home/*/public_html>
-<     AllowOverride FileInfo AuthConfig Limit
-<     Options MultiViews Indexes SymLinksIfOwnerMatch IncludesNoExec
-<     <Limit GET POST OPTIONS>
-<         Order allow,deny
-<         Allow from all
-<     </Limit>
-<     <LimitExcept GET POST OPTIONS>
-<         Order deny,allow
-<         Deny from all
-<     </LimitExcept>
-< </Directory>
+< #<Directory /home/*/public_html>
+< #    AllowOverride FileInfo AuthConfig Limit
+< #    Options MultiViews Indexes SymLinksIfOwnerMatch IncludesNoExec
+< #    <Limit GET POST OPTIONS>
+< #        Order allow,deny
+< #        Allow from all
+< #    </Limit>
+< #    <LimitExcept GET POST OPTIONS>
+< #        Order deny,allow
+< #        Deny from all
+< #    </LimitExcept>
+< #</Directory>
 ---
-> #<Directory /home/*/public_html>
-> #    AllowOverride FileInfo AuthConfig Limit
-> #    Options MultiViews Indexes SymLinksIfOwnerMatch IncludesNoExec
-> #    <Limit GET POST OPTIONS>
-> #        Order allow,deny
-> #        Allow from all
-> #    </Limit>
-> #    <LimitExcept GET POST OPTIONS>
-> #        Order deny,allow
-> #        Deny from all
-> #    </LimitExcept>
-> #</Directory>
+> <Directory /home/*/public_html>
+>     AllowOverride FileInfo AuthConfig Limit
+>     Options MultiViews Indexes SymLinksIfOwnerMatch IncludesNoExec
+>     <Limit GET POST OPTIONS>
+>         Order allow,deny
+>         Allow from all
+>     </Limit>
+>     <LimitExcept GET POST OPTIONS>
+>         Order deny,allow
+>         Deny from all
+>     </LimitExcept>
+> </Directory>
 ----
 
 Recarregue as configurações do Apache (não é necessário reiniciá-lo):
@@ -367,7 +371,9 @@ sudo setsebool -P httpd_enable_homedirs 1
 sudo getsebool -a | grep httpd | grep on$
 ----
 
-De um browser na máquina base, teste o acesso a URL http://vm-centos/~aluno/curso-jboss
+O parâmetro +-a+ passado ao +getsebool+ solicita que sejam impressos todos os _booleans_ do SELinux. Já o parâmetro +-P+ passado ao +setsebool+ serve para tornar permanente (sobrevivente as reinicializações do S.O.) o valor informado para a variável booleana.
+
+De um browser na máquina +base+, teste o acesso a URL http://vm-centos/~aluno/curso-jboss
 
 === Instalando o OpenJDK
 
@@ -380,7 +386,7 @@ java -version
 
 === Baixando e instalando o JBoss EAP
 
-Abra um browser em tua máquina (base) e faça o download do JBoss EAP a partir da URL http://www.jboss.org/products/eap/download/. Para esse tutorial, faça o download desse arquivo da versão 6.2.0.GA: http://www.jboss.org/download-manager/file/jboss-eap-6.2.0.GA.zip
+Abra um browser na máquina (+base+) e faça o download do JBoss EAP a partir da URL http://www.jboss.org/products/eap/download/. Para esse tutorial, faça o download desse arquivo da versão 6.2.0.GA: http://www.jboss.org/download-manager/file/jboss-eap-6.2.0.GA.zip
 
 Crie e copie o arquivo baixado na máquina +base+ para o diretório +~/curso-jboss/instaladores+
 [source,bash]
@@ -487,9 +493,55 @@ Novamente, pare o JBoss:
 jboss-cli.sh -c :shutdown
 ----
 
+=== Habilitando a inicialização automática do JBoss durante o boot da máquina
+
+A habilidade de fazer um serviço subir automaticamente na inicialização da máquina é uma característica desejada em servidores. Fazer isso acontecer no JBoss, é bastante fácil. Para deixar as coisas ainda mais simples, vamos deixar o JBoss ser iniciado pelo próprio usuário +aluno+.
+
+Primeiro, copie o script de iniciacialização do JBoss para o local adequado, conforme a seguir:
+[source,bash]
+----
+cd $JBOSS_HOME/bin
+sudo cp init.d/jboss-as-standalone.sh /etc/init.d/jboss
+----
+
+Edite o script copiado (+/etc/init.d/jboss+) através de um editor de textos (Vim). Para fazer as mudanças, baseie-se na saída do comando +diff+ entre o arquivo original e o editado:
+[source,bash]
+----
+diff $JBOSS_HOME/bin/init.d/jboss-as-standalone.sh /etc/init.d/jboss
+25a26
+> JBOSS_USER=aluno
+28c29
+<   JBOSS_HOME=/usr/share/jboss-as
+---
+>   JBOSS_HOME=/home/aluno/curso-jboss/ferramentas/jboss
+----
+
+Teste o script de inicialização:
+[source,bash]
+----
+sudo /etc/init.d/jboss start
+sudo /etc/init.d/jboss status
+ps -ef | grep java
+sudo /etc/init.d/jboss stop
+!-2
+----
+
+Registre o script de inicialização:
+[source,bash]
+----
+sudo chkconfig --add jboss
+sudo chkconfig 
+----
+
+Por fim, como último teste, reinicie a VM e verifique se durante o boot o JBoss é iniciado automaticamente:
+[source,bash]
+----
+sudo shutdown -r now
+----
+
 === Acessando a interface administrativa do JBoss via túnel SSH reverso
 
-Para acessar a interface administrativa do JBoss, será necessário criar um usuário que possua tais privilégios. Para isso, execute:
+Para acessar a interface administrativa do JBoss, será necessário criar um usuário que possua tais privilégios. Para isso, refaça o login na máquina +vm-centos+ como usuário +aluno+ e execute:
 
 [source,bash]
 ----
@@ -523,20 +575,14 @@ e.g. for a slave host controller connecting to the master or for a Remoting conn
 yes/no? no
 ----
 
-Inicie novamente o JBoss e, em seguida efetue o logout:
+Faça o +logout+ e conecte-se novamente, via SSH, criando túneis para as portas 8080 (aplicações) e 9990 (gerenciamento via web):
 [source,bash]
 ----
-nohup standalone.sh 2>&1 &
 logout
-----
-
-Conecte-se novamente, via SSH, criando túneis para as portas 8080 (aplicações) e 9990 (gerenciamento via web):
-[source,bash]
-----
 ssh -L 8080:localhost:8080 -L 9990:localhost:9990 aluno@vm-centos 
 ----
 
-Na máquina base, abra o browser em http://localhost:8080. Em seguida, clique no link http://localhost:8080/console[Administration Console]. Informe o usuário e a senha cadastrados anteriormente. Navegue pela interface administrativa ...
+Na máquina +base+, abra o browser em http://localhost:8080. Em seguida, clique no link http://localhost:8080/console[Administration Console]. Informe o usuário e a senha cadastrados anteriormente. Navegue pela interface administrativa ...
 
 Feche a conexão SSH. Obviamente, após fazer isso, os túneis serão desfeitos e o acesso as portas 8080 e 9990 não será mais possível! Mesmo assim, é claro que o JBoss continuará em execução ...
 [source,bash]
@@ -617,7 +663,7 @@ logout
 ===== Simplificando o uso do SSH ...
 O comando SSH executado acima é meio chato e grande e será executado várias vezes, não é? Podemos simplificá-lo ...
 
-Execute o seguinte comando para adicionar conteúdo ao arquivo +~/.ssh/config+ da tua máquina (+base+):
+Execute o seguinte comando para adicionar conteúdo ao arquivo +~/.ssh/config+ da máquina +base+:
 
 [source,bash]
 ----
@@ -686,7 +732,7 @@ Em termos de produção, por questões de segurança, é bom mesmo que o JBoss s
 
 ==== Utilizando o mod_proxy
 
-Logue-se novamente na vm-centos como aluno e, em seguida, como root:
+Logue-se novamente na vm-centos como +aluno+ e, em seguida, como +root+:
 [source,bash]
 ----
 ssh vm-centos
@@ -735,7 +781,7 @@ Esse é o problema! Geralmente, a primeira coisa que observo nesses tipos de cas
 
 [source,bash]
 ----
-setsebool httpd_can_network_connect 1
+setsebool -P httpd_can_network_connect 1
 ----
 
 Não é necessário reiniciar o Apache após executar essa instrução. Agora, tente novamente o acesso a URL e _voilà_! https://www.youtube.com/watch?v=d-diB65scQU[Don't Worry Be Happy]! ;)
@@ -775,7 +821,7 @@ Você poderá observar, agora, que ao acessar a URL http://localhost:8080, o con
 
 ==== Configurando o virtual host
 
-Como não estamos utilizando nenhum servidor de DNS nesse tutorial, precisaremos ajustar esse nome no arquivo +/etc/hosts+ da nossa máquina +base+. Então, façamos isso:
+Como não estamos utilizando nenhum servidor de DNS nesse tutorial, precisaremos ajustar esse nome no arquivo +/etc/hosts+ da máquina +base+. Então, façamos isso:
 
 [source,bash]
 ----
@@ -783,7 +829,7 @@ f=/etc/hosts; grep -q 'helloworld\.vm-centos' $f ||
 echo -e '192.168.0.254\thelloworld.vm-centos' | sudo tee -a $f
 ----
 
-Agora de volta ao shell aberto anteriormente como root na máquina +vm-centos+ vamos retornar o Apache a configuração feita no arquivo +http.conf.2+:
+Agora de volta ao shell aberto anteriormente como +root+ na máquina +vm-centos+ vamos retornar o Apache a configuração feita no arquivo +http.conf.2+:
 
 [source,bash]
 ----
@@ -798,10 +844,22 @@ Vamos editar a configuração do novo _virtual host_ em +httpd.conf+:
 vim httpd.conf
 ----
 
-Observe as diferenças desse arquivo em relação ao arquivo +httpd.conf.2+ para saber o que foi editado:
+Observe as diferenças no arquivo original (+httpd.conf.2+) com o editado +httpd.conf+ para saber o que foi modificado:
 [source,bash]
 ----
-diff httpd.conf{,.2}
+diff httpd.conf{.2,}
+991c991
+< #NameVirtualHost *:80
+---
+> NameVirtualHost *:80
+1010a1011,1017
+> <VirtualHost *:80>
+>     ServerName helloworld.vm-centos
+> 
+>     ProxyRequests off
+>     ProxyPass / http://localhost:8080/
+>     ProxyPassReverse / http://localhost:8080/
+> </VirtualHost>
 ----
 
 == Para refazer este tutorial
@@ -824,7 +882,7 @@ Remova a VM:
 VBoxManage unregistervm vm-centos --delete
 ----
 
-Remova a entrada +vm-centos+ do arquivo +/etc/hosts+ de tua máquina:
+Remova a entrada +vm-centos+ do arquivo +/etc/hosts+ na máquina +base+:
 [source,bash]
 ----
 sudo sed -i '/vm-centos/d' /etc/hosts

@@ -2,8 +2,10 @@
 *.html
 !pagseguro.html
 *.swp
+ambiente
 dotfiles
+exemplos
+ferramentas
+instaladores
 mirrors
 vm-centos
-instaladores
-ferramentas
