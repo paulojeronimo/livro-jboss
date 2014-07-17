@@ -312,10 +312,9 @@ d=/etc/httpd/conf/; sudo cp $d/httpd.conf $d/httpd.conf.1
 sudo vim $d/httpd.conf
 ----
 
-As diferenças entre o arquivo original (httpd.conf.1) e o editado são apresentadas na saída do comando +diff+. Execute-o e observe as diferenças para saber o que você deve editar:
-[source,bash]
+Apresento a saída do comando +diff httpd.conf{.1,}+. Ela informa as diferenças entre o arquivo original (httpd.conf.1) e o editado. Observe-as para saber o que você deve modificar em +httpd.conf+:
+[source,diff]
 ----
-diff httpd.conf{.1,}
 276c276
 < ServerName 192.168.0.254
 ---
@@ -504,10 +503,15 @@ cd $JBOSS_HOME/bin
 sudo cp init.d/jboss-as-standalone.sh /etc/init.d/jboss
 ----
 
-Edite o script copiado (+/etc/init.d/jboss+) através de um editor de textos (Vim). Para fazer as mudanças, baseie-se na saída do comando +diff+ entre o arquivo original e o editado:
+Edite o script copiado:
 [source,bash]
 ----
-diff $JBOSS_HOME/bin/init.d/jboss-as-standalone.sh /etc/init.d/jboss
+sudo vim /etc/init.d/jboss
+----
+
+Para fazer as mudanças, baseie-se na saída do comando +diff+ entre o arquivo original (+$JBOSS_HOME/bin/init.d/jboss-as-standalone.sh+) e o editado:
+[source,diff]
+----
 25a26
 > JBOSS_USER=aluno
 28c29
@@ -838,16 +842,15 @@ cp httpd.conf httpd.conf.3
 cp httpd.conf.2 httpd.conf
 ----
 
-Vamos editar a configuração do novo _virtual host_ em +httpd.conf+:
+Edite a configuração do novo _virtual host_ em +httpd.conf+:
 [source,bash]
 ----
 vim httpd.conf
 ----
 
-Observe as diferenças no arquivo original (+httpd.conf.2+) com o editado +httpd.conf+ para saber o que foi modificado:
-[source,bash]
+Apresento a saída do comando +diff httpd.conf{.2,}+. Ela mostra as diferenças entre o arquivo original e o editado. Utilize-a para saber o precisa ser modificado:
+[source,diff]
 ----
-diff httpd.conf{.2,}
 991c991
 < #NameVirtualHost *:80
 ---
